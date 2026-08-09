@@ -1,15 +1,9 @@
-import * as React from 'react'
-import Header from "@/components/ui/header";
+import * as React from 'react';
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-      <>
-        <Header />
-        {children}
-      </>
-  )
+    return <>{children}</>;
 }

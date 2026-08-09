@@ -9,8 +9,10 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@floating-ui/react": "^0.27.20",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "date-fns": "^4.4.0",
     "embla-carousel": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.42.2",
@@ -18,8 +20,10 @@
     "motion": "^12.42.2",
     "next": "16.2.10",
     "next-themes": "^0.4.6",
+    "prettierrc": "^0.0.0-5",
     "radix-ui": "^1.6.2",
     "react": "19.2.4",
+    "react-day-picker": "^10.0.1",
     "react-dom": "19.2.4",
     "react-markdown": "^10.1.0",
     "react-scroll": "^1.9.3",
