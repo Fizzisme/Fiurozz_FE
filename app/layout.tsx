@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Lexend_Deca } from "next/font/google";
 import "./globals.css";
 import Navigate from "@/components/ui/navigate";
+import Header from "@/components/ui/header";
+import * as React from "react";
 // import Navigate from "@/components/Navigate/Navigate";
 // import { Providers } from '@/components/Providers/Providers'
 // import Chatbot from '@/components/ChatBot/ChatBot'
@@ -107,6 +109,7 @@ export default function RootLayout({
 
         <div>
             <Navigate/>
+            <Header />
             {/*<Chatbot />*/}
             {children}
         </div>

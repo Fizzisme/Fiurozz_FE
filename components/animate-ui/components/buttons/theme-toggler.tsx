@@ -45,12 +45,12 @@ function ThemeTogglerButton({
 
             <div>
               {effective === 'dark' ? <CloudMoon animateOnHover data-slot="theme-toggler-button"
-                                            className='size-4'
+                                            className='size-4 opacity-60 hover:opacity-80 transition-opacity'
                                             onClick={() => {
                                               toggleTheme(getNextTheme(effective));
                                             }}
               /> : <CloudSun animateOnHover data-slot="theme-toggler-button"
-                        className='size-4'
+                        className='size-4 opacity-60 hover:opacity-80 transition-opacity'
                         onClick={() => {
                           toggleTheme(getNextTheme(effective));
                         }}
