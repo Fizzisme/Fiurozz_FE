@@ -1,14 +1,14 @@
-'use client'
+'use client';
 
-import { motion } from 'framer-motion'
-import Link from 'next/link'
-import { EyeClosed, Eye } from 'lucide-react'
-import { Button } from '@/components/animate-ui/components/buttons/button'
-import LogoFramework from "@/app/(main)/home/components/logoframework";
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { EyeClosed, Eye } from 'lucide-react';
+import { Button } from '@/components/animate-ui/components/buttons/button';
+import LogoFramework from '@/app/(main)/home/components/logoframework';
 
 export default function Description() {
     return (
-        <>
+        <div>
             <div className="text-center mt-20 flex flex-col items-center">
                 {/*
               Heading with a two-layer blur/reveal effect:
@@ -70,8 +70,8 @@ export default function Description() {
                     transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
                     className="mt-6 w-[55%] text-lg leading-relaxed text-[#737373]"
                 >
-                    A modern platform where you can share your personal web projects, explore work from other creators and
-                    exchange insights with a community of developers who love creating just as much as you do.
+                    A modern platform where you can share your personal web projects, explore work from other creators
+                    and exchange insights with a community of developers who love creating just as much as you do.
                 </motion.p>
 
                 {/* CTA buttons, fades/slides in last to complete the staggered entrance sequence */}
@@ -92,9 +92,9 @@ export default function Description() {
 
                             {/* Icon swap on hover: closed-eye -> open-eye, cross-faded via opacity/scale */}
                             <span className="relative w-5 h-5">
-                            <EyeClosed className="size-5 transition-all duration-300 opacity-100 scale-100 group-hover:opacity-0 group-hover:scale-75 absolute inset-0" />
-                            <Eye className="size-5 transition-all duration-300 opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 absolute inset-0" />
-                        </span>
+                                <EyeClosed className="size-5 transition-all duration-300 opacity-100 scale-100 group-hover:opacity-0 group-hover:scale-75 absolute inset-0" />
+                                <Eye className="size-5 transition-all duration-300 opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 absolute inset-0" />
+                            </span>
                         </Button>
                     </Link>
                 </motion.div>
@@ -102,6 +102,6 @@ export default function Description() {
                 {/* Row of framework/tech logos rendered below the hero content */}
                 <LogoFramework />
             </div>
-        </>
+        </div>
     );
-};
+}

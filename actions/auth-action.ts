@@ -1,11 +1,12 @@
-'use server'
+'use server';
 
 // Server Actions related to auth token lifecycle. These run on the
 // server ONLY -- they read/write httpOnly cookies directly via
 // next/headers, which browser JS has no access to.
 
-import { cookies } from 'next/headers'
-import {ApiEnvelope, ApiError, gatewayClient} from "@/services/gateway-client";
+import { cookies } from 'next/headers';
+import { ApiEnvelope, ApiError, gatewayClient } from '@/services/gateway-client';
+import { isRefreshInFlight, beginRefresh, endRefresh, waitForRefresh } from '@/lib/refresh-lock';
 // gatewayClient hits the Gateway directly with an absolute URL.
 // Using the browser client here (baseUrl '/api/proxy') would throw,
 // since a relative URL has nothing to resolve against on the server.
@@ -20,50 +21,18 @@ interface IRefreshResult {
 interface RefreshTokenResponse {
     accessToken: string;
     accessTokenExpiresIn: number;
+    refreshTokenExpiresIn: number;
 }
-
-// --- Mutex to deduplicate concurrent refresh calls ---
-//
-// If several requests hit the proxy route at nearly the same time and
-// all get a 401 (expired token), each one calls refreshAccessTokenAction().
-// Without this guard, that means N simultaneous calls to /auth/refresh
-// with the SAME refresh token. If the BE rotates refresh tokens (issues
-// a new one and invalidates the old one on each use), only the first
-// call would succeed and the other N-1 would fail with an invalid
-// token error -- even though the session is actually fine.
-//
-// This only dedupes within a single Node process/instance. On
-// serverless hosting where each request may spin up a separate
-// instance, this won't fully prevent duplicate calls -- acceptable
-// for now, would need a distributed lock (e.g. Redis) to fix properly.
-let isRefreshing = false;
-let refreshSubscribers: ((success: boolean) => void)[] = [];
-
-// Called once the in-flight refresh finishes. Wakes up every caller
-// that was waiting, all with the same result.
-const onRefreshed = (success: boolean) => {
-    refreshSubscribers.forEach((cb) => cb(success));
-    refreshSubscribers = [];
-};
-
-// Returns a Promise that stays pending until the in-flight refresh
-// (owned by some other caller) calls onRefreshed(). Used by callers
-// that arrive WHILE a refresh is already running, so they don't
-// trigger a second one.
-const waitForRefreshResult = () =>
-    new Promise<boolean>((resolve) => {
-        refreshSubscribers.push(resolve);
-    });
 
 export async function refreshAccessTokenAction(): Promise<IRefreshResult> {
     // Someone else's refresh is already in flight -- piggyback on its
     // result instead of starting a new one.
-    if (isRefreshing) {
-        const success = await waitForRefreshResult();
+    if (isRefreshInFlight()) {
+        const success = await waitForRefresh();
         return { success };
     }
 
-    isRefreshing = true;
+    beginRefresh();
 
     try {
         const cookieStore = await cookies();
@@ -72,7 +41,7 @@ export async function refreshAccessTokenAction(): Promise<IRefreshResult> {
         // No refresh token at all -- user was never logged in, or the
         // cookie already expired/was cleared. Nothing to do.
         if (!refreshToken) {
-            onRefreshed(false);
+            endRefresh(false);
             return { success: false };
         }
 
@@ -81,11 +50,16 @@ export async function refreshAccessTokenAction(): Promise<IRefreshResult> {
         // token comes back via Set-Cookie, NOT in the JSON body.
         const { response, data: envelope } = await gatewayClient.postWithResponse<RefreshTokenResponse>(
             '/api/auth/refresh',
-            { refreshToken },
+            undefined,
+            {
+                headers: {
+                    Cookie: `refreshToken=${refreshToken}`,
+                },
+            },
         );
 
         if (!envelope.success || !envelope.data?.accessToken) {
-            onRefreshed(false);
+            endRefresh(false);
             return { success: false };
         }
 
@@ -97,7 +71,7 @@ export async function refreshAccessTokenAction(): Promise<IRefreshResult> {
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
             path: '/',
-            maxAge: envelope.data.accessTokenExpiresIn ?? 15 * 60, // fallback: 15 minutes
+            maxAge: envelope?.data?.accessTokenExpiresIn ?? 15 * 60,
         });
 
         // The BE rotates the refresh token on every use (security best
@@ -114,27 +88,21 @@ export async function refreshAccessTokenAction(): Promise<IRefreshResult> {
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'lax',
                 path: '/',
-                maxAge: 7 * 24 * 60 * 60,
+                maxAge: envelope?.data?.refreshTokenExpiresIn ?? 7 * 24 * 60 * 60,
             });
         }
 
-        onRefreshed(true);
+        endRefresh(true);
         return { success: true };
     } catch (error) {
         // Network failure, Gateway down, etc. Treat as a failed
         // refresh rather than letting the error bubble up -- callers
         // (the proxy route) just need a success/fail signal.
         console.error('Refresh token failed:', error);
-        onRefreshed(false);
+        endRefresh(false);
         return { success: false };
-    } finally {
-        // Always release the lock, even on error, so the NEXT 401
-        // (e.g. after the user logs in again) can trigger a fresh
-        // refresh attempt instead of being stuck waiting forever.
-        isRefreshing = false;
     }
 }
-
 
 export interface ILoginPayload {
     email: string;
@@ -171,7 +139,7 @@ export async function loginAction(payload: ILoginPayload): Promise<ApiEnvelope<n
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
             path: '/',
-            maxAge: envelope.data.accessTokenExpiresIn ?? 15 * 60,
+            maxAge: envelope?.data?.accessTokenExpiresIn ?? 15 * 60,
         });
 
         const setCookies = response.headers.getSetCookie?.() ?? [];
@@ -211,7 +179,6 @@ export async function loginAction(payload: ILoginPayload): Promise<ApiEnvelope<n
     }
 }
 
-
 export async function logoutAction(): Promise<{ success: boolean }> {
     const cookieStore = await cookies();
     const accessToken = cookieStore.get('accessToken')?.value;
@@ -226,13 +193,11 @@ export async function logoutAction(): Promise<{ success: boolean }> {
     // unable to log out.
     try {
         if (accessToken || refreshToken) {
-            await gatewayClient.post(
-                '/api/auth/logout',
-                { refreshToken },
-                {
-                    headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
+            await gatewayClient.post('/api/auth/logout', undefined, {
+                headers: {
+                    Cookie: `refreshToken=${refreshToken}`,
                 },
-            );
+            });
         }
     } catch (error) {
         console.error('Logout BE call failed (clearing cookies anyway):', error);
@@ -247,8 +212,6 @@ export async function logoutAction(): Promise<{ success: boolean }> {
 
     return { success: true };
 }
-
-
 
 interface OAuthTokens {
     accessToken: string;
@@ -275,7 +238,7 @@ export async function exchangeOAuthCodeAction(code: string): Promise<{ success: 
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
             path: '/',
-            maxAge: envelope.data.accessTokenExpiresIn ?? 60 * 15,
+            maxAge: envelope?.data?.accessTokenExpiresIn ?? 15 * 60,
         });
 
         cookieStore.set('refreshToken', envelope.data.refreshToken, {

@@ -11,7 +11,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { refreshAccessTokenAction } from '@/actions/authAction';
+import { refreshAccessTokenAction } from '@/actions/auth-action';
 
 const BE_URL = process.env.BE_URL;
 
@@ -35,9 +35,7 @@ async function proxy(req: NextRequest, path: string[]) {
     // same body again on retry, which a stream won't allow.
     // arrayBuffer() also preserves binary data correctly (file
     // uploads, images), unlike reading it as .text().
-    const rawBody = req.method === 'GET' || req.method === 'HEAD'
-        ? undefined
-        : await req.arrayBuffer();
+    const rawBody = req.method === 'GET' || req.method === 'HEAD' ? undefined : await req.arrayBuffer();
 
     // Small helper so the "attach token + fetch" logic isn't
     // duplicated between the first attempt and the post-refresh retry.

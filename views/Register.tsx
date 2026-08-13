@@ -16,13 +16,14 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Calendar } from '@/components/ui/calendar';
 import { z } from 'zod';
 import { ApiEnvelope } from '@/services/client';
-import { authService } from '@/services/authService';
+import { authService } from '@/services/auth-service';
 import { GravityStarsBackground } from '@/components/animate-ui/components/backgrounds/gravity-stars';
 import Github from '@/components/icons/github';
 import OauthLogin from '@/components/ui/oauth-login';
 import Google from '@/components/icons/google';
 import Image from 'next/image';
 import Facebook from '@/components/icons/facebook';
+import { OauthLoginListener } from '@/components/oauth-login-listener';
 
 const GENDER_OPTIONS = [
     { label: 'Male', value: 'MALE', icon: Mars },
@@ -410,15 +411,16 @@ export default function Register({ countries }: { countries: string[] }) {
                                 <CardDescription>Continue with a connected account</CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-3">
-                                {/*Google*/}
+                                <OauthLoginListener>
+                                    {/*Google*/}
+                                    <OauthLogin provider="google" label="Continue with Google" Icon={Google} />
 
-                                <OauthLogin provider="google" label="Continue with Google" Icon={Google} />
+                                    {/*Facebook*/}
+                                    <OauthLogin provider="facebook" label="Continue with Facebook" Icon={Facebook} />
 
-                                {/*Facebook*/}
-                                <OauthLogin provider="facebook" label="Continue with Facebook" Icon={Facebook} />
-
-                                {/*Github*/}
-                                <OauthLogin provider="github" label="Continue with GitHub" Icon={Github} />
+                                    {/*Github*/}
+                                    <OauthLogin provider="github" label="Continue with GitHub" Icon={Github} />
+                                </OauthLoginListener>
                             </CardContent>
                         </Card>
 
