@@ -5,7 +5,7 @@
 // "Cookies can only be modified in a Server Action or Route Handler" error.
 
 import { NextRequest, NextResponse } from 'next/server';
-import { exchangeOAuthCodeAction } from '@/actions/authAction';
+import { exchangeOAuthCodeAction } from '@/actions/auth-action';
 
 export async function GET(req: NextRequest) {
     const code = req.nextUrl.searchParams.get('code');

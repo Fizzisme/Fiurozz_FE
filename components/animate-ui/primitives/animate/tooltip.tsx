@@ -270,7 +270,15 @@ function TooltipOverlay() {
   }, [currentTooltip]);
 
   React.useLayoutEffect(() => {
-    if (referenceElRef.current) {
+      // Guard against a detached node: if the trigger's owning
+      // component unmounted while the tooltip was still closing
+      // (exit animation in progress), referenceElRef.current may point
+      // to a node no longer in the document. getBoundingClientRect() on
+      // a detached node always returns {0,0,0,0}, which snaps the
+      // tooltip to the page's top-left corner and leaves it stuck there
+      // (detached nodes never fire the ResizeObserver events autoUpdate
+      // relies on to recompute).
+    if (referenceElRef.current && referenceElRef.current.isConnected) {
       refs.setReference(referenceElRef.current);
       update();
     }
@@ -458,6 +466,29 @@ function TooltipTrigger({
 
   const triggerRef = React.useRef<HTMLDivElement>(null);
   React.useImperativeHandle(ref, () => triggerRef.current as HTMLDivElement);
+
+    // Tracks whether THIS trigger currently owns the visible tooltip.
+    // Kept in a ref (not read directly from context in the cleanup
+    // below) because the unmount cleanup closure would otherwise see
+    // a stale value from whichever render it was created in.
+    const isActiveRef = React.useRef(false);
+    isActiveRef.current = currentTooltip?.id === id;
+
+    // If this trigger unmounts (e.g. its owning component disappears
+    // due to a state change right after a click, like logging out and
+    // navigating away) while it still owns the active tooltip, force
+    // it closed immediately. Without this, the tooltip overlay keeps
+    // trying to reposition itself against a now-detached DOM node and
+    // gets visually stuck (see the .isConnected guard in
+    // TooltipOverlay for the other half of this fix).
+    React.useEffect(() => {
+        return () => {
+            if (isActiveRef.current) {
+                hideImmediate();
+            }
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
   const suppressNextFocusRef = React.useRef(false);
 

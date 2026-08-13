@@ -11,13 +11,14 @@ import Github from '@/components/icons/github';
 import { GravityStarsBackground } from '@/components/animate-ui/components/backgrounds/gravity-stars';
 import { useState } from 'react';
 import { z } from 'zod';
-import { authService } from '@/services/authService';
+import { authService } from '@/services/auth-service';
 import { ApiEnvelope } from '@/services/api-core';
 import { useRouter } from 'next/navigation';
 import Google from '@/components/icons/google';
 import OauthLogin from '@/components/ui/oauth-login';
 import Image from 'next/image';
 import Facebook from '@/components/icons/facebook';
+import { OauthLoginListener } from '@/components/oauth-login-listener';
 
 const loginSchema = z.object({
     email: z.string().email(),
@@ -195,12 +196,13 @@ export default function LoginForm() {
                         </div>
 
                         {/* SOCIAL LOGIN */}
+
                         <div className="grid grid-cols-3 gap-3">
-                            <OauthLogin provider="google" label="" Icon={Google} />
-
-                            <OauthLogin provider="facebook" label="" Icon={Facebook} />
-
-                            <OauthLogin provider="github" label="" Icon={Github} />
+                            <OauthLoginListener>
+                                <OauthLogin provider="google" label="" Icon={Google} />
+                                <OauthLogin provider="facebook" label="" Icon={Facebook} />
+                                <OauthLogin provider="github" label="" Icon={Github} />
+                            </OauthLoginListener>
                         </div>
 
                         <p className="text-center text-sm text-muted-foreground mt-6">

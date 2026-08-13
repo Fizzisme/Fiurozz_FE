@@ -1,38 +1,34 @@
-import {apiClient, ApiEnvelope, ApiError} from "@/services/client";
-import {loginAction, logoutAction} from "@/actions/authAction";
+import { apiClient, ApiEnvelope, ApiError } from '@/services/client';
+import { loginAction, logoutAction } from '@/actions/auth-action';
 
-interface IRegisterPayload{
-    fullName:string;
-    displayName:string;
-    email:string;
-    password:string;
+interface IRegisterPayload {
+    fullName: string;
+    displayName: string;
+    email: string;
+    password: string;
     birthday: Date;
     country: string;
-    gender:string;
+    gender: string;
 }
 
-interface ILoginPayload{
-    email:string;
-    password:string;
+interface ILoginPayload {
+    email: string;
+    password: string;
 }
 
 export const authService = {
-
-    async register(payload: IRegisterPayload): Promise<ApiEnvelope<null>>{
+    async register(payload: IRegisterPayload): Promise<ApiEnvelope<null>> {
         try {
-            return  await apiClient.post<null>('/api/auth/register', payload);
-        }
-        catch(error) {
+            return await apiClient.post<null>('/api/auth/register', payload);
+        } catch (error) {
             if (error instanceof ApiError && error.payload) {
-
                 return error.payload as ApiEnvelope<null>;
-
             }
 
             return {
                 success: false,
                 timestamp: new Date().toISOString(),
-                message: "Cannot connect to server",
+                message: 'Cannot connect to server',
                 data: null,
             };
         }
@@ -45,4 +41,4 @@ export const authService = {
     async logout(): Promise<{ success: boolean }> {
         return logoutAction();
     },
-}
+};
