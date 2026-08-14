@@ -1,6 +1,5 @@
-
-import { motion } from 'framer-motion'
-import FlipCard from "@/app/(main)/home/components/flipCard";
+import { motion } from 'framer-motion';
+import FlipCard from '@/app/(main)/home/components/flipCard';
 const code = `## Achievements 2025
 
 - **Completed 12 Projects:**  
@@ -17,7 +16,7 @@ const code = `## Achievements 2025
 
 - **Fi Landing Page:**  
   handled responsive UI logic & animation flows.
-`
+`;
 const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -26,7 +25,7 @@ const containerVariants = {
             staggerChildren: 0.4, // Delay giữa các card
         },
     },
-}
+};
 
 // Card animation variants
 const cardVariants = {
@@ -45,23 +44,23 @@ const cardVariants = {
             damping: 15,
         },
     },
-}
+};
 export default function MemberOfYear() {
     return (
         <motion.div className="pt-32" variants={containerVariants} initial="hidden" animate="visible">
             <div className="grid grid-cols-3 gap-4 items-end max-w-6xl mx-auto">
                 <motion.div className="-translate-y-8" variants={cardVariants}>
-                    <FlipCard emoji="🥈" color="text-gray-400" code={code} />
+                    <FlipCard emoji="" color="text-gray-400" code={code} />
                 </motion.div>
 
                 <motion.div className="-translate-y-24" variants={cardVariants}>
-                    <FlipCard emoji="🥇" color="text-yellow-500" code={code} />
+                    <FlipCard emoji="" color="text-yellow-500" code={code} />
                 </motion.div>
 
                 <motion.div className="translate-y-0" variants={cardVariants}>
-                    <FlipCard emoji="🥉" color="text-orange-400" code={code} />
+                    <FlipCard emoji="" color="text-orange-400" code={code} />
                 </motion.div>
             </div>
         </motion.div>
-    )
+    );
 }

@@ -8,7 +8,6 @@ import { Separator } from '@/components/ui/separator';
 import { Label } from '@/components/ui/label';
 import { Mail, Lock } from 'lucide-react';
 import Github from '@/components/icons/github';
-import { GravityStarsBackground } from '@/components/animate-ui/components/backgrounds/gravity-stars';
 import { useState } from 'react';
 import { z } from 'zod';
 import { authService } from '@/services/auth-service';
@@ -19,6 +18,8 @@ import OauthLogin from '@/components/ui/oauth-login';
 import Image from 'next/image';
 import Facebook from '@/components/icons/facebook';
 import { OauthLoginListener } from '@/components/oauth-login-listener';
+import BackgroundSpace from '@/components/ui/background-space';
+import { Star } from '@/lib/utils';
 
 const loginSchema = z.object({
     email: z.string().email(),
@@ -32,7 +33,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 type FormErrors = Partial<Record<keyof LoginFormData, string>>;
 
-export default function LoginForm() {
+export default function LoginForm({ smallStars, bigStars }: { smallStars: Star[]; bigStars: Star[] }) {
     const [formData, setFormData] = useState<LoginFormData>({
         email: '',
         password: '',
@@ -71,12 +72,12 @@ export default function LoginForm() {
 
     return (
         <div className="min-h-screen flex items-center justify-center p-8 relative">
-            <GravityStarsBackground
-                starsCount={100}
-                starsOpacity={0.9}
-                className="absolute bg-muted/30 dark:bg-primary"
-            />
-
+            {/*<GravityStarsBackground*/}
+            {/*    starsCount={100}*/}
+            {/*    starsOpacity={0.9}*/}
+            {/*    className="absolute bg-muted/30 dark:bg-primary"*/}
+            {/*/>*/}
+            <BackgroundSpace smallStars={smallStars} bigStars={bigStars} />
             {/* SATURN DECORATION - top right, hidden on small screens */}
             <div className="hidden md:block absolute top-16 right-8 pointer-events-none select-none">
                 <Image
