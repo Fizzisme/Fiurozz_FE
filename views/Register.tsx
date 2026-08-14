@@ -17,13 +17,14 @@ import { Calendar } from '@/components/ui/calendar';
 import { z } from 'zod';
 import { ApiEnvelope } from '@/services/client';
 import { authService } from '@/services/auth-service';
-import { GravityStarsBackground } from '@/components/animate-ui/components/backgrounds/gravity-stars';
 import Github from '@/components/icons/github';
 import OauthLogin from '@/components/ui/oauth-login';
 import Google from '@/components/icons/google';
 import Image from 'next/image';
 import Facebook from '@/components/icons/facebook';
 import { OauthLoginListener } from '@/components/oauth-login-listener';
+import BackgroundSpace from '@/components/ui/background-space';
+import { Star } from '@/lib/utils';
 
 const GENDER_OPTIONS = [
     { label: 'Male', value: 'MALE', icon: Mars },
@@ -61,7 +62,15 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 
 type FormErrors = Partial<Record<keyof RegisterFormData, string>>;
 
-export default function Register({ countries }: { countries: string[] }) {
+export default function Register({
+    countries,
+    smallStars,
+    bigStars,
+}: {
+    countries: string[];
+    smallStars: Star[];
+    bigStars: Star[];
+}) {
     const [formData, setFormData] = useState<RegisterFormData>({
         fullName: '',
         displayName: '',
@@ -157,11 +166,7 @@ export default function Register({ countries }: { countries: string[] }) {
 
     return (
         <div className="min-h-screen flex items-center justify-center p-8 relative">
-            <GravityStarsBackground
-                starsCount={100}
-                starsOpacity={0.9}
-                className="absolute bg-muted/30 dark:bg-primary"
-            />
+            <BackgroundSpace smallStars={smallStars} bigStars={bigStars} />
 
             {/* SATURN DECORATION - top right, hidden on small screens */}
             <div className="hidden md:block absolute top-16 right-8 pointer-events-none select-none">
@@ -436,7 +441,10 @@ export default function Register({ countries }: { countries: string[] }) {
                             </CardContent>
                         </Card>
 
-                        <Button variant="outline" onClick={handleSubmit} className="w-full cursor-pointer">
+                        <Button
+                            onClick={handleSubmit}
+                            className="w-full cursor-pointer dark:bg-[#212121] dark:border-[#424242] border-1 dark:text-white text-black"
+                        >
                             {/*{loading ? 'Registering...' : 'Register'}*/}
                             Register
                         </Button>

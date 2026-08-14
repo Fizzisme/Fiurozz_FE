@@ -7,6 +7,7 @@ import * as React from "react";
 import RouteProgressBar from '@/components/ui/route-progress-bar';
 import { userService } from '@/services/user-service';
 import { AuthHydrator } from '@/components/auth-hydrator';
+import { ThemeProvider } from '@/components/ui/theme-provider';
 // import Navigate from "@/components/Navigate/Navigate";
 // import { Providers } from '@/components/Providers/Providers'
 // import Chatbot from '@/components/ChatBot/ChatBot'
@@ -113,14 +114,14 @@ export default async function RootLayout({
             className={`${lexendDeca.className} antialiased`}
         >
 
-        <div>
+        <ThemeProvider attribute="class" defaultTheme='system' enableSystem>
             <AuthHydrator initialUser={user}/>
             <RouteProgressBar />
             <Navigate/>
             <Header />
             {/*<Chatbot />*/}
             {children}
-        </div>
+        </ThemeProvider>
         </body>
         </html>
     );

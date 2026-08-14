@@ -34,3 +34,30 @@ export function parseGithubUrl(url: string)  : {owner: string, repo: string} {
 
   return { owner, repo };
 }
+
+export interface Star {
+    id: number;
+    top: number;
+    left: number;
+    size: number;
+    delay: number;
+    duration: number;
+}
+
+export function createStars(
+    count: number,
+    sizeMin: number,
+    sizeMax: number,
+    durationMin: number,
+    durationMax: number,
+): Star[] {
+    return Array.from({ length: count }, (_, id) => ({
+        id,
+        top: Math.random() * 100,
+        left: Math.random() * 100,
+        size: Math.random() * (sizeMax - sizeMin) + sizeMin,
+        delay: Math.random() * 5,
+        duration:
+            Math.random() * (durationMax - durationMin) + durationMin,
+    }));
+}
