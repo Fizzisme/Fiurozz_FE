@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type {Metadata, Viewport} from "next";
 import { Lexend_Deca } from "next/font/google";
 import "./globals.css";
 import Navigate from "@/components/ui/navigate";
@@ -8,6 +8,7 @@ import RouteProgressBar from '@/components/ui/route-progress-bar';
 import { userService } from '@/services/user-service';
 import { AuthHydrator } from '@/components/auth-hydrator';
 import { ThemeProvider } from '@/components/ui/theme-provider';
+import {baseUrl} from "@/lib/constanst";
 // import Navigate from "@/components/Navigate/Navigate";
 // import { Providers } from '@/components/Providers/Providers'
 // import Chatbot from '@/components/ChatBot/ChatBot'
@@ -20,28 +21,28 @@ const lexendDeca = Lexend_Deca({
 });
 
 export const metadata: Metadata = {
-    metadataBase: new URL("https://fiurozz.com"),
+    metadataBase: new URL(baseUrl),
 
     title: {
-        default: "Fiurozz - Software Engineer Portfolio",
-        template: "%s - Fiurozz",
+        default: "Showcase Developer Projects & Connect Creators | Fiurozz",
+        template: "%s | Fiurozz",
     },
 
     description:
-        "Explore software engineering projects, full-stack development, backend architecture, UI design, and technical blogs by Phi.",
+        "Fiurozz is a modern platform to showcase developer projects, discover inspiring work, and connect with developers and designers who love building.",
 
     keywords: [
         "Fiurozz",
-        "Portfolio",
-        "Software Engineer",
-        "Backend Developer",
-        "Full Stack",
-        "NestJS",
-        "Spring Boot",
-        "Go",
-        "React",
-        "Next.js",
-        "Microservices",
+        "web project showcase",
+        "developer portfolio platform",
+        "web development projects",
+        "web developer projects",
+        "web developer portfolio",
+        "personal web projects",
+        "showcase personal web projects",
+        "developer community",
+        "connect developers and designers",
+        "web creators community",
     ],
 
     authors: [
@@ -63,10 +64,10 @@ export const metadata: Metadata = {
     },
 
     openGraph: {
-        title: "Fiurozz | Software Engineer Portfolio",
+        title: "Showcase Developer Projects & Connect Creators | Fiurozz",
         description:
-            "Discover projects, blogs and technical articles about backend engineering, system architecture and UI development.",
-        url: "https://fiurozz.com",
+            "Fiurozz is a modern platform to showcase your developer projects, discover inspiring work, and connect with developers and designers who love building.",
+        url: baseUrl,
         siteName: "Fiurozz",
         locale: "en_US",
         type: "website",
@@ -81,14 +82,6 @@ export const metadata: Metadata = {
         ],
     },
 
-    twitter: {
-        card: "summary_large_image",
-        title: "Fiurozz | Software Engineer Portfolio",
-        description:
-            "Software Engineer Portfolio showcasing projects and blogs.",
-        images: ["/og-image.png"],
-    },
-
     icons: {
         icon: "/favicon.ico",
         shortcut: "/favicon.ico",
@@ -96,8 +89,13 @@ export const metadata: Metadata = {
     },
 
     alternates: {
-        canonical: "https://fiurozz.com",
+        canonical: baseUrl,
     },
+};
+
+export const viewport: Viewport = {
+    width: 'device-width',
+    initialScale: 1,
 };
 
 export default async function RootLayout({

@@ -27,7 +27,7 @@ export default function Description({ smallStars, bigStars }: { smallStars: Star
                 transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
                 className="mt-6 w-[55%] text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed dark:text-white/70 z-2"
             >
-                A modern space to showcase personal projects, discover inspiring work, and connect with creators who
+                A modern space to showcase developer projects, discover inspiring work, and connect with creators who
                 love building and sharing.
             </motion.p>
 
