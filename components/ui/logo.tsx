@@ -1,11 +1,10 @@
-import Image from 'next/image';
 import Link from 'next/link';
+import Fiurozz from '@/components/icons/logo';
 
 export default function Logo() {
     return (
-        <Link href={'/'}>
-            <Image src="/logo/logo-light.png" alt="Fiurozz" width={80} height={80} className="block dark:hidden" />
-            <Image src="/logo/logo-dark.png" alt="Fiurozz" width={80} height={80} className="hidden dark:block" />
+        <Link href={'/home'} className="w-12 h-12 md:w-15 md:h-15 overflow-hidden bg-white dark:bg-primary">
+            <Fiurozz height={60} width={60} />
         </Link>
     );
 }

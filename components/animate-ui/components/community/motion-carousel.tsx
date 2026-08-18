@@ -63,7 +63,7 @@ export default function MotionCarousel({
               return (
                   <motion.div
                       key={i}
-                      className="flex-none w-[25%]"
+                      className="flex-none w-[100%] min-[450px]:w-[70%] sm:w-[48%] md:w-[32%] lg:w-[25%]"
                       style={{ height: cardHeight }}
                   >
                     <motion.div

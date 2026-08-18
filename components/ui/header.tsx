@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { User } from '@/components/animate-ui/icons/user';
 import Logo from '@/components/ui/logo';
+
 import { Button } from '@/components/ui/button';
 import Github from '@/components/icons/github';
 import {
@@ -17,26 +18,8 @@ import {
 } from '@/components/animate-ui/components/animate/tooltip';
 import { Separator } from '@/components/ui/separator';
 import { useUserStore } from '@/lib/store/user-store';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { getInitials } from '@/lib/utils';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuShortcut,
-    DropdownMenuTrigger,
-    DropdownMenuSeparator,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
-} from '@/components/animate-ui/components/radix/dropdown-menu';
-
-import { ChevronRight } from 'lucide-react';
-import { apiClient } from '@/services/client';
-import { authService } from '@/services/auth-service';
 import { UserMenu } from '@/components/ui/user-menu';
+
 const IDLE_DELAY = 1200;
 const TOP_THRESHOLD = 10; // px
 
@@ -102,17 +85,11 @@ export default function Header() {
     const user = useUserStore((state) => state.user);
     const isInitialized = useUserStore((state) => state.isInitialized);
 
-    const handleLogout = async () => {
-        const res = await authService.logout();
-        if (!res.success) alert('logout failed');
-        alert('logged out');
-    };
-
     return (
         <motion.header
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className="fixed top-0 left-0 right-0 h-[82px] bg-primary dark:bg-primary border-b border-input dark:border-input  z-10 flex items-center justify-between px-6"
+            className="fixed top-0 left-0 right-0 h-[56px] md:h-[82px] bg-primary dark:bg-primary border-b border-input dark:border-input  z-10 flex items-center justify-between px-4 md:px-6"
             animate={{ y: hidden ? '-100%' : '0%' }}
             transition={{
                 type: 'spring',
@@ -123,7 +100,11 @@ export default function Header() {
         >
             <Logo />
 
-            <div className="flex items-center gap-1">
+            <Button variant="ghost" className="h-[25px] w-[25px] [&_svg]:pointer-events-auto cursor-pointer md:hidden">
+                <ThemeTogglerButton />
+            </Button>
+
+            <div className="hidden md:flex items-center gap-1">
                 <Search />
                 <TooltipProvider>
                     <Tooltip>
