@@ -1,14 +1,14 @@
-export default function LogoIcon() {
+export default function LogoIcon({ width = 20, height = 20 }: { width?: number; height?: number }) {
     return (
         <svg
             version="1.0"
             xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
+            width={width}
+            height={height}
             viewBox="307.5 253.548 682.5 682.5"
             preserveAspectRatio="xMidYMid meet"
         >
-            <g transform="translate(0.000000,1254.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+            <g transform="translate(0.000000,1254.000000) scale(0.100000,-0.100000)" fill="currentColor" stroke="none">
                 <path
                     d="M4255 9608 c-144 -53 -248 -232 -313 -538 -36 -170 -45 -278 -40
 -517 l4 -227 -69 -65 c-93 -88 -257 -285 -340 -410 -200 -299 -333 -628 -400

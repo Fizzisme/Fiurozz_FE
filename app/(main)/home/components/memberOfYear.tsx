@@ -47,13 +47,13 @@ const cardVariants = {
 };
 export default function MemberOfYear() {
     return (
-        <motion.div className="pt-32" variants={containerVariants} initial="hidden" animate="visible">
-            <div className="grid grid-cols-3 gap-4 items-end max-w-6xl mx-auto">
-                <motion.div className="-translate-y-8" variants={cardVariants}>
+        <motion.div className="pt-16 sm:pt-24 md:pt-32" variants={containerVariants} initial="hidden" animate="visible">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-4 items-end max-w-6xl mx-auto">
+                <motion.div className="md:-translate-y-8" variants={cardVariants}>
                     <FlipCard emoji="" color="text-gray-400" code={code} />
                 </motion.div>
 
-                <motion.div className="-translate-y-24" variants={cardVariants}>
+                <motion.div className="md:-translate-y-24" variants={cardVariants}>
                     <FlipCard emoji="" color="text-yellow-500" code={code} />
                 </motion.div>
 

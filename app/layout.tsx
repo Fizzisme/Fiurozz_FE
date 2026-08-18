@@ -9,6 +9,7 @@ import { userService } from '@/services/user-service';
 import { AuthHydrator } from '@/components/auth-hydrator';
 import { ThemeProvider } from '@/components/ui/theme-provider';
 import {baseUrl} from "@/lib/constanst";
+import { FloatingMenuBubble } from '@/components/ui/floating-menu-bubble';
 // import Navigate from "@/components/Navigate/Navigate";
 // import { Providers } from '@/components/Providers/Providers'
 // import Chatbot from '@/components/ChatBot/ChatBot'
@@ -98,6 +99,8 @@ export const viewport: Viewport = {
     initialScale: 1,
 };
 
+
+
 export default async function RootLayout({
                                        children,
                                    }: Readonly<{
@@ -117,6 +120,7 @@ export default async function RootLayout({
             <RouteProgressBar />
             <Navigate/>
             <Header />
+            <FloatingMenuBubble />
             {/*<Chatbot />*/}
             {children}
         </ThemeProvider>
