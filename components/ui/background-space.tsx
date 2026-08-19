@@ -3,8 +3,6 @@ import ShootingStars from '@/components/ui/shooting-start';
 import { Star } from '@/lib/utils';
 
 export default function BackgroundSpace({ smallStars, bigStars }: { smallStars: Star[]; bigStars: Star[] }) {
-    console.log('BackgroundSpace:', typeof window === 'undefined' ? 'SERVER' : 'BROWSER');
-
     return (
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
             {/* =========================================================

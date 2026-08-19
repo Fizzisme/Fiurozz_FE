@@ -2,8 +2,6 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { gatewayClient } from '@/services/gateway-client';
 import { isRefreshInFlight, beginRefresh, endRefresh, waitForRefresh } from '@/lib/refresh-lock';
 
-export const runtime = 'nodejs';
-
 interface RefreshTokenResponse {
     accessToken: string;
     accessTokenExpiresIn: number;
@@ -25,7 +23,7 @@ function isAuthOnlyPath(pathname: string) {
     return AUTH_ONLY_WHEN_LOGGED_OUT.includes(pathname);
 }
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
     const { pathname } = req.nextUrl;
 
     let accessToken = req.cookies.get('accessToken')?.value;
