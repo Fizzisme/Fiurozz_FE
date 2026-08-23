@@ -118,10 +118,6 @@ export default async function RootLayout({
         <ThemeProvider attribute="class" defaultTheme='system' enableSystem>
             <AuthHydrator initialUser={user}/>
             <RouteProgressBar />
-            <Navigate/>
-            <Header />
-            <FloatingMenuBubble />
-            {/*<Chatbot />*/}
             {children}
         </ThemeProvider>
         </body>
