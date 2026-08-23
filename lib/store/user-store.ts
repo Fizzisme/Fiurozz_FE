@@ -19,7 +19,7 @@ export interface UserSettings {
 
 export interface CurrentUser {
     id: string;
-    username: string;
+    email: string;
     displayName: string;
     fullName: string | null;
     avatarUrl: string | null;
@@ -35,6 +35,7 @@ export interface CurrentUser {
     timezone: string;
     settings: UserSettings | null;
     links: SocialLink[];
+    createdAt: string | null;
 }
 
 interface UserState {

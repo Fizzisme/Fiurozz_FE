@@ -3,9 +3,8 @@
 import * as React from 'react';
 import { Slot } from 'radix-ui';
 import { cva, VariantProps } from 'class-variance-authority';
-import { PanelLeftIcon } from 'lucide-react';
 import { type Transition } from 'motion/react';
-
+import {PanelLeftClose} from "@/components/animate-ui/icons/panel-left-close"
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -30,6 +29,8 @@ import {
     HighlightItem,
 } from '@/components/animate-ui/primitives/effects/highlight';
 import { getStrictContext } from '@/lib/get-strict-context';
+import {AnimateIcon} from "@/components/animate-ui/icons/icon";
+import { PanelLeftOpen } from '@/components/animate-ui/icons/panel-left-open';
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state';
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -256,7 +257,7 @@ function Sidebar({
             <div
                 data-slot="sidebar-container"
                 className={cn(
-                    'fixed top-[82px] h-[calc(100svh-82px)] z-10 hidden  w-(--sidebar-width) transition-[left,right,width] duration-400 ease-[cubic-bezier(0.75,0,0.25,1)] md:flex',
+                    'fixed top-0 h-svh z-10 hidden  w-(--sidebar-width) transition-[left,right,width] duration-400 ease-[cubic-bezier(0.75,0,0.25,1)] md:flex',
                     side === 'left'
                         ? 'left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]'
                         : 'right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]',
@@ -293,24 +294,31 @@ function Sidebar({
 type SidebarTriggerProps = React.ComponentProps<typeof Button>;
 
 function SidebarTrigger({ className, onClick, ...props }: SidebarTriggerProps) {
-    const { toggleSidebar } = useSidebar();
+    const { toggleSidebar, state } = useSidebar();
 
     return (
-        <Button
-            data-sidebar="trigger"
-            data-slot="sidebar-trigger"
-            variant="ghost"
-            size="icon"
-            className={cn('size-7', className)}
-            onClick={(event) => {
-                onClick?.(event);
-                toggleSidebar();
-            }}
-            {...props}
-        >
-            <PanelLeftIcon />
-            <span className="sr-only">Toggle Sidebar</span>
-        </Button>
+        <AnimateIcon animateOnHover>
+            <Button
+                data-sidebar="trigger"
+                data-slot="sidebar-trigger"
+                variant="ghost"
+                size="icon"
+                className={cn('size-7', className)}
+                onClick={(event) => {
+                    onClick?.(event);
+                    toggleSidebar();
+                }}
+                {...props}
+            >
+                {state === 'expanded' ? (
+                    <PanelLeftClose />
+                ) : (
+                    <PanelLeftOpen />
+                )}
+                <span className="sr-only">Toggle Sidebar</span>
+            </Button>
+        </AnimateIcon>
+
     );
 }
 
@@ -591,6 +599,7 @@ function SidebarMenuButton({
 
     const button = (
         <HighlightItem
+            className='cursor-pointer'
             activeClassName={sidebarMenuButtonActiveVariants({ variant })}
         >
             <Comp

@@ -1,611 +1,652 @@
-'use client'
+'use client';
 
-import * as React from 'react'
+import * as React from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import {
-    Sidebar,
-    SidebarHeader,
-    SidebarContent,
-    SidebarFooter,
-    SidebarRail,
-    SidebarGroup,
-    SidebarGroupLabel,
-    SidebarMenu,
-    SidebarMenuItem,
-    SidebarMenuButton,
-    SidebarMenuSub,
-    SidebarMenuSubItem,
-    SidebarMenuSubButton,
-    SidebarMenuAction,
-} from '@/components/animate-ui/components/radix/sidebar'
+    Bookmark,
+    BrainCog,
+    ChevronRight,
+    CircleUserRound,
+    Code,
+    CreditCard,
+    Folder,
+    GraduationCap,
+    HeartPulse,
+    Mail,
+    PlayCircle,
+    ShoppingCart,
+} from 'lucide-react';
+
+import { Activity } from '@/components/animate-ui/icons/activity';
+import { Trash2 } from '@/components/animate-ui/icons/trash-2';
+import { Bell } from '@/components/animate-ui/icons/bell';
+import { User } from '@/components/animate-ui/icons/user';
+import { Users } from '@/components/animate-ui/icons/users';
+import { MessageSquare } from '@/components/animate-ui/icons/message-square';
+import { LayoutDashboard } from '@/components/animate-ui/icons/layout-dashboard';
+
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
-} from '@/components/animate-ui/primitives/radix/collapsible'
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuShortcut,
-    DropdownMenuTrigger,
-} from '@/components/animate-ui/components/radix/dropdown-menu'
-import {
-    AudioWaveform,
-    BadgeCheck,
-    Bell,
-    BookOpen,
-    Bot,
-    ChevronRight,
-    ChevronsUpDown,
-    Command,
-    CreditCard,
-    Folder,
-    Forward,
-    Frame,
-    GalleryVerticalEnd,
-    LogOut,
-    Map,
-    MoreHorizontal,
-    PieChart,
-    Plus,
-    Settings2,
-    Sparkles,
-    SquareTerminal,
-    Trash2,
-    ShoppingCart,
-    Users,
-    GraduationCap,
-    HeartPulse,
-    PlayCircle,
-    Code,
-    BrainCog,
-    PlusCircle,
-} from 'lucide-react'
+} from '@/components/animate-ui/primitives/radix/collapsible';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { useIsMobile } from '@/hooks/use-mobile'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { getInitials } from '@/lib/utils'
+import {
+    Sidebar as SidebarRadix,
+    SidebarContent,
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarGroupLabel,
+    SidebarMenu,
+    SidebarMenuBadge,
+    SidebarMenuButton,
+    SidebarMenuItem,
+    SidebarMenuSub,
+    SidebarMenuSubButton,
+    SidebarMenuSubItem,
+} from '@/components/animate-ui/components/radix/sidebar';
 
-// import { IMember } from '@/service/member'
-// import { logoutMember } from '@/app/(main)/(Auth)/action'
-// import { IProjectCategory } from '@/app/(main)/projects/layout'
-// interface SideBarProps {
-//     member: IMember | null
-//     projectCategories: IProjectCategory[]
-// }
-const DATA = {
-    user: {
-        name: 'Fizzisme',
-        email: 'nguyenletuanphi910.2019@gmail.com',
-        avatar: 'https://pbs.twimg.com/profile_images/1909615404789506048/MTqvRsjo_400x400.jpg',
+import { AnimateIcon } from '@/components/animate-ui/icons/icon';
+import SidebarHeader from '@/components/ui/sidebar/sidebar-header';
+import SidebarFooter from '@/components/ui/sidebar/sidebar-footer';
+import Project from '@/components/icons/project';
+
+/* -------------------------------------------------------------------------- */
+/*                                    Types                                   */
+/* -------------------------------------------------------------------------- */
+
+type IconType = React.ComponentType<{
+    className?: string;
+}>;
+
+type MenuItem = {
+    label: string;
+    icon?: IconType;
+    badge?: number;
+    href: string;
+};
+
+type MenuGroup = {
+    label: string;
+    items: MenuItem[];
+};
+
+type ProjectCategory = {
+    title: string;
+    slug: string;
+    icon: IconType;
+    subCategories: {
+        title: string;
+        slug: string;
+    }[];
+};
+
+/* -------------------------------------------------------------------------- */
+/*                                  Main Menu                                 */
+/* -------------------------------------------------------------------------- */
+
+const menuItems: MenuGroup[] = [
+    {
+        label: 'Profile',
+        items: [
+            {
+                label: 'My Profile',
+                icon: CircleUserRound,
+                href: '/profile',
+            },
+            {
+                label: 'Activity',
+                icon: Activity,
+                href: '/profile/activity',
+            },
+            {
+                label: 'Saved',
+                icon: Bookmark,
+                href: '/profile/saved',
+            },
+        ],
     },
-    teams: [
-        {
-            name: 'Acme Inc',
-            logo: GalleryVerticalEnd,
-            plan: 'Enterprise',
-        },
-        {
-            name: 'Acme Corp.',
-            logo: AudioWaveform,
-            plan: 'Startup',
-        },
-        {
-            name: 'Evil Corp.',
-            logo: Command,
-            plan: 'Free',
-        },
-    ],
-    navMain: [
-        {
-            title: 'Playground',
-            url: '#',
-            icon: SquareTerminal,
-            isActive: true,
-            items: [
-                {
-                    title: 'History',
-                    url: '#',
-                },
-                {
-                    title: 'Starred',
-                    url: '#',
-                },
-                {
-                    title: 'Settings',
-                    url: '#',
-                },
-            ],
-        },
-        {
-            title: 'Models',
-            url: '#',
-            icon: Bot,
-            items: [
-                {
-                    title: 'Genesis',
-                    url: '#',
-                },
-                {
-                    title: 'Explorer',
-                    url: '#',
-                },
-                {
-                    title: 'Quantum',
-                    url: '#',
-                },
-            ],
-        },
-        {
-            title: 'Documentation',
-            url: '#',
-            icon: BookOpen,
-            items: [
-                {
-                    title: 'Introduction',
-                    url: '#',
-                },
-                {
-                    title: 'Get Started',
-                    url: '#',
-                },
-                {
-                    title: 'Tutorials',
-                    url: '#',
-                },
-                {
-                    title: 'Changelog',
-                    url: '#',
-                },
-            ],
-        },
-        {
-            title: 'Settings',
-            url: '#',
-            icon: Settings2,
-            items: [
-                {
-                    title: 'General',
-                    url: '#',
-                },
-                {
-                    title: 'Team',
-                    url: '#',
-                },
-                {
-                    title: 'Billing',
-                    url: '#',
-                },
-                {
-                    title: 'Limits',
-                    url: '#',
-                },
-            ],
-        },
-    ],
 
-    projectCategories: [
-        {
-            title: 'E-commerce',
-            url: '#',
-            icon: ShoppingCart,
-            items: [
-                { title: 'Online Store', url: '/projects/online-store' },
-                { title: 'Marketplace', url: '/projects/market-place' },
-                { title: 'Booking System', url: '/projects/booking-system' },
-                { title: 'Subscription Service', url: '/projects/subscription-service' },
-            ],
-        },
-        {
-            title: 'Community & Social',
-            url: '#',
-            icon: Users,
-            items: [
-                { title: 'Forum', url: '/projects/forum' },
+    {
+        label: 'Community',
+        items: [
+            {
+                label: 'Notifications',
+                icon: Bell,
+                badge: 5,
+                href: '/notifications',
+            },
+            {
+                label: 'Messages',
+                icon: MessageSquare,
+                badge: 2,
+                href: '/messages',
+            },
+            {
+                label: 'Followers',
+                icon: Users,
+                href: '/followers',
+            },
+            {
+                label: 'Following',
+                icon: User,
+                href: '/following',
+            },
+        ],
+    },
 
-                { title: 'Chat Application', url: '/projects/chat-application' },
-                { title: 'Social Network', url: '/projects/social-network' },
-            ],
-        },
-        {
-            title: 'Education',
-            url: '#',
-            icon: GraduationCap,
-            items: [
-                { title: 'E-learning Platform', url: '/projects/elearning-platform' },
-                { title: 'Online Courses', url: '/projects/online-courses' },
-                { title: 'Quiz System', url: '/projects/quiz-system' },
-                { title: 'Student Management', url: '/projects/student-management' },
-            ],
-        },
-        {
-            title: 'Finance & Fintech',
-            url: '#',
-            icon: CreditCard,
-            items: [
-                { title: 'Expense Tracker', url: '/projects/expense-tracker' },
-                { title: 'Payment System', url: '/projects/payment-system' },
-                { title: 'Crypto Dashboard', url: '/projects/crypto-dashboard' },
-                { title: 'Invoice & Billing', url: '/projects/invoice-and-billing' },
-            ],
-        },
-        {
-            title: 'Healthcare & Lifestyle',
-            url: '#',
-            icon: HeartPulse,
-            items: [
-                { title: 'Appointment Booking', url: '/projects/appointment-booking' },
-                { title: 'Fitness Tracker', url: '/projects/fitness-tracker' },
-                { title: 'Health Records', url: '/projects/health-records' },
-                { title: 'Mental Health App', url: '/projects/mental-health-app' },
-            ],
-        },
+    {
+        label: 'Explore',
+        items: [
+            {
+                label: 'Members',
+                icon: Users,
+                href: '/members',
+            },
+            {
+                label: 'Posts',
+                icon: MessageSquare,
+                href: '/posts',
+            },
+            {
+                label: 'Contact Us',
+                icon: Mail,
+                href: '/contact',
+            },
+        ],
+    },
+];
 
-        {
-            title: 'Entertainment & Media',
-            url: '#',
-            icon: PlayCircle,
-            items: [
-                { title: 'Streaming Platform', url: '/projects/streaming-platform' },
-                { title: 'Music Player', url: '/projects/music-music' },
-                { title: 'Mini Games', url: '/projects/mini-games' },
-                { title: 'Podcast Platform', url: '/projects/podcast' },
-            ],
-        },
-        {
-            title: 'AI & Data',
-            url: '#',
-            icon: BrainCog,
-            items: [
-                { title: 'AI Chatbot', url: '/projects/ai-chatbot' },
-                { title: 'Recommendation System', url: '/projects/recommendation-system' },
-                { title: 'Data Visualization', url: '/projects/data-visualization' },
-                { title: 'AI SaaS Tool', url: '/projects/ai-saas-tool' },
-            ],
-        },
-        {
-            title: 'Developer Tools',
-            url: '#',
-            icon: Code,
-            items: [
-                { title: 'Component Library', url: '/projects/component-library' },
-                { title: 'API Platform', url: '/projects/api-platform' },
-                { title: 'Code Snippet Manager', url: '/projects/code-snippet-manager' },
-                { title: 'Dev Dashboard', url: '/projects/dev-dashboard' },
-            ],
-        },
-    ],
+/* -------------------------------------------------------------------------- */
+/*                           Project Categories                               */
+/* -------------------------------------------------------------------------- */
 
-    account: [
-        {
-            name: 'Design Engineering',
-            url: '#',
-            icon: Frame,
-        },
-        {
-            name: 'Sales & Marketing',
-            url: '#',
-            icon: PieChart,
-        },
-        {
-            name: 'Travel',
-            url: '#',
-            icon: Map,
-        },
-    ],
-}
+const projectCategories: ProjectCategory[] = [
+    {
+        title: 'E-commerce',
+        slug: 'e-commerce',
+        icon: ShoppingCart,
+        subCategories: [
+            {
+                title: 'Online Store',
+                slug: 'online-store',
+            },
+            {
+                title: 'Marketplace',
+                slug: 'market-place',
+            },
+            {
+                title: 'Booking System',
+                slug: 'booking-system',
+            },
+            {
+                title: 'Subscription Service',
+                slug: 'subscription-service',
+            },
+        ],
+    },
 
+    {
+        title: 'Community & Social',
+        slug: 'community-social',
+        icon: Users,
+        subCategories: [
+            {
+                title: 'Forum',
+                slug: 'forum',
+            },
+            {
+                title: 'Chat Application',
+                slug: 'chat-application',
+            },
+            {
+                title: 'Social Network',
+                slug: 'social-network',
+            },
+        ],
+    },
 
-// { member, projectCategories }: SideBarProps
+    {
+        title: 'Education',
+        slug: 'education',
+        icon: GraduationCap,
+        subCategories: [
+            {
+                title: 'E-learning Platform',
+                slug: 'elearning-platform',
+            },
+            {
+                title: 'Online Courses',
+                slug: 'online-courses',
+            },
+            {
+                title: 'Quiz System',
+                slug: 'quiz-system',
+            },
+            {
+                title: 'Student Management',
+                slug: 'student-management',
+            },
+        ],
+    },
 
-export const SideBar = () => {
-    const isMobile = useIsMobile()
-    const [activeTeam, setActiveTeam] = React.useState(DATA.teams[0])
+    {
+        title: 'Finance & Fintech',
+        slug: 'finance-fintech',
+        icon: CreditCard,
+        subCategories: [
+            {
+                title: 'Expense Tracker',
+                slug: 'expense-tracker',
+            },
+            {
+                title: 'Payment System',
+                slug: 'payment-system',
+            },
+            {
+                title: 'Crypto Dashboard',
+                slug: 'crypto-dashboard',
+            },
+            {
+                title: 'Invoice & Billing',
+                slug: 'invoice-and-billing',
+            },
+        ],
+    },
 
-    const pathname = usePathname()
+    {
+        title: 'Healthcare & Lifestyle',
+        slug: 'healthcare-lifestyle',
+        icon: HeartPulse,
+        subCategories: [
+            {
+                title: 'Appointment Booking',
+                slug: 'appointment-booking',
+            },
+            {
+                title: 'Fitness Tracker',
+                slug: 'fitness-tracker',
+            },
+            {
+                title: 'Health Records',
+                slug: 'health-records',
+            },
+            {
+                title: 'Mental Health App',
+                slug: 'mental-health-app',
+            },
+        ],
+    },
 
-    if (!activeTeam) return null
-    // const avatarSrc = member?.profile.avatar ?? ''
-    // const displayName = member?.displayName ?? 'Guest'
-    // const email = member?.email ?? 'Guest'
-    //
-    // const handleClickLogout = async () => {
-    //     return await logoutMember()
-    // }
-    const ICON_MAP: Record<string, React.ElementType> = {
-        ShoppingCart: ShoppingCart,
-        Users: Users,
-        GraduationCap: GraduationCap,
-        HeartPulse: HeartPulse,
-        CreditCard: CreditCard,
-        PlayCircle: PlayCircle,
-        BrainCog: BrainCog,
-        Code: Code,
-        // Thêm các icon khác nếu cần...
-        // Mặc định có thể dùng Folder nếu không tìm thấy
-        Folder: Folder,
-    }
+    {
+        title: 'Entertainment & Media',
+        slug: 'entertainment-media',
+        icon: PlayCircle,
+        subCategories: [
+            {
+                title: 'Streaming Platform',
+                slug: 'streaming-platform',
+            },
+            {
+                title: 'Music Player',
+                slug: 'music-player',
+            },
+            {
+                title: 'Mini Games',
+                slug: 'mini-games',
+            },
+            {
+                title: 'Podcast Platform',
+                slug: 'podcast',
+            },
+        ],
+    },
+
+    {
+        title: 'AI & Data',
+        slug: 'ai-data',
+        icon: BrainCog,
+        subCategories: [
+            {
+                title: 'AI Chatbot',
+                slug: 'ai-chatbot',
+            },
+            {
+                title: 'Recommendation System',
+                slug: 'recommendation-system',
+            },
+            {
+                title: 'Data Visualization',
+                slug: 'data-visualization',
+            },
+            {
+                title: 'AI SaaS Tool',
+                slug: 'ai-saas-tool',
+            },
+        ],
+    },
+
+    {
+        title: 'Developer Tools',
+        slug: 'developer-tools',
+        icon: Code,
+        subCategories: [
+            {
+                title: 'Component Library',
+                slug: 'component-library',
+            },
+            {
+                title: 'API Platform',
+                slug: 'api-platform',
+            },
+            {
+                title: 'Code Snippet Manager',
+                slug: 'code-snippet-manager',
+            },
+            {
+                title: 'Dev Dashboard',
+                slug: 'dev-dashboard',
+            },
+        ],
+    },
+];
+
+/* -------------------------------------------------------------------------- */
+/*                              Profile Sidebar                               */
+/* -------------------------------------------------------------------------- */
+
+export function Sidebar() {
+    const pathname = usePathname();
+
     return (
-        <Sidebar collapsible="icon">
-            <SidebarHeader>
-                {/* Team Switcher */}
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <SidebarMenuButton
-                                    size="lg"
-                                    className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-                                >
-                                    <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                                        <activeTeam.logo className="size-4" />
-                                    </div>
-                                    <div className="grid flex-1 text-left text-sm leading-tight">
-                                        <span className="truncate font-semibold">{activeTeam.name}</span>
-                                        <span className="truncate text-xs">{activeTeam.plan}</span>
-                                    </div>
-                                    <ChevronsUpDown className="ml-auto" />
-                                </SidebarMenuButton>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent
-                                className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-                                align="start"
-                                side={isMobile ? 'bottom' : 'right'}
-                                sideOffset={4}
-                            >
-                                <DropdownMenuLabel className="text-xs text-muted-foreground">Teams</DropdownMenuLabel>
-                                {DATA.teams.map((team, index) => (
-                                    <DropdownMenuItem
-                                        key={team.name}
-                                        onClick={() => setActiveTeam(team)}
-                                        className="gap-2 p-2"
-                                    >
-                                        <div className="flex size-6 items-center justify-center rounded-sm border">
-                                            <team.logo className="size-4 shrink-0" />
-                                        </div>
-                                        {team.name}
-                                        <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
-                                    </DropdownMenuItem>
-                                ))}
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem className="gap-2 p-2">
-                                    <div className="flex size-6 items-center justify-center rounded-md border bg-background">
-                                        <Plus className="size-4" />
-                                    </div>
-                                    <div className="font-medium text-muted-foreground">Add team</div>
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </SidebarMenuItem>
-                </SidebarMenu>
-                {/* Team Switcher */}
-            </SidebarHeader>
+        <SidebarRadix collapsible="icon" className="w-[280px]">
+            {/* Header */}
+            <SidebarHeader />
+            {/* ---------------------------------------------------------------- */}
+            {/* Content                                                          */}
+            {/* ---------------------------------------------------------------- */}
 
-            <SidebarContent>
-                {/* Nav Main */}
+            <SidebarContent className="overflow-x-hidden">
+                {/* ========================================================== */}
+                {/* Profile                                                      */}
+                {/* ========================================================== */}
+
                 <SidebarGroup>
-                    <SidebarGroupLabel>Platform</SidebarGroupLabel>
-                    <SidebarMenu>
-                        {DATA.navMain.map(item => (
-                            <Collapsible
-                                key={item.title}
-                                asChild
-                                defaultOpen={item.isActive}
-                                className="group/collapsible"
-                            >
+                    <SidebarGroupLabel>Profile</SidebarGroupLabel>
+
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            {menuItems[0].items.map((item) => {
+                                const Icon = item.icon;
+
+                                return (
+                                    <SidebarMenuItem key={item.label}>
+                                        <AnimateIcon animateOnHover asChild>
+                                            <SidebarMenuButton>
+                                                {Icon && <Icon />}
+
+                                                <span className="truncate">{item.label}</span>
+                                            </SidebarMenuButton>
+                                        </AnimateIcon>
+
+                                        {item.badge !== undefined && <SidebarMenuBadge>{item.badge}</SidebarMenuBadge>}
+                                    </SidebarMenuItem>
+                                );
+                            })}
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
+
+                {/* ========================================================== */}
+                {/* Projects                                                     */}
+                {/* ========================================================== */}
+
+                <SidebarGroup>
+                    <SidebarGroupLabel>Projects</SidebarGroupLabel>
+
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            {/* ------------------------------------------------ */}
+                            {/* My Projects                                      */}
+                            {/* ------------------------------------------------ */}
+
+                            <Collapsible defaultOpen className="group/collapsible">
                                 <SidebarMenuItem>
                                     <CollapsibleTrigger asChild>
-                                        <SidebarMenuButton tooltip={item.title} className="group">
-                                            {item.icon && <item.icon />}
-                                            <span>{item.title}</span>
-                                            <ChevronRight className="ml-auto transition-transform duration-300 group-data-[state=open]:rotate-90" />
-                                        </SidebarMenuButton>
+                                        <AnimateIcon animateOnHover asChild>
+                                            <SidebarMenuButton>
+                                                <Folder />
+
+                                                <span className="truncate">My Projects</span>
+
+                                                <ChevronRight className="ml-auto size-4 shrink-0 transition-transform duration-300 group-data-[state=open]/collapsible:rotate-90" />
+                                            </SidebarMenuButton>
+                                        </AnimateIcon>
                                     </CollapsibleTrigger>
+
                                     <CollapsibleContent>
                                         <SidebarMenuSub>
-                                            {item.items?.map(subItem => (
-                                                <SidebarMenuSubItem key={subItem.title}>
-                                                    <SidebarMenuSubButton asChild>
-                                                        <a href={subItem.url}>
-                                                            <span>{subItem.title}</span>
-                                                        </a>
+                                            {/* Published */}
+                                            <SidebarMenuSubItem>
+                                                <AnimateIcon animateOnHover asChild>
+                                                    <SidebarMenuSubButton>
+                                                        <span>Published</span>
                                                     </SidebarMenuSubButton>
-                                                </SidebarMenuSubItem>
-                                            ))}
+                                                </AnimateIcon>
+                                            </SidebarMenuSubItem>
+
+                                            {/* Drafts */}
+                                            <SidebarMenuSubItem>
+                                                <AnimateIcon animateOnHover asChild>
+                                                    <SidebarMenuSubButton>
+                                                        <span>Drafts</span>
+
+                                                        <span className="ml-auto shrink-0 text-xs text-muted-foreground">
+                                                            3
+                                                        </span>
+                                                    </SidebarMenuSubButton>
+                                                </AnimateIcon>
+                                            </SidebarMenuSubItem>
+
+                                            {/* Archived */}
+                                            <SidebarMenuSubItem>
+                                                <AnimateIcon animateOnHover asChild>
+                                                    <SidebarMenuSubButton>
+                                                        <span>Archived</span>
+                                                    </SidebarMenuSubButton>
+                                                </AnimateIcon>
+                                            </SidebarMenuSubItem>
+
+                                            {/* Trash */}
+                                            <SidebarMenuSubItem>
+                                                <AnimateIcon animateOnHover asChild>
+                                                    <SidebarMenuSubButton>
+                                                        <Trash2 />
+
+                                                        <span>Trash</span>
+                                                    </SidebarMenuSubButton>
+                                                </AnimateIcon>
+                                            </SidebarMenuSubItem>
                                         </SidebarMenuSub>
                                     </CollapsibleContent>
                                 </SidebarMenuItem>
                             </Collapsible>
-                        ))}
-                    </SidebarMenu>
-                </SidebarGroup>
-                {/* Nav Main */}
 
-                {/*Projects Categories*/}
-                <SidebarGroup>
-                    <SidebarGroupLabel>Projects Categories</SidebarGroupLabel>
-                    <SidebarMenu>
-                        {projectCategories.map(projectCategory => {
-                            const IconComponent = ICON_MAP[projectCategory.icon as string] || Folder
-                            const isOpen = pathname.includes(projectCategory.slug!)
-                            return (
-                                <Collapsible
-                                    key={projectCategory._id}
-                                    defaultOpen={isOpen}
-                                    asChild
-                                    className="group/collapsible"
-                                >
-                                    <SidebarMenuItem>
-                                        <CollapsibleTrigger asChild>
-                                            <SidebarMenuButton tooltip={projectCategory.title} className="group">
-                                                {IconComponent && <IconComponent />}
-                                                <span>{projectCategory.title}</span>
-                                                <ChevronRight className="ml-auto transition-transform duration-300 group-data-[state=open]:rotate-90" />
+                            {/* ------------------------------------------------ */}
+                            {/* Categories                                      */}
+                            {/* ------------------------------------------------ */}
+
+                            <Collapsible defaultOpen className="group/collapsible">
+                                <SidebarMenuItem>
+                                    {/* Categories Header */}
+                                    <CollapsibleTrigger asChild>
+                                        <AnimateIcon animateOnHover asChild>
+                                            <SidebarMenuButton>
+                                                <LayoutDashboard />
+
+                                                <span>Categories</span>
+
+                                                <ChevronRight className="ml-auto size-4 shrink-0 transition-transform duration-300 group-data-[state=open]/collapsible:rotate-90" />
                                             </SidebarMenuButton>
-                                        </CollapsibleTrigger>
-                                        <CollapsibleContent>
-                                            <SidebarMenuSub>
-                                                {projectCategory?.subCategories?.map(subItem => {
-                                                    const isActive = pathname.includes(subItem.slug!)
-                                                    return (
-                                                        <SidebarMenuSubItem key={subItem.title}>
-                                                            <SidebarMenuSubButton asChild isActive={isActive}>
-                                                                <Link
-                                                                    href={`/projects/${projectCategory.slug}/${subItem.slug}`}
-                                                                >
-                                                                    <span>{subItem.title}</span>
-                                                                </Link>
-                                                            </SidebarMenuSubButton>
-                                                        </SidebarMenuSubItem>
-                                                    )
-                                                })}
-                                            </SidebarMenuSub>
-                                        </CollapsibleContent>
+                                        </AnimateIcon>
+                                    </CollapsibleTrigger>
+
+                                    <CollapsibleContent>
+                                        <SidebarMenu className="ml-3.5 pr-2 border-l border-sidebar-border pl-2.5">
+                                            {/* -------------------------------- */}
+                                            {/* All Projects                     */}
+                                            {/* -------------------------------- */}
+
+                                            <SidebarMenuItem>
+                                                <AnimateIcon animateOnHover asChild>
+                                                    <SidebarMenuButton asChild isActive={pathname === '/projects'}>
+                                                        <Link href="/projects">
+                                                            <Project />
+
+                                                            <span className="truncate">All Projects</span>
+                                                        </Link>
+                                                    </SidebarMenuButton>
+                                                </AnimateIcon>
+                                            </SidebarMenuItem>
+
+                                            {/* -------------------------------- */}
+                                            {/* Project Categories               */}
+                                            {/* -------------------------------- */}
+
+                                            {projectCategories.map((category) => {
+                                                const Icon = category.icon;
+
+                                                const categoryPath = `/projects/${category.slug}`;
+
+                                                const isOpen = pathname.startsWith(categoryPath);
+
+                                                return (
+                                                    <Collapsible
+                                                        key={category.slug}
+                                                        defaultOpen={isOpen}
+                                                        className="group/collapsible"
+                                                    >
+                                                        <SidebarMenuItem>
+                                                            {/* Category */}
+                                                            <CollapsibleTrigger asChild>
+                                                                <AnimateIcon animateOnHover asChild>
+                                                                    <SidebarMenuButton>
+                                                                        <Icon />
+
+                                                                        <span className="min-w-0 truncate">
+                                                                            {category.title}
+                                                                        </span>
+
+                                                                        <ChevronRight className="ml-auto size-4 shrink-0 transition-transform duration-300 group-data-[state=open]/collapsible:rotate-90" />
+                                                                    </SidebarMenuButton>
+                                                                </AnimateIcon>
+                                                            </CollapsibleTrigger>
+
+                                                            {/* Sub Categories */}
+                                                            <CollapsibleContent>
+                                                                <SidebarMenuSub>
+                                                                    {category.subCategories.map((subCategory) => {
+                                                                        const subCategoryPath = `${categoryPath}/${subCategory.slug}`;
+
+                                                                        const isActive = pathname === subCategoryPath;
+
+                                                                        return (
+                                                                            <SidebarMenuSubItem key={subCategory.slug}>
+                                                                                <AnimateIcon animateOnHover asChild>
+                                                                                    <SidebarMenuSubButton
+                                                                                        asChild
+                                                                                        isActive={isActive}
+                                                                                    >
+                                                                                        <Link href={subCategoryPath}>
+                                                                                            <span className="truncate">
+                                                                                                {subCategory.title}
+                                                                                            </span>
+                                                                                        </Link>
+                                                                                    </SidebarMenuSubButton>
+                                                                                </AnimateIcon>
+                                                                            </SidebarMenuSubItem>
+                                                                        );
+                                                                    })}
+                                                                </SidebarMenuSub>
+                                                            </CollapsibleContent>
+                                                        </SidebarMenuItem>
+                                                    </Collapsible>
+                                                );
+                                            })}
+                                        </SidebarMenu>
+                                    </CollapsibleContent>
+                                </SidebarMenuItem>
+                            </Collapsible>
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
+
+                {/* ========================================================== */}
+                {/* Community                                                    */}
+                {/* ========================================================== */}
+
+                <SidebarGroup>
+                    <SidebarGroupLabel>Community</SidebarGroupLabel>
+
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            {menuItems[1].items.map((item) => {
+                                const Icon = item.icon;
+
+                                return (
+                                    <SidebarMenuItem key={item.label}>
+                                        <AnimateIcon animateOnHover asChild>
+                                            <SidebarMenuButton>
+                                                {Icon && <Icon />}
+
+                                                <span className="truncate">{item.label}</span>
+                                            </SidebarMenuButton>
+                                        </AnimateIcon>
+
+                                        {item.badge !== undefined && <SidebarMenuBadge>{item.badge}</SidebarMenuBadge>}
                                     </SidebarMenuItem>
-                                </Collapsible>
-                            )
-                        })}
-                    </SidebarMenu>
+                                );
+                            })}
+                        </SidebarMenu>
+                    </SidebarGroupContent>
                 </SidebarGroup>
 
-                {/* Nav Project */}
-                <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-                    <SidebarGroupLabel>Account</SidebarGroupLabel>
-                    <SidebarMenu>
-                        {DATA.account.map(item => (
-                            <SidebarMenuItem key={item.name}>
-                                <SidebarMenuButton asChild>
-                                    <a href={item.url}>
-                                        <item.icon />
-                                        <span>{item.name}</span>
-                                    </a>
-                                </SidebarMenuButton>
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <SidebarMenuAction showOnHover>
-                                            <MoreHorizontal />
-                                            <span className="sr-only">More</span>
-                                        </SidebarMenuAction>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent
-                                        className="w-48 rounded-lg"
-                                        side={isMobile ? 'bottom' : 'right'}
-                                        align={isMobile ? 'end' : 'start'}
-                                    >
-                                        <DropdownMenuItem>
-                                            <Folder className="text-muted-foreground" />
-                                            <span>View Project</span>
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem>
-                                            <Forward className="text-muted-foreground" />
-                                            <span>Share Project</span>
-                                        </DropdownMenuItem>
-                                        <DropdownMenuSeparator />
-                                        <DropdownMenuItem>
-                                            <Trash2 className="text-muted-foreground" />
-                                            <span>Delete Project</span>
-                                        </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
-                            </SidebarMenuItem>
-                        ))}
-                        <SidebarMenuItem>
-                            <SidebarMenuButton className="text-sidebar-foreground/70">
-                                <MoreHorizontal className="text-sidebar-foreground/70" />
-                                <span>More</span>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    </SidebarMenu>
+                {/* ========================================================== */}
+                {/* Explore                                                      */}
+                {/* ========================================================== */}
+
+                <SidebarGroup>
+                    <SidebarGroupLabel>Explore</SidebarGroupLabel>
+
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            {menuItems[2].items.map((item) => {
+                                const Icon = item.icon;
+
+                                return (
+                                    <SidebarMenuItem key={item.label}>
+                                        <AnimateIcon animateOnHover asChild>
+                                            <SidebarMenuButton>
+                                                {Icon && <Icon />}
+
+                                                <span className="truncate">{item.label}</span>
+                                            </SidebarMenuButton>
+                                        </AnimateIcon>
+                                    </SidebarMenuItem>
+                                );
+                            })}
+                        </SidebarMenu>
+                    </SidebarGroupContent>
                 </SidebarGroup>
-                {/* Nav Project */}
             </SidebarContent>
-            <SidebarFooter>
-                {/* Nav User */}
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild disabled={!member}>
-                                <SidebarMenuButton
-                                    size="lg"
-                                    className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-                                >
-                                    <Avatar className="h-8 w-8 rounded-lg">
-                                        <AvatarImage src={avatarSrc} alt={displayName} />
-                                        <AvatarFallback className="rounded-lg">
-                                            {getInitials(member?.username ?? 'Guest')}
-                                        </AvatarFallback>
-                                    </Avatar>
 
-                                    <div className="grid flex-1 text-left text-sm leading-tight">
-                                        <span className="truncate font-semibold">@{displayName}</span>
-                                        <span className="truncate text-xs">{email}</span>
-                                    </div>
-                                    <ChevronsUpDown className="ml-auto size-4" />
-                                </SidebarMenuButton>
-                            </DropdownMenuTrigger>
+            {/* ---------------------------------------------------------------- */}
+            {/* Footer                                                           */}
+            {/* ---------------------------------------------------------------- */}
 
-                            <DropdownMenuContent
-                                className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-                                side={isMobile ? 'bottom' : 'right'}
-                                align="end"
-                                sideOffset={4}
-                            >
-                                <DropdownMenuLabel className="p-0 font-normal">
-                                    <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                                        <Avatar className="h-8 w-8 rounded-lg">
-                                            <AvatarImage src={avatarSrc} alt={displayName} />
-                                            <AvatarFallback className="rounded-lg">
-                                                {getInitials(member?.username ?? 'Guest')}
-                                            </AvatarFallback>
-                                        </Avatar>
-                                        <div className="grid flex-1 text-left text-sm leading-tight">
-                                            <span className="truncate font-semibold">@{displayName}</span>
-                                            <span className="truncate text-xs">{email}</span>
-                                        </div>
-                                    </div>
-                                </DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuGroup>
-                                    <DropdownMenuItem>
-                                        <Sparkles />
-                                        Upgrade to Pro
-                                    </DropdownMenuItem>
-                                </DropdownMenuGroup>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuGroup>
-                                    <DropdownMenuItem>
-                                        <BadgeCheck />
-                                        Account
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem className="cursor-pointer">
-                                        <Link href={'/projects/create_project'} className="flex gap-2 items-center">
-                                            <PlusCircle />
-                                            Create Project
-                                        </Link>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem>
-                                        <Bell />
-                                        Notifications
-                                    </DropdownMenuItem>
-                                </DropdownMenuGroup>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={handleClickLogout} className="cursor-pointer">
-                                    <LogOut />
-                                    Log out
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </SidebarMenuItem>
-                </SidebarMenu>
-                {/* Nav User */}
-            </SidebarFooter>
-            <SidebarRail />
-        </Sidebar>
-    )
+            <SidebarFooter />
+        </SidebarRadix>
+    );
 }

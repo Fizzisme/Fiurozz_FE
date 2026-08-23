@@ -64,7 +64,7 @@ export function UserMenu() {
 
                     <DropdownMenuGroup>
                         <AnimateIcon animateOnHover>
-                            <DropdownMenuItem onClick={() => router.push('/member/profile')}>
+                            <DropdownMenuItem onClick={() => router.push(`/profile/${user?.displayName}`)}>
                                 <User />
                                 Profile
                                 <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>

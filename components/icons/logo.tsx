@@ -1,11 +1,13 @@
-export default function Fiurozz() {
+import { cn } from '@/lib/utils';
+
+export default function Fiurozz({ className }: { className?: string }) {
     return (
         <svg
             version="1.0"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1254.000000 1254.000000"
             preserveAspectRatio="xMidYMid meet"
-            className="text-black dark:text-white dark:opacity-60 w-12 h-12 md:w-15 md:h-15"
+            className={cn('text-black dark:text-white dark:opacity-60 w-12 h-12 md:w-15 md:h-15', className)}
         >
             <g transform="translate(0.000000,1254.000000) scale(0.100000,-0.100000)" fill="currentColor" stroke="none">
                 {/*Left ear*/}

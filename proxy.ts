@@ -13,7 +13,7 @@ interface RefreshTokenResponse {
 const AUTH_ONLY_WHEN_LOGGED_OUT = ['/login', '/register', '/forgot-password'];
 
 // Routes that require a valid session -- redirect to /login if missing.
-const PROTECTED_PREFIXES = ['/member', '/settings'];
+const PROTECTED_PREFIXES = ['/member', '/settings', '/profile'];
 
 function isProtectedPath(pathname: string) {
     return PROTECTED_PREFIXES.some((prefix) => pathname.startsWith(prefix));
