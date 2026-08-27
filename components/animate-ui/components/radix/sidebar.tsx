@@ -67,7 +67,7 @@ function SidebarProvider({
                              children,
                              ...props
                          }: SidebarProviderProps) {
-    const isMobile = useIsMobile();
+    const isMobile = useIsMobile() ?? false;
     const [openMobile, setOpenMobile] = React.useState(false);
 
     // This is the internal state of the sidebar.
@@ -696,9 +696,9 @@ function SidebarMenuSkeleton({
                                  ...props
                              }: SidebarMenuSkeletonProps) {
     // Random width between 50 to 90%.
-    const width = React.useMemo(() => {
-        return `${Math.floor(Math.random() * 40) + 50}%`;
-    }, []);
+    const [width] = React.useState(
+        () => `${Math.floor(Math.random() * 40) + 50}%`,
+    );
 
     return (
         <div
