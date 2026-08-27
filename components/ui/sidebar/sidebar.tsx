@@ -368,13 +368,13 @@ export function Sidebar() {
             {/* Content                                                          */}
             {/* ---------------------------------------------------------------- */}
 
-            <SidebarContent className="overflow-x-hidden">
+            <SidebarContent className="overflow-x-hidden thin-scrollbar">
                 {/* ========================================================== */}
                 {/* Profile                                                      */}
                 {/* ========================================================== */}
 
                 <SidebarGroup>
-                    <SidebarGroupLabel>Profile</SidebarGroupLabel>
+                    <SidebarGroupLabel className="text-[#898781]">Profile</SidebarGroupLabel>
 
                     <SidebarGroupContent>
                         <SidebarMenu>
@@ -384,7 +384,7 @@ export function Sidebar() {
                                 return (
                                     <SidebarMenuItem key={item.label}>
                                         <AnimateIcon animateOnHover asChild>
-                                            <SidebarMenuButton>
+                                            <SidebarMenuButton className="text-[#52514e] dark:text-[#c3c2b7]">
                                                 {Icon && <Icon />}
 
                                                 <span className="truncate">{item.label}</span>
@@ -404,7 +404,7 @@ export function Sidebar() {
                 {/* ========================================================== */}
 
                 <SidebarGroup>
-                    <SidebarGroupLabel>Projects</SidebarGroupLabel>
+                    <SidebarGroupLabel className="text-[#898781]">Projects</SidebarGroupLabel>
 
                     <SidebarGroupContent>
                         <SidebarMenu>
@@ -416,7 +416,7 @@ export function Sidebar() {
                                 <SidebarMenuItem>
                                     <CollapsibleTrigger asChild>
                                         <AnimateIcon animateOnHover asChild>
-                                            <SidebarMenuButton>
+                                            <SidebarMenuButton className="text-[#52514e] dark:text-[#c3c2b7]">
                                                 <Folder />
 
                                                 <span className="truncate">My Projects</span>
@@ -431,7 +431,7 @@ export function Sidebar() {
                                             {/* Published */}
                                             <SidebarMenuSubItem>
                                                 <AnimateIcon animateOnHover asChild>
-                                                    <SidebarMenuSubButton>
+                                                    <SidebarMenuSubButton className="text-[#52514e] dark:text-[#c3c2b7]">
                                                         <span>Published</span>
                                                     </SidebarMenuSubButton>
                                                 </AnimateIcon>
@@ -440,7 +440,7 @@ export function Sidebar() {
                                             {/* Drafts */}
                                             <SidebarMenuSubItem>
                                                 <AnimateIcon animateOnHover asChild>
-                                                    <SidebarMenuSubButton>
+                                                    <SidebarMenuSubButton className="text-[#52514e] dark:text-[#c3c2b7]">
                                                         <span>Drafts</span>
 
                                                         <span className="ml-auto shrink-0 text-xs text-muted-foreground">
@@ -453,7 +453,7 @@ export function Sidebar() {
                                             {/* Archived */}
                                             <SidebarMenuSubItem>
                                                 <AnimateIcon animateOnHover asChild>
-                                                    <SidebarMenuSubButton>
+                                                    <SidebarMenuSubButton className="text-[#52514e] dark:text-[#c3c2b7]">
                                                         <span>Archived</span>
                                                     </SidebarMenuSubButton>
                                                 </AnimateIcon>
@@ -462,8 +462,8 @@ export function Sidebar() {
                                             {/* Trash */}
                                             <SidebarMenuSubItem>
                                                 <AnimateIcon animateOnHover asChild>
-                                                    <SidebarMenuSubButton>
-                                                        <Trash2 />
+                                                    <SidebarMenuSubButton className="text-[#52514e] dark:text-[#c3c2b7]">
+                                                        <Trash2 className="text-[#52514e] dark:text-[#c3c2b7]" />
 
                                                         <span>Trash</span>
                                                     </SidebarMenuSubButton>
@@ -483,7 +483,7 @@ export function Sidebar() {
                                     {/* Categories Header */}
                                     <CollapsibleTrigger asChild>
                                         <AnimateIcon animateOnHover asChild>
-                                            <SidebarMenuButton>
+                                            <SidebarMenuButton className="text-[#52514e] dark:text-[#c3c2b7]">
                                                 <LayoutDashboard />
 
                                                 <span>Categories</span>
@@ -501,7 +501,11 @@ export function Sidebar() {
 
                                             <SidebarMenuItem>
                                                 <AnimateIcon animateOnHover asChild>
-                                                    <SidebarMenuButton asChild isActive={pathname === '/projects'}>
+                                                    <SidebarMenuButton
+                                                        asChild
+                                                        isActive={pathname === '/projects'}
+                                                        className="text-[#52514e] dark:text-[#c3c2b7]"
+                                                    >
                                                         <Link href="/projects">
                                                             <Project />
 
@@ -532,7 +536,7 @@ export function Sidebar() {
                                                             {/* Category */}
                                                             <CollapsibleTrigger asChild>
                                                                 <AnimateIcon animateOnHover asChild>
-                                                                    <SidebarMenuButton>
+                                                                    <SidebarMenuButton className="text-[#52514e] dark:text-[#c3c2b7]">
                                                                         <Icon />
 
                                                                         <span className="min-w-0 truncate">
@@ -558,6 +562,7 @@ export function Sidebar() {
                                                                                     <SidebarMenuSubButton
                                                                                         asChild
                                                                                         isActive={isActive}
+                                                                                        className="text-[#52514e] dark:text-[#c3c2b7]"
                                                                                     >
                                                                                         <Link href={subCategoryPath}>
                                                                                             <span className="truncate">
@@ -588,7 +593,7 @@ export function Sidebar() {
                 {/* ========================================================== */}
 
                 <SidebarGroup>
-                    <SidebarGroupLabel>Community</SidebarGroupLabel>
+                    <SidebarGroupLabel className="text-[#898781]">Community</SidebarGroupLabel>
 
                     <SidebarGroupContent>
                         <SidebarMenu>
@@ -598,7 +603,7 @@ export function Sidebar() {
                                 return (
                                     <SidebarMenuItem key={item.label}>
                                         <AnimateIcon animateOnHover asChild>
-                                            <SidebarMenuButton>
+                                            <SidebarMenuButton className="text-[#52514e] dark:text-[#c3c2b7]">
                                                 {Icon && <Icon />}
 
                                                 <span className="truncate">{item.label}</span>
@@ -618,7 +623,7 @@ export function Sidebar() {
                 {/* ========================================================== */}
 
                 <SidebarGroup>
-                    <SidebarGroupLabel>Explore</SidebarGroupLabel>
+                    <SidebarGroupLabel className="text-[#898781]">Explore</SidebarGroupLabel>
 
                     <SidebarGroupContent>
                         <SidebarMenu>
@@ -628,7 +633,7 @@ export function Sidebar() {
                                 return (
                                     <SidebarMenuItem key={item.label}>
                                         <AnimateIcon animateOnHover asChild>
-                                            <SidebarMenuButton>
+                                            <SidebarMenuButton className="text-[#52514e] dark:text-[#c3c2b7]">
                                                 {Icon && <Icon />}
 
                                                 <span className="truncate">{item.label}</span>

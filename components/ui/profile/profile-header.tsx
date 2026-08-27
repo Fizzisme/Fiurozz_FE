@@ -10,7 +10,12 @@ import Image from 'next/image';
 import { TooltipContent, TooltipTrigger, Tooltip } from '@/components/animate-ui/components/animate/tooltip';
 import Link from 'next/link';
 
-const PLATFORM_ICON: Record<string, typeof Github> = {
+type PlatformIcon = React.ComponentType<{
+    className?: string;
+    'aria-hidden'?: boolean;
+}>;
+
+const PLATFORM_ICON: Record<string, PlatformIcon> = {
     github: Github,
     // twitter: Twitter,
     // x: Twitter,
@@ -48,7 +53,7 @@ function SocialLinks({ links }: { links: SocialLink[] }) {
                         title={link.title ?? link.platform}
                         className="flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs text-muted-foreground transition hover:bg-accent hover:text-accent-foreground"
                     >
-                        <Icon size={14} aria-hidden />
+                        <Icon aria-hidden />
                         {link.title ?? link.platform}
                     </a>
                 );
@@ -59,7 +64,7 @@ function SocialLinks({ links }: { links: SocialLink[] }) {
 
 export default function ProfileHeader({ user }: { user: CurrentUser }) {
     return (
-        <div className="overflow-hidden rounded border">
+        <div className="overflow-hidden rounded border bg-sidebar">
             {/* Cover */}
             <div className="relative h-32 w-full bg-muted sm:h-48">
                 {user.coverUrl && (
@@ -87,7 +92,7 @@ export default function ProfileHeader({ user }: { user: CurrentUser }) {
                         <TooltipTrigger>
                             <Button
                                 variant="ghost"
-                                className="h-[32px] w-[32px] [&_svg]:pointer-events-auto cursor-pointer"
+                                className="h-[32px] w-[32px] [&_svg]:pointer-events-auto cursor-pointer text-[#52514e] dark:text-[#c3c2b7]"
                             >
                                 <Link href={`/profile/${user.displayName}/edit`}>
                                     <UserPen className="size-5 opacity-60 hover:opacity-80 transition-opacity" />
@@ -102,7 +107,9 @@ export default function ProfileHeader({ user }: { user: CurrentUser }) {
 
                 {/* Name + handle */}
                 <div>
-                    <h1 className="text-xl font-bold leading-tight">{user.fullName}</h1>
+                    <h1 className="text-xl font-bold leading-tight text-[#52514e] dark:text-[#c3c2b7]">
+                        {user.fullName}
+                    </h1>
                     <p className="text-sm text-muted-foreground">@{user.displayName}</p>
                 </div>
 
@@ -145,11 +152,11 @@ export default function ProfileHeader({ user }: { user: CurrentUser }) {
                 {/* Following / Followers */}
                 <div className="flex items-center gap-4 text-sm">
                     <span className="hover:underline">
-                        <strong className="font-semibold">0</strong>{' '}
+                        <strong className="font-semibold text-[#52514e] dark:text-[#c3c2b7]">0</strong>{' '}
                         <span className="text-muted-foreground">Following</span>
                     </span>
                     <span className="hover:underline">
-                        <strong className="font-semibold">0</strong>{' '}
+                        <strong className="font-semibold text-[#52514e] dark:text-[#c3c2b7]">0</strong>{' '}
                         <span className="text-muted-foreground">Follower</span>
                     </span>
                 </div>

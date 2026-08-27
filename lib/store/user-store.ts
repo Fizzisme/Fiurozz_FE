@@ -35,7 +35,7 @@ export interface CurrentUser {
     timezone: string;
     settings: UserSettings | null;
     links: SocialLink[];
-    createdAt: string | null;
+    createdAt: string;
 }
 
 interface UserState {

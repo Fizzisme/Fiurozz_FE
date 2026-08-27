@@ -311,9 +311,9 @@ function SidebarTrigger({ className, onClick, ...props }: SidebarTriggerProps) {
                 {...props}
             >
                 {state === 'expanded' ? (
-                    <PanelLeftClose />
+                    <PanelLeftClose className='!text-[#52514e] dark:text-[#c3c2b7]' />
                 ) : (
-                    <PanelLeftOpen />
+                    <PanelLeftOpen className='!text-[#52514e] dark:text-[#c3c2b7]' />
                 )}
                 <span className="sr-only">Toggle Sidebar</span>
             </Button>
