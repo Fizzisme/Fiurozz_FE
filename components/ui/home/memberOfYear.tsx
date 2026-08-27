@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import FlipCard from '@/app/(main)/home/components/flipCard';
+import FlipCard from '@/components/ui/home/flipCard';
+
 const code = `## Achievements 2025
 
 - **Completed 12 Projects:**  
@@ -17,6 +18,7 @@ const code = `## Achievements 2025
 - **Fi Landing Page:**  
   handled responsive UI logic & animation flows.
 `;
+
 const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -31,7 +33,7 @@ const containerVariants = {
 const cardVariants = {
     hidden: {
         opacity: 0,
-        y: 100, // Bắt đầu từ dưới lên
+        y: 40,
         scale: 0.8,
     },
     visible: {
@@ -45,15 +47,16 @@ const cardVariants = {
         },
     },
 };
+
 export default function MemberOfYear() {
     return (
-        <motion.div className="pt-16 sm:pt-24 md:pt-32" variants={containerVariants} initial="hidden" animate="visible">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-4 items-end max-w-6xl mx-auto">
-                <motion.div className="md:-translate-y-8" variants={cardVariants}>
+        <motion.div className="pt-2 sm:pt-3" variants={containerVariants} initial="hidden" animate="visible">
+            <div className="mx-auto grid max-w-6xl grid-cols-1 items-end gap-4 md:grid-cols-2 md:gap-3 xl:grid-cols-3 justify-items-center">
+                <motion.div className="md:-translate-y-3" variants={cardVariants}>
                     <FlipCard emoji="" color="text-gray-400" code={code} />
                 </motion.div>
 
-                <motion.div className="md:-translate-y-24" variants={cardVariants}>
+                <motion.div className="md:-translate-y-8" variants={cardVariants}>
                     <FlipCard emoji="" color="text-yellow-500" code={code} />
                 </motion.div>
 
