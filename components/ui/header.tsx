@@ -89,7 +89,7 @@ export default function Header() {
         <motion.header
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className="fixed top-0 left-0 right-0 h-[56px] md:h-[82px] bg-primary dark:bg-primary border-b border-input dark:border-input  z-10 flex items-center justify-between px-4 md:px-6"
+            className="fixed top-0 left-0 right-0 h-[56px] md:h-[82px] bg-background border-b border-input z-10 flex items-center justify-between px-4 md:px-6"
             animate={{ y: hidden ? '-100%' : '0%' }}
             transition={{
                 type: 'spring',

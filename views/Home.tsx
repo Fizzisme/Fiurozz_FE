@@ -1,19 +1,308 @@
-import Description from '@/app/(main)/home/components/description';
-import MainCard from '@/app/(main)/home/components/maincard';
-import SeeTop3 from '@/app/(main)/home/components/seeTop3';
-import { createStars } from '@/lib/utils';
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
+
+import Description from '@/components/ui/home/description';
+import FeaturedProjects from '@/components/ui/home/featured-projects';
+import SeeTop3 from '@/components/ui/home/seeTop3';
+import BuiltWith from '@/components/ui/home/build-with';
+import CoreExperiences from '@/components/ui/home/core-experiences';
+import SectionNav from '@/components/ui/home/section-nav';
+
+/**
+ * Duration of the full-screen section transition.
+ *
+ * This value must match the animation duration used by
+ * every section layer so that the navigation feels consistent.
+ */
+const TRANSITION_DURATION = 0.9;
+
+/**
+ * Tolerance used when determining whether an inner scroll container
+ * has reached the top or bottom.
+ *
+ * A small threshold prevents floating-point and sub-pixel scrolling
+ * from preventing the section transition.
+ */
+const EDGE_THRESHOLD = 4;
+
+/**
+ * Ignore very small wheel events.
+ *
+ * Trackpads often emit a series of small wheel events caused by
+ * momentum/inertia after the user's actual gesture has finished.
+ * Ignoring these small events prevents accidental section changes.
+ */
+const MIN_DELTA = 6;
+
+/**
+ * Full-screen section order:
+ *
+ * 0 → Description
+ * 1 → Built With
+ * 2 → Core Experiences
+ * 3 → Main Card
+ * 4 → Top 3
+ */
+const SECTION_COUNT = 5;
 
 export default function Home() {
-    const smallStars = createStars(80, 0.5, 2, 2, 5);
-    const bigStars = createStars(8, 2, 4, 3, 6);
-    return (
-        <div>
-            <Description smallStars={smallStars} bigStars={bigStars} />
+    const [currentIndex, setCurrentIndex] = useState(0);
 
-            <div className=" px-6 overflow-hidden dark:bg-primary relative">
-                <MainCard />
-                <SeeTop3 />
+    /**
+     * Prevent multiple section transitions from being triggered
+     * while the current animation is still running.
+     */
+    const isAnimating = useRef(false);
+
+    /**
+     * Root container used to capture wheel events.
+     *
+     * The root itself does not scroll. Individual section layers
+     * handle their own internal scrolling when necessary.
+     */
+    const wrapperRef = useRef<HTMLDivElement>(null);
+
+    /**
+     * Each section has its own scroll container.
+     *
+     * This is important because some sections may contain content
+     * taller than the viewport. The user should be able to scroll
+     * inside the active section before moving to the next section.
+     */
+    const scrollRef0 = useRef<HTMLDivElement>(null);
+    const scrollRef1 = useRef<HTMLDivElement>(null);
+    const scrollRef2 = useRef<HTMLDivElement>(null);
+    const scrollRef3 = useRef<HTMLDivElement>(null);
+    const scrollRef4 = useRef<HTMLDivElement>(null);
+
+    const scrollRefs = [scrollRef0, scrollRef1, scrollRef2, scrollRef3, scrollRef4];
+
+    /**
+     * Move to a specific full-screen section.
+     *
+     * The function only changes the active index.
+     * The actual animation is handled by the motion.div
+     * associated with each section.
+     */
+    const switchTo = (index: number) => {
+        // Ignore requests while another section transition is running.
+        if (isAnimating.current) return;
+
+        // Prevent navigation outside the available section range.
+        if (index < 0 || index >= SECTION_COUNT) return;
+
+        // Lock section navigation until the current animation finishes.
+        isAnimating.current = true;
+
+        // Changing currentIndex automatically updates the position
+        // of every section layer through its Framer Motion animation.
+        setCurrentIndex(index);
+    };
+
+    /**
+     * Handle wheel-based section navigation.
+     *
+     * The important concept is:
+     *
+     * 1. If the active section still has scrollable content,
+     *    allow normal inner scrolling.
+     *
+     * 2. If the user reaches the bottom and scrolls down,
+     *    move to the next full-screen section.
+     *
+     * 3. If the user reaches the top and scrolls up,
+     *    move to the previous full-screen section.
+     */
+    useEffect(() => {
+        const el = wrapperRef.current;
+        if (!el) return;
+
+        const handleWheel = (event: WheelEvent) => {
+            /**
+             * A section transition is already running.
+             *
+             * Prevent the browser from performing any additional
+             * scrolling while the full-screen animation is active.
+             */
+            if (isAnimating.current) {
+                event.preventDefault();
+                return;
+            }
+
+            /**
+             * Ignore very small wheel events.
+             *
+             * These are commonly generated by trackpad momentum
+             * and should not trigger a new section transition.
+             */
+            if (Math.abs(event.deltaY) < MIN_DELTA) {
+                return;
+            }
+
+            // Only the active section participates in the scroll logic.
+            const activeRef = scrollRefs[currentIndex]?.current;
+            if (!activeRef) return;
+
+            /**
+             * DOWNWARD SCROLL
+             *
+             * The user wants to move toward the next section.
+             *
+             * However, the current section may still contain
+             * scrollable content. In that case, normal scrolling
+             * should continue inside the section.
+             */
+            if (event.deltaY > 0 && currentIndex < SECTION_COUNT - 1) {
+                const atBottom =
+                    activeRef.scrollTop + activeRef.clientHeight >= activeRef.scrollHeight - EDGE_THRESHOLD;
+                if (!atBottom) return;
+
+                event.preventDefault();
+                switchTo(currentIndex + 1);
+            } else if (event.deltaY < 0 && currentIndex > 0) {
+                const atTop = activeRef.scrollTop <= EDGE_THRESHOLD;
+                if (!atTop) return;
+
+                event.preventDefault();
+                switchTo(currentIndex - 1);
+            }
+        };
+
+        el.addEventListener('wheel', handleWheel, { passive: false });
+        return () => el.removeEventListener('wheel', handleWheel);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentIndex]);
+
+    const isLeavingDescription = currentIndex > 0;
+
+    /**
+     * Unlock section navigation when a section transition has
+     * actually completed.
+     *
+     * This is more reliable than using setTimeout because the
+     * animation duration and the unlock timing always stay synchronized.
+     */
+    const handleAnimationComplete = () => {
+        isAnimating.current = false;
+    };
+
+    return (
+        <div ref={wrapperRef} style={{ position: 'fixed', inset: 0, overflow: 'hidden' }}>
+            <div
+                style={{
+                    position: 'absolute',
+                    right: 0,
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    zIndex: 50,
+                }}
+                className="pr-4 md:pr-6 lg:pr-8"
+            >
+                <SectionNav count={SECTION_COUNT} activeIndex={currentIndex} onSelect={(index) => switchTo(index)} />
             </div>
+            {/* SECTION 1 — DESCRIPTION */}
+            <motion.div
+                ref={scrollRef0}
+                style={{
+                    position: 'absolute',
+                    inset: 0,
+                    zIndex: SECTION_COUNT - 0,
+                    pointerEvents: currentIndex === 0 ? 'auto' : 'none',
+                }}
+                className="overflow-y-auto overflow-x-hidden"
+                initial={false}
+                animate={{ y: `${(0 - currentIndex) * 100}%` }}
+                transition={{ duration: TRANSITION_DURATION, ease: [0.76, 0, 0.24, 1] }}
+                onAnimationComplete={handleAnimationComplete}
+            >
+                <Description isLeaving={isLeavingDescription} />
+            </motion.div>
+
+            {/* SECTION 2 — BUILT WITH */}
+            <motion.div
+                ref={scrollRef1}
+                style={{
+                    position: 'absolute',
+                    inset: 0,
+                    zIndex: SECTION_COUNT - 1,
+                    pointerEvents: currentIndex === 1 ? 'auto' : 'none',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                }}
+                className="overflow-y-auto overflow-x-hidden bg-background px-6 pt-14 md:pt-[82px]"
+                initial={false}
+                animate={{ y: `${(1 - currentIndex) * 100}%` }}
+                transition={{ duration: TRANSITION_DURATION, ease: [0.76, 0, 0.24, 1] }}
+                onAnimationComplete={handleAnimationComplete}
+            >
+                <BuiltWith />
+            </motion.div>
+
+            {/* SECTION 3 — Core experiences */}
+            <motion.div
+                ref={scrollRef2}
+                style={{
+                    position: 'absolute',
+                    inset: 0,
+                    zIndex: SECTION_COUNT - 2,
+                    pointerEvents: currentIndex === 2 ? 'auto' : 'none',
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
+                className="overflow-y-auto overflow-x-hidden bg-background px-6 pt-14 md:pt-[82px]"
+                initial={false}
+                animate={{ y: `${(2 - currentIndex) * 100}%` }}
+                transition={{ duration: TRANSITION_DURATION, ease: [0.76, 0, 0.24, 1] }}
+                onAnimationComplete={handleAnimationComplete}
+            >
+                <CoreExperiences />
+            </motion.div>
+
+            {/* SECTION 4 — Featured projects */}
+            <motion.div
+                ref={scrollRef3}
+                style={{
+                    position: 'absolute',
+                    inset: 0,
+                    overflow: 'hidden',
+                    zIndex: SECTION_COUNT - 3,
+                    pointerEvents: currentIndex === 3 ? 'auto' : 'none',
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
+                className="bg-background px-6 pt-14 md:pt-[82px]"
+                initial={false}
+                animate={{ y: `${(3 - currentIndex) * 100}%` }}
+                transition={{ duration: TRANSITION_DURATION, ease: [0.76, 0, 0.24, 1] }}
+                onAnimationComplete={handleAnimationComplete}
+            >
+                <FeaturedProjects />
+            </motion.div>
+
+            {/* SECTION 5 — SEE TOP 3 */}
+            <motion.div
+                ref={scrollRef4}
+                style={{
+                    position: 'absolute',
+                    inset: 0,
+                    overflowY: 'auto',
+                    overflowX: 'hidden',
+                    zIndex: SECTION_COUNT - 4,
+                    pointerEvents: currentIndex === 4 ? 'auto' : 'none',
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
+                className="bg-background px-6 pt-14 md:pt-[82px]"
+                initial={false}
+                animate={{ y: `${(4 - currentIndex) * 100}%` }}
+                transition={{ duration: TRANSITION_DURATION, ease: [0.76, 0, 0.24, 1] }}
+                onAnimationComplete={handleAnimationComplete}
+            >
+                <SeeTop3 />
+            </motion.div>
         </div>
     );
 }
