@@ -63,16 +63,20 @@ export default function SidebarFooter() {
                                 >
                                     <Avatar className="h-8 w-8">
                                         <AvatarImage src={user?.avatarUrl ?? ''} alt={user?.displayName} />
-                                        <AvatarFallback>{getInitials(user?.fullName || 'Guest')}</AvatarFallback>
+                                        <AvatarFallback className="text-[#52514e] dark:text-[#c3c2b7]">
+                                            {getInitials(user?.fullName || 'Guest')}
+                                        </AvatarFallback>
                                     </Avatar>
 
                                     <div className="grid flex-1 text-left text-sm leading-tight">
-                                        <span className="truncate font-semibold">@{user?.displayName || 'Guest'}</span>
-                                        <span className="truncate text-xs">
+                                        <span className="truncate font-semibold text-[#52514e] dark:text-[#c3c2b7]">
+                                            @{user?.displayName || 'Guest'}
+                                        </span>
+                                        <span className="truncate text-xs text-[#52514e] dark:text-[#c3c2b7]">
                                             {user?.email || 'guest.example@gmail.com'}
                                         </span>
                                     </div>
-                                    <ChevronUpDown className="ml-auto size-4" />
+                                    <ChevronUpDown className="ml-auto size-4 text-[#52514e] dark:text-[#c3c2b7]" />
                                 </SidebarMenuButton>
                             </AnimateIcon>
                         </DropdownMenuTrigger>
@@ -86,11 +90,17 @@ export default function SidebarFooter() {
                                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                                     <Avatar className="h-8 w-8">
                                         <AvatarImage src={user?.avatarUrl ?? ''} alt={user?.displayName} />
-                                        <AvatarFallback>{getInitials(user?.fullName ?? 'Guest')}</AvatarFallback>
+                                        <AvatarFallback className="text-[#52514e] dark:text-[#c3c2b7]">
+                                            {getInitials(user?.fullName ?? 'Guest')}
+                                        </AvatarFallback>
                                     </Avatar>
                                     <div className="grid flex-1 text-left text-sm leading-tight">
-                                        <span className="truncate font-semibold">@{user?.displayName}</span>
-                                        <span className="truncate text-xs">{user?.email}</span>
+                                        <span className="truncate font-semibold text-[#52514e] dark:text-[#c3c2b7]">
+                                            @{user?.displayName}
+                                        </span>
+                                        <span className="truncate text-xs text-[#52514e] dark:text-[#c3c2b7]">
+                                            {user?.email}
+                                        </span>
                                     </div>
                                 </div>
                             </DropdownMenuLabel>
@@ -98,7 +108,7 @@ export default function SidebarFooter() {
                             {/* Upgrade */}
                             <DropdownMenuGroup>
                                 <AnimateIcon animateOnHover>
-                                    <DropdownMenuItem className="cursor-pointer">
+                                    <DropdownMenuItem className="cursor-pointer text-[#52514e] dark:text-[#c3c2b7]">
                                         <LogoIcon height={30} width={30} />
                                         Upgrade to Pro
                                     </DropdownMenuItem>
@@ -114,7 +124,7 @@ export default function SidebarFooter() {
 
                                     return (
                                         <AnimateIcon key={item.label} animateOnHover>
-                                            <DropdownMenuItem className="cursor-pointer">
+                                            <DropdownMenuItem className="cursor-pointer text-[#52514e] dark:text-[#c3c2b7]">
                                                 {item.href ? (
                                                     <Link href={item.href} className="flex w-full items-center gap-2">
                                                         <Icon />
@@ -136,7 +146,7 @@ export default function SidebarFooter() {
                                 <DropdownMenuItem
                                     // onClick={handleClickLogout}
 
-                                    className="cursor-pointer"
+                                    className="cursor-pointer text-[#52514e] dark:text-[#c3c2b7]"
                                 >
                                     <LogOut />
                                     Log out

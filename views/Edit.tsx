@@ -116,6 +116,8 @@ export default function Edit() {
     React.useEffect(() => {
         if (!user || fields) return;
         const birthday = user.birthday ? new Date(user.birthday) : undefined;
+
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setFields({
             displayName: user.displayName ?? '',
             fullName: user.fullName ?? '',
@@ -217,6 +219,10 @@ export default function Edit() {
             // if (coverFile) await userService.uploadCover(coverFile);
             // await userService.updateProfile({ ...fields, links, settings });
 
+            if (!fields) {
+                return;
+            }
+
             updateUser({
                 displayName: fields.displayName,
                 fullName: fields.fullName || null,
@@ -242,7 +248,7 @@ export default function Edit() {
     return (
         <div className="mx-auto max-w-2xl px-4">
             <div className="mb-6 flex items-center justify-between">
-                <h1 className="text-xl font-bold">Edit profile</h1>
+                <h1 className="text-xl font-bold text-[#52514e] dark:text-[#c3c2b7]">Edit profile</h1>
                 <Button variant="ghost" asChild className="cursor-pointer">
                     <AnimateIcon animateOnHover>
                         <Link href={`/profile/${user.displayName}`} className="flex gap-1 items-center justify-center">
@@ -264,7 +270,7 @@ export default function Edit() {
                         {(coverPreview ?? user.coverUrl) && (
                             <Image src={coverPreview ?? user.coverUrl!} alt="" fill className="object-cover" />
                         )}
-                        <label className="absolute inset-0 flex cursor-pointer items-center justify-center bg-black/0 text-white opacity-0 transition group-hover:bg-black/40 group-hover:opacity-100">
+                        <label className="absolute inset-0 flex cursor-pointer items-center justify-center bg-black/0 text-[#52514e] dark:text-[#c3c2b7] opacity-0 transition group-hover:bg-black/40 group-hover:opacity-100">
                             <Camera className="size-5" />
                             <input type="file" accept="image/*" className="hidden" onChange={handleCoverChange} />
                         </label>
@@ -281,7 +287,7 @@ export default function Edit() {
                                     {getInitials(fields.fullName || fields.displayName)}
                                 </AvatarFallback>
                             </Avatar>
-                            <span className="absolute inset-0 flex items-center justify-center rounded bg-black/0 text-white opacity-0 transition group-hover:bg-black/40 group-hover:opacity-100">
+                            <span className="absolute inset-0 flex items-center justify-center rounded bg-black/0 text-[#52514e] dark:text-[#c3c2b7] opacity-0 transition group-hover:bg-black/40 group-hover:opacity-100">
                                 <Camera className="size-4" />
                             </span>
                             <input type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
@@ -296,7 +302,7 @@ export default function Edit() {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2 text-xl">
+                        <CardTitle className="flex items-center gap-2 text-xl text-[#52514e] dark:text-[#c3c2b7]">
                             <User className="h-5 w-5" />
                             About you
                         </CardTitle>
@@ -305,7 +311,7 @@ export default function Edit() {
 
                     <CardContent className="space-y-5">
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            <div className="space-y-2">
+                            <div className="space-y-2 text-[#52514e] dark:text-[#c3c2b7]">
                                 <Label>Display name</Label>
                                 <Input
                                     value={fields.displayName}
@@ -315,7 +321,7 @@ export default function Edit() {
                                 />
                             </div>
 
-                            <div className="space-y-2">
+                            <div className="space-y-2 text-[#52514e] dark:text-[#c3c2b7]">
                                 <Label>Full name</Label>
                                 <Input
                                     value={fields.fullName}
@@ -327,7 +333,7 @@ export default function Edit() {
                         </div>
 
                         <div className="space-y-2">
-                            <div className="flex items-center justify-between">
+                            <div className="flex items-center justify-between text-[#52514e] dark:text-[#c3c2b7]">
                                 <Label>Bio / headline</Label>
                                 <span className="text-xs text-muted-foreground">
                                     {fields.bio.length}/{BIO_MAX_LENGTH}
@@ -343,7 +349,7 @@ export default function Edit() {
                         </div>
 
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            <div className="space-y-2">
+                            <div className="space-y-2 text-[#52514e] dark:text-[#c3c2b7]">
                                 <Label>Title</Label>
                                 <Input
                                     value={fields.occupation}
@@ -351,7 +357,7 @@ export default function Edit() {
                                     placeholder="e.g. Software Engineer"
                                 />
                             </div>
-                            <div className="space-y-2">
+                            <div className="space-y-2 text-[#52514e] dark:text-[#c3c2b7]">
                                 <Label>Company</Label>
                                 <Input
                                     value={fields.company}
@@ -362,7 +368,7 @@ export default function Edit() {
                         </div>
 
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            <div className="space-y-2">
+                            <div className="space-y-2 text-[#52514e] dark:text-[#c3c2b7]">
                                 <Label className="flex items-center gap-1.5">
                                     <MapPin className="h-3.5 w-3.5" /> Location
                                 </Label>
@@ -372,7 +378,7 @@ export default function Edit() {
                                     placeholder="e.g. Da Nang, Vietnam"
                                 />
                             </div>
-                            <div className="space-y-2">
+                            <div className="space-y-2 text-[#52514e] dark:text-[#c3c2b7]">
                                 <Label className="flex items-center gap-1.5">
                                     <LinkIcon className="h-3.5 w-3.5" /> Website
                                 </Label>
@@ -387,7 +393,7 @@ export default function Edit() {
                         <Separator />
 
                         <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-                            <div className="space-y-2">
+                            <div className="space-y-2 text-[#52514e] dark:text-[#c3c2b7]">
                                 <Label className="flex items-center gap-1.5">
                                     <CalendarIcon className="h-3.5 w-3.5" /> Birthday
                                 </Label>
@@ -432,7 +438,7 @@ export default function Edit() {
                                 {birthdayError && <p className="mt-1 text-xs text-destructive">{birthdayError}</p>}
                             </div>
 
-                            <div className="space-y-2">
+                            <div className="space-y-2 text-[#52514e] dark:text-[#c3c2b7]">
                                 <Label className="flex items-center gap-1.5">
                                     <User className="h-3.5 w-3.5" /> Gender
                                 </Label>
@@ -442,7 +448,11 @@ export default function Edit() {
                                     </SelectTrigger>
                                     <SelectContent className="w-[var(--radix-select-trigger-width)]">
                                         {GENDER_OPTIONS.map(({ label, value, icon: Icon }) => (
-                                            <SelectItem key={value} value={value} className="cursor-pointer">
+                                            <SelectItem
+                                                key={value}
+                                                value={value}
+                                                className="cursor-pointer text-[#52514e] dark:text-[#c3c2b7]"
+                                            >
                                                 <div className="flex items-center gap-2">
                                                     <Icon className="h-4 w-4 text-muted-foreground" />
                                                     {label}
@@ -453,7 +463,7 @@ export default function Edit() {
                                 </Select>
                             </div>
 
-                            <div className="space-y-2">
+                            <div className="space-y-2 text-[#52514e] dark:text-[#c3c2b7]">
                                 <Label className="flex items-center gap-1.5">
                                     <Globe className="h-3.5 w-3.5" /> Language
                                 </Label>
@@ -463,7 +473,11 @@ export default function Edit() {
                                     </SelectTrigger>
                                     <SelectContent className="w-[var(--radix-select-trigger-width)]">
                                         {LANGUAGE_OPTIONS.map((opt) => (
-                                            <SelectItem key={opt.value} value={opt.value} className="cursor-pointer">
+                                            <SelectItem
+                                                key={opt.value}
+                                                value={opt.value}
+                                                className="cursor-pointer text-[#52514e] dark:text-[#c3c2b7]"
+                                            >
                                                 {opt.label}
                                             </SelectItem>
                                         ))}
@@ -472,7 +486,7 @@ export default function Edit() {
                             </div>
                         </div>
 
-                        <div className="space-y-2 md:max-w-xs">
+                        <div className="space-y-2 md:max-w-xs text-[#52514e] dark:text-[#c3c2b7]">
                             <Label>Timezone</Label>
                             <Select value={fields.timezone} onValueChange={(v) => setField('timezone', v)}>
                                 <SelectTrigger className="w-full cursor-pointer">
@@ -480,7 +494,11 @@ export default function Edit() {
                                 </SelectTrigger>
                                 <SelectContent className="w-[var(--radix-select-trigger-width)]">
                                     {TIMEZONE_OPTIONS.map((tz) => (
-                                        <SelectItem key={tz} value={tz} className="cursor-pointer">
+                                        <SelectItem
+                                            key={tz}
+                                            value={tz}
+                                            className="cursor-pointer text-[#52514e] dark:text-[#c3c2b7]"
+                                        >
                                             {tz}
                                         </SelectItem>
                                     ))}
@@ -490,7 +508,7 @@ export default function Edit() {
 
                         <Separator />
 
-                        <div className="space-y-3">
+                        <div className="space-y-3 text-[#52514e] dark:text-[#c3c2b7]">
                             <Label>Social links</Label>
                             {links.map((link) => (
                                 <div key={link.id} className="flex items-start gap-2">
@@ -545,7 +563,7 @@ export default function Edit() {
                 {/* SAVE                                                          */}
                 {/* ============================================================ */}
 
-                <Button onClick={handleSave} disabled={saving} className="w-full cursor-pointer">
+                <Button variant="outline" onClick={handleSave} disabled={saving} className="w-full cursor-pointer">
                     {saving && <Loader2 className="mr-2 size-4 animate-spin" />}
                     Save changes
                 </Button>

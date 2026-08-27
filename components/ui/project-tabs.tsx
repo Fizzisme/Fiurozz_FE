@@ -21,7 +21,7 @@ function AddPrompt({ label, description }: { label: string; description: string 
     return (
         <div className="flex items-start justify-between gap-3 rounded border border-dashed p-3">
             <div>
-                <p className="text-sm font-medium">{label}</p>
+                <p className="text-sm font-medium text-[#52514e] dark:text-[#c3c2b7]">{label}</p>
                 <p className="text-xs text-muted-foreground">{description}</p>
             </div>
             <Button variant="outline" className="shrink-0" asChild>
@@ -45,7 +45,7 @@ export default function ProjectTabs({ user }: { user: CurrentUser }) {
     return (
         <Card>
             <CardHeader>
-                <CardTitle className="text-base">About</CardTitle>
+                <CardTitle className="text-base text-[#52514e] dark:text-[#c3c2b7]">About</CardTitle>
             </CardHeader>
 
             <CardContent className="flex flex-col gap-3">
