@@ -5,7 +5,6 @@ import { LucideIcon } from 'lucide-react';
 import { motion, AnimatePresence, type Transition } from 'motion/react';
 import { ContextMenu } from '@base-ui/react/context-menu';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
 
 type RadialMenuProps = {
     children?: React.ReactNode;
@@ -259,7 +258,7 @@ function RadialMenu({
                                                         className="rounded object-cover"
                                                         draggable={false}
                                                     />
-                                                ) : (
+                                                ) : Icon ? (
                                                     <Icon
                                                         style={{
                                                             width: iconSize,
@@ -267,7 +266,7 @@ function RadialMenu({
                                                         }}
                                                         strokeWidth={1.8}
                                                     />
-                                                )}
+                                                ) : null}
                                                 <span className="max-w-[70px] truncate text-[10px] font-medium leading-none">
         {item.label}
     </span>
