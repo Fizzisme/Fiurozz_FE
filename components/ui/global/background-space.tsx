@@ -1,5 +1,5 @@
-import StarField from '@/components/ui/start-field';
-import ShootingStars from '@/components/ui/shooting-start';
+import StarField from '@/components/ui/global/start-field';
+import ShootingStars from '@/components/ui/global/shooting-start';
 import { Star } from '@/lib/utils';
 
 export default function BackgroundSpace({ smallStars, bigStars }: { smallStars: Star[]; bigStars: Star[] }) {

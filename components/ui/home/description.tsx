@@ -51,7 +51,7 @@ const throwTransition: Transition = {
 export default function Description({ isLeaving = false }: DescriptionProps) {
     return (
         <section
-            className="relative min-h-screen overflow-hidden border-b border-[#e7e2db] bg-background text-[#171717]"
+            className="relative min-h-screen overflow-hidden bg-background text-[#171717]  no-scrollbar"
             style={{
                 paddingTop: '82px',
             }}

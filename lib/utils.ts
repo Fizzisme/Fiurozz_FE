@@ -61,3 +61,9 @@ export function createStars(
             Math.random() * (durationMax - durationMin) + durationMin,
     }));
 }
+
+export function getSpanClassName(index: number): string {
+    const mobileRole = index % 3 < 2 ? 'mobile-span-small' : 'mobile-span-large';
+    const desktopRole = index % 5 < 3 ? 'desktop-span-small' : 'desktop-span-large';
+    return `${mobileRole} ${desktopRole}`;
+}

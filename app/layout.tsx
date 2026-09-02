@@ -1,18 +1,12 @@
 import type {Metadata, Viewport} from "next";
 import { Lexend_Deca } from "next/font/google";
 import "./globals.css";
-import Navigate from "@/components/ui/navigate";
-import Header from "@/components/ui/header";
 import * as React from "react";
-import RouteProgressBar from '@/components/ui/route-progress-bar';
+import RouteProgressBar from '@/components/ui/global/route-progress-bar';
 import { userService } from '@/services/user-service';
 import { AuthHydrator } from '@/components/auth-hydrator';
-import { ThemeProvider } from '@/components/ui/theme-provider';
+import { ThemeProvider } from '@/components/ui/global/theme-provider';
 import {baseUrl} from "@/lib/constanst";
-import { FloatingMenuBubble } from '@/components/ui/floating-menu-bubble';
-// import Navigate from "@/components/Navigate/Navigate";
-// import { Providers } from '@/components/Providers/Providers'
-// import Chatbot from '@/components/ChatBot/ChatBot'
 
 
 
@@ -112,7 +106,7 @@ export default async function RootLayout({
     return (
         <html lang="en" className='mdl-js' suppressHydrationWarning>
         <body
-            className={`${lexendDeca.className} antialiased`}
+            className={`${lexendDeca.className} antialiased thin-scrollbar`}
         >
 
         <ThemeProvider attribute="class" defaultTheme='system' enableSystem>
