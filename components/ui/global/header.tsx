@@ -1,14 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import Search from '@/components/ui/search';
+import Search from '@/components/ui/global/search';
 import { ThemeTogglerButton } from '@/components/animate-ui/components/buttons/theme-toggler';
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { User } from '@/components/animate-ui/icons/user';
-import Logo from '@/components/ui/logo';
+import Logo from '@/components/ui/global/logo';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/global/button';
 import Github from '@/components/icons/github';
 import {
     TooltipContent,
@@ -16,9 +16,9 @@ import {
     TooltipTrigger,
     Tooltip,
 } from '@/components/animate-ui/components/animate/tooltip';
-import { Separator } from '@/components/ui/separator';
+import { Separator } from '@/components/ui/global/separator';
 import { useUserStore } from '@/lib/store/user-store';
-import { UserMenu } from '@/components/ui/user-menu';
+import { UserMenu } from '@/components/ui/global/user-menu';
 
 const IDLE_DELAY = 1200;
 const TOP_THRESHOLD = 10; // px

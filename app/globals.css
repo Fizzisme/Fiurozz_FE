@@ -190,3 +190,37 @@
 .dark .thin-scrollbar::-webkit-scrollbar-thumb {
   background-color: rgba(255, 255, 255, 0.18);
 }
+
+
+
+
+.projects-grid-container {
+  container-type: inline-size;
+  container-name: projects-grid;
+}
+
+.projects-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem; /* khớp gap-4 của Tailwind */
+}
+
+/* Vai trò MOBILE (chu kỳ 3: 2 nhỏ + 1 lớn) - luôn có hiệu lực mặc định */
+.projects-grid-container .mobile-span-small {
+  flex: 0 0 calc(50% - 0.5rem);
+}
+
+.projects-grid-container .mobile-span-large {
+  flex: 0 0 100%;
+}
+
+/* Vai trò DESKTOP (chu kỳ 5: 3 nhỏ + 2 lớn) - chỉ có hiệu lực khi container >= 700px */
+@container projects-grid (min-width: 700px) {
+  .projects-grid-container .desktop-span-small {
+    flex: 0 0 calc(33.3333% - 0.6667rem);
+  }
+
+  .projects-grid-container .desktop-span-large {
+    flex: 0 0 calc(50% - 0.5rem);
+  }
+}

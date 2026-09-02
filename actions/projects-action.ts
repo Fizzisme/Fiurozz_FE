@@ -1,0 +1,56 @@
+'use server';
+
+import { gatewayClient, ApiError } from '@/services/gateway-client';
+import {
+    fetchProjectsCursorPage as fetchMockProjectsCursorPage,
+    getProjectBySlug as getMockProjectBySlug,
+    type ProjectsCursorPage,
+    type GetProjectsCursorParams, Project,
+} from '@/mock-data/projects';
+
+
+const EMPTY_PAGE: ProjectsCursorPage = { items: [], nextCursor: null, hasMore: false };
+
+export async function getProjectsCursorPageAction(
+    params: GetProjectsCursorParams = {},
+): Promise<ProjectsCursorPage> {
+    try {
+        // TODO: real url
+        const envelope = await gatewayClient.get<ProjectsCursorPage>('/projects', {
+            query: {
+                cursor: params.cursor ?? undefined,
+                limit: params.limit,
+                categorySlug: params.categorySlug ?? undefined,
+                subCategorySlug: params.subCategorySlug ?? undefined,
+            },
+        });
+
+        return envelope.data ?? EMPTY_PAGE;
+    } catch (error) {
+
+        if (error instanceof ApiError && error.payload) {
+            const envelope = error.payload as { data?: ProjectsCursorPage };
+           return envelope.data ?? EMPTY_PAGE;
+
+
+        }
+
+        // MockData
+        return fetchMockProjectsCursorPage(params);
+    }
+}
+
+export async function getProjectBySlugAction(slug: string): Promise<Project | null> {
+    try {
+        // TODO: check real url
+        const envelope = await gatewayClient.get<Project>(`/projects/${slug}`);
+        return envelope.data ?? null;
+    } catch (error) {
+        if (error instanceof ApiError && error.payload) {
+            const envelope = error.payload as { data?: Project | null };
+            return envelope.data ?? null;
+        }
+
+        return getMockProjectBySlug(slug) ?? null;
+    }
+}

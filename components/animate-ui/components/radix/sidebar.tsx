@@ -7,10 +7,10 @@ import { type Transition } from 'motion/react';
 import {PanelLeftClose} from "@/components/animate-ui/icons/panel-left-close"
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/global/button';
+import { Input } from '@/components/ui/global/input';
+import { Separator } from '@/components/ui/global/separator';
+import { Skeleton } from '@/components/ui/global/skeleton';
 import {
     Sheet,
     SheetContent,

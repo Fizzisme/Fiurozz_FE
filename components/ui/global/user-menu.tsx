@@ -12,7 +12,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/animate-ui/components/radix/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/animate-ui/components/animate/tooltip';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/global/avatar';
 import { getInitials } from '@/lib/utils';
 import { useUserStore } from '@/lib/store/user-store';
 import { authService } from '@/services/auth-service';

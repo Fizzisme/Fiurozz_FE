@@ -2,10 +2,10 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/global/input';
 import { Button } from '@/components/animate-ui/components/buttons/button';
-import { Separator } from '@/components/ui/separator';
-import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/global/separator';
+import { Label } from '@/components/ui/global/label';
 import { Mail, Lock } from 'lucide-react';
 import Github from '@/components/icons/github';
 import { useState } from 'react';
@@ -14,11 +14,11 @@ import { authService } from '@/services/auth-service';
 import { ApiEnvelope } from '@/services/api-core';
 import { useRouter } from 'next/navigation';
 import Google from '@/components/icons/google';
-import OauthLogin from '@/components/ui/oauth-login';
+import OauthLogin from '@/components/ui/global/oauth-login';
 import Image from 'next/image';
 import Facebook from '@/components/icons/facebook';
 import { OauthLoginListener } from '@/components/oauth-login-listener';
-import BackgroundSpace from '@/components/ui/background-space';
+import BackgroundSpace from '@/components/ui/global/background-space';
 import { Star } from '@/lib/utils';
 
 const loginSchema = z.object({

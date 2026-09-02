@@ -5,7 +5,8 @@ const nextConfig: NextConfig = {
   images: {
       remotePatterns: [
         { protocol: "https", hostname: "i.pravatar.cc" },
-        { protocol: "https", hostname: "images.unsplash.com" }, // 👈 thêm dòng này
+        { protocol: "https", hostname: "images.unsplash.com" },
+        { protocol: "https", hostname: "picsum.photos" }, // 👈 thêm dòng này
         // thêm domain CDN avatar/cover thật của bạn ở đây
       ],
     },

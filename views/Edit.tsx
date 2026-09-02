@@ -20,19 +20,20 @@ import {
 } from 'lucide-react';
 
 import { useUserStore, SocialLink, UserSettings } from '@/lib/store/user-store';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/global/avatar';
 import { Button } from '@/components/animate-ui/components/buttons/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Separator } from '@/components/ui/separator';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Calendar } from '@/components/ui/calendar';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/global/input';
+import { Label } from '@/components/ui/global/label';
+import { Textarea } from '@/components/ui/global/textarea';
+import { Separator } from '@/components/ui/global/separator';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/global/card';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/global/popover';
+import { Calendar } from '@/components/ui/global/calendar';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/global/select';
 import { getInitials } from '@/lib/utils';
 import { ArrowLeft } from '@/components/animate-ui/icons/arrow-left';
 import { AnimateIcon } from '@/components/animate-ui/icons/icon';
+import { useRouter } from 'next/navigation';
 
 /* -------------------------------------------------------------------------- */
 /*                                 Constants                                  */
@@ -111,6 +112,8 @@ export default function Edit() {
     const [coverPreview, setCoverPreview] = React.useState<string | null>(null);
 
     const [saving, setSaving] = React.useState(false);
+
+    const router = useRouter();
 
     // Hydrate local form state once the client-side store has the user.
     React.useEffect(() => {
@@ -249,12 +252,15 @@ export default function Edit() {
         <div className="mx-auto max-w-2xl px-4">
             <div className="mb-6 flex items-center justify-between">
                 <h1 className="text-xl font-bold text-[#52514e] dark:text-[#c3c2b7]">Edit profile</h1>
-                <Button variant="ghost" asChild className="cursor-pointer">
-                    <AnimateIcon animateOnHover>
-                        <Link href={`/profile/${user.displayName}`} className="flex gap-1 items-center justify-center">
-                            <ArrowLeft />
-                            Cancel
-                        </Link>
+                <Button
+                    variant="ghost"
+                    asChild
+                    className="cursor-pointer text-[#52514e] dark:text-[#c3c2b7]"
+                    onClick={() => router.back()}
+                >
+                    <AnimateIcon animateOnHover className="flex gap-1 items-center justify-center">
+                        <ArrowLeft />
+                        Cancel
                     </AnimateIcon>
                 </Button>
             </div>

@@ -1,7 +1,7 @@
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Cake, Mail, MapPin, School, Send } from 'lucide-react'
-import { Button } from '@/components/animate-ui/components/buttons/button'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/global/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/global/avatar';
+import { Cake, Mail, MapPin, School, Send } from 'lucide-react';
+import { Button } from '@/components/animate-ui/components/buttons/button';
 
 export default function MemberCard() {
     return (
@@ -18,7 +18,7 @@ export default function MemberCard() {
 
                     <div className="flex items-center gap-3">
                         <Send className="size-6 cursor-pointer" />
-                        <Button variant="ghost" className='px-1 cursor-pointer'>
+                        <Button variant="ghost" className="px-1 cursor-pointer">
                             Follow
                         </Button>
                     </div>
@@ -95,5 +95,5 @@ export default function MemberCard() {
                 </Button>
             </CardFooter>
         </Card>
-    )
+    );
 }
