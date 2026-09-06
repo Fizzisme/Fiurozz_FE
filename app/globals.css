@@ -49,6 +49,41 @@
   --radius-4xl: calc(var(--radius) * 2.6);
   --animate-twinkle: twinkle 3s ease-in-out infinite;
   --animate-gradient-shift: gradient-shift 6s ease-in-out infinite;
+
+  /* ── Catronaut design page (/design) — namespaced "ctr" so it only ever
+     generates ctr-* utilities and never collides with the app's own tokens ── */
+  --color-ctr-paper: #F2ECDF;
+  --color-ctr-paper-lift: #F8F3E8;
+  --color-ctr-paper-2: #E9E1D0;
+  --color-ctr-paper-3: #DED3BE;
+  --color-ctr-desk: #454D3D;
+  --color-ctr-desk-lift: #515A48;
+  --color-ctr-ink: #2B3A4A;
+  --color-ctr-ink-soft: #4E5E6C;
+  --color-ctr-ink-faint: rgba(43, 58, 74, 0.28);
+  --color-ctr-ink-hair: rgba(43, 58, 74, 0.16);
+  --color-ctr-on-dark: #EDE5D3;
+  --color-ctr-on-dark-soft: #C8CDBA;
+  --color-ctr-sage: #8B9C86;
+  --color-ctr-blue: #93A9B8;
+  --color-ctr-terracotta: #BE6247;
+  --color-ctr-terracotta-ink: #8E3D28;
+  --color-ctr-ochre: #C98F52;
+
+  --font-ctr-serif: var(--font-eb-garamond);
+  --font-ctr-sans: var(--font-archivo);
+  --font-ctr-mono: var(--font-courier-prime);
+
+  --text-ctr-display: clamp(2.5rem, 6.2vw, 5.6rem);
+  --text-ctr-h2: clamp(2.1rem, 4.1vw, 3.6rem);
+  --text-ctr-h3: clamp(1.35rem, 1.9vw, 1.75rem);
+  --text-ctr-lede: clamp(1.06rem, 1.3vw, 1.28rem);
+  --text-ctr-body: clamp(1rem, 1.05vw, 1.1rem);
+  --text-ctr-micro: clamp(0.69rem, 0.78vw, 0.79rem);
+
+  --ease-ctr: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-ctr-blink: ctr-blink 1.15s steps(1) infinite;
 }
 
 :root {
@@ -150,6 +185,13 @@
   50% {
     background-position: 100% 50%;
   }
+}
+
+/* Catronaut (/design) — the pen-caret blink in the prompt sheet. Everything
+   else on that page animates through the `motion` library instead. */
+@keyframes ctr-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
 }
 
 

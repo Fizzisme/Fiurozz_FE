@@ -7,13 +7,14 @@ import { Button } from '@/components/animate-ui/components/buttons/button';
 import { Compass } from '@/components/animate-ui/icons/compass';
 import HeroHeading from '@/components/ui/home/hero-heading';
 import { AnimateIcon } from '@/components/animate-ui/icons/icon';
-import LogoIcon from '@/components/icons/logo-icon';
 import { Tabs, TabsContent, TabsContents, TabsList, TabsTrigger } from '@/components/animate-ui/components/radix/tabs';
 import { Eye, CodeXml } from 'lucide-react';
 import { CodeBlock, CodeHeader, Code } from '@/components/animate-ui/components/animate/code';
 import Image from 'next/image';
 import ReactECharts from 'echarts-for-react';
 import { Transition } from 'motion/react';
+import Link from 'next/link';
+import CatronautCoding from '@/components/ui/catronaut/coding';
 
 type DescriptionProps = {
     isLeaving?: boolean;
@@ -168,9 +169,13 @@ export default function Description({ isLeaving = false }: DescriptionProps) {
                                 }}
                                 className="mt-5 md:mt-8 flex flex-wrap gap-3"
                             >
-                                <Button>Projects</Button>
+                                <Button>
+                                    <Link href="/projects">Projects</Link>
+                                </Button>
 
-                                <Button variant="outline">Try AI Agent</Button>
+                                <Button variant="outline">
+                                    <Link href="/design">Try AI Agent</Link>
+                                </Button>
                             </motion.div>
 
                             {/* Value props */}
@@ -208,7 +213,11 @@ export default function Description({ isLeaving = false }: DescriptionProps) {
                                     description="with developers"
                                 />
 
-                                <Feature icon={<LogoIcon />} title="Build faster" description="with Catronaut" />
+                                <Feature
+                                    icon={<CatronautCoding scale={0.3} />}
+                                    title="Build faster"
+                                    description="with Catronaut"
+                                />
                             </motion.div>
                         </div>
                     </motion.div>
@@ -517,7 +526,7 @@ function Feature({ icon, title, description }: { icon: React.ReactNode; title: s
         <div className="flex items-center gap-3">
             <AnimateIcon
                 animateOnHover
-                className="flex size-10 shrink-0 items-center justify-center rounded bg-[#f5eee6] text-[#4b4540]"
+                className="flex size-10 shrink-0 items-center justify-center rounded bg-[#f5eee6] text-[#4b4540] dark:bg-primary dark:text-[#171717]"
             >
                 {icon}
             </AnimateIcon>
