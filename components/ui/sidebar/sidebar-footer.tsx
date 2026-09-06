@@ -29,6 +29,7 @@ import { useUserStore } from '@/lib/store/user-store';
 import { authService } from '@/services/auth-service';
 import LogoIcon from '@/components/icons/logo-icon';
 import { useIsMobile } from '@/hooks/use-mobile';
+import CatronautCoding from '@/components/ui/catronaut/coding';
 
 export default function SidebarFooter() {
     const router = useRouter();
@@ -168,7 +169,7 @@ export default function SidebarFooter() {
                             <DropdownMenuGroup>
                                 <AnimateIcon animateOnHover>
                                     <DropdownMenuItem className="cursor-pointer text-[#52514e] dark:text-[#c3c2b7]">
-                                        <LogoIcon height={30} width={30} />
+                                        <CatronautCoding scale={0.3} />
                                         Upgrade to Pro
                                     </DropdownMenuItem>
                                 </AnimateIcon>

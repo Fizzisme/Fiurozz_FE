@@ -19,7 +19,7 @@ export default function SidebarContent() {
 
             {user && communityGroup && <SidebarMenuGroup label={communityGroup.label} items={communityGroup.items} />}
 
-            <SidebarMenuGroup label={exploreGroup.label} items={exploreGroup.items} />
+            {exploreGroup && <SidebarMenuGroup label={exploreGroup.label} items={exploreGroup.items} />}
         </SidebarContentRadix>
     );
 }
