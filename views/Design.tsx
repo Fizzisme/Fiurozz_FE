@@ -12,6 +12,7 @@ import { DesignWhy } from '@/components/ui/design/design-why';
 import { DesignProcess } from '@/components/ui/design/design-process';
 import { DesignWork } from '@/components/ui/design/design-work';
 import { DesignColophon } from '@/components/ui/design/design-colophon';
+import { Scene } from '@/components/ui/design/design-scene';
 
 /* The atelier sets in EB Garamond, Archivo and Courier Prime — self-hosted,
    exposed as CSS variables the ctr-serif / ctr-sans / ctr-mono Tailwind
@@ -34,6 +35,19 @@ const courierPrime = Courier_Prime({
     weight: ['400', '700'],
     variable: '--font-courier-prime',
 });
+
+/**
+ * The furthest the page is allowed to fall behind the wheel, in pixels.
+ *
+ * Lenis closes about a tenth of that gap each frame, so this is really a speed
+ * limit of roughly a tenth of it per frame. Below the limit nothing is touched
+ * — a slow read, or stopping to look again, behaves exactly as it always did.
+ * Above it the surplus is *held, not discarded*: it is released over the frames
+ * that follow, so a hard flick turns into a long even glide through the scenes
+ * rather than a jump past them, and the page still travels the full distance
+ * the wheel asked for.
+ */
+const MAX_LEAD = 700;
 
 /* The laid-paper fibre texture sits behind everything, held still while the
    page scrolls under it. It's one small inline data URI, so it stays with
@@ -73,11 +87,51 @@ export function Design() {
        ScrollTrigger on the page read the same frame. Lag smoothing is off
        for the same reason — a smoothed catch-up would desync the scrub. */
     useEffect(() => {
+        /* Where the reader has actually asked to be, which is not the same as
+           where Lenis is allowed to head next once the cap below bites. */
+        let intent = 0;
+        /* The last target we handed Lenis, so anything else that shows up on
+           `targetScroll` can only have come from the reader's own input. */
+        let handed = 0;
+        /* Only the reader's scrolling is capped. A programmatic scroll — the
+           "Start designing" plate handing a hash to Lenis — drives
+           `targetScroll` itself and would otherwise read as input. */
+        let byHand = false;
+        const noteInput = () => {
+            byHand = true;
+        };
+        window.addEventListener('wheel', noteInput, { passive: true });
+        window.addEventListener('touchmove', noteInput, { passive: true });
+
         /* The instance is read inside the tick, never captured here: on the
            first pass the ref is still empty, and a tick that bailed early
            would leave Lenis swallowing wheel events it never acts on. */
         const update = (time: number) => {
-            lenisRef.current?.lenis?.raf(time * 1000);
+            const active = lenisRef.current?.lenis;
+
+            if (active) {
+                if (byHand) {
+                    /* Whatever moved the target since the last frame is new
+                       intent — one wheel notch, or twenty. */
+                    intent += active.targetScroll - handed;
+
+                    const lead = intent - active.animatedScroll;
+                    if (Math.abs(lead) < 1) {
+                        byHand = false;
+                    } else {
+                        const capped =
+                            active.animatedScroll + Math.max(-MAX_LEAD, Math.min(MAX_LEAD, lead));
+                        if (Math.abs(capped - active.targetScroll) > 0.5) {
+                            active.scrollTo(capped, { programmatic: false, lerp: active.options.lerp });
+                        }
+                    }
+                    handed = active.targetScroll;
+                } else {
+                    intent = handed = active.targetScroll;
+                }
+            }
+
+            active?.raf(time * 1000);
         };
 
         gsap.ticker.add(update);
@@ -87,6 +141,8 @@ export function Design() {
         lenis?.on('scroll', ScrollTrigger.update);
 
         return () => {
+            window.removeEventListener('wheel', noteInput);
+            window.removeEventListener('touchmove', noteInput);
             lenis?.off('scroll', ScrollTrigger.update);
             gsap.ticker.remove(update);
             gsap.ticker.lagSmoothing(500, 33);
@@ -112,9 +168,24 @@ export function Design() {
 
             <DesignRail />
 
+            {/* Exactly one transition, and only the first: the studio fades out
+                completely, the screen is bare paper for a beat, and the canvas
+                comes up in its place. Everything from the canvas down scrolls
+                the way it always did.
+
+                It takes two halves to do that. The hero owns the leaving half
+                itself — it pins for its opening plate, and GSAP writes a
+                transform onto anything it pins, so a Scene wrapper around it
+                would become a containing block and take that pin away. The
+                canvas owns the arriving half, and needs it: without one it is
+                fully opaque and would climb over the lower half of the screen
+                while the studio was still fading. It never leaves, so nothing
+                below it is touched. */}
             <main id="top">
                 <DesignHero />
-                <DesignCanvas />
+                <Scene exit={false}>
+                    <DesignCanvas />
+                </Scene>
                 <DesignWhy />
                 <DesignProcess />
                 <DesignWork />
