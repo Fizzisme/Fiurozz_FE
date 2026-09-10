@@ -1,0 +1,375 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-09T00:00:00.000Z",
+  "title": "Design System: Fiurozz",
+  "extensions": {
+    "colorMeta": {
+      "signal-orange": {
+        "role": "primary",
+        "displayName": "Signal Orange",
+        "canonical": "#ffa951",
+        "tonalRamp": [
+          "oklch(0.20 0.12 62)",
+          "oklch(0.31 0.12 62)",
+          "oklch(0.42 0.12 62)",
+          "oklch(0.53 0.12 62)",
+          "oklch(0.64 0.12 62)",
+          "oklch(0.75 0.12 62)",
+          "oklch(0.85 0.09 62)",
+          "oklch(0.94 0.05 62)"
+        ]
+      },
+      "ember-red": {
+        "role": "primary",
+        "displayName": "Ember Red",
+        "canonical": "#bb2233",
+        "tonalRamp": [
+          "oklch(0.18 0.19 22)",
+          "oklch(0.28 0.19 22)",
+          "oklch(0.38 0.19 22)",
+          "oklch(0.48 0.19 22)",
+          "oklch(0.58 0.17 22)",
+          "oklch(0.69 0.14 22)",
+          "oklch(0.80 0.10 22)",
+          "oklch(0.92 0.05 22)"
+        ]
+      },
+      "bone-white": {
+        "role": "neutral",
+        "displayName": "Bone White",
+        "canonical": "#fcfcfb",
+        "tonalRamp": [
+          "oklch(0.15 0.002 90)",
+          "oklch(0.26 0.002 90)",
+          "oklch(0.37 0.002 90)",
+          "oklch(0.48 0.002 90)",
+          "oklch(0.59 0.002 90)",
+          "oklch(0.72 0.002 90)",
+          "oklch(0.86 0.002 90)",
+          "oklch(0.99 0.002 90)"
+        ]
+      },
+      "ink-black": {
+        "role": "neutral",
+        "displayName": "Ink Black",
+        "canonical": "oklch(0.145 0 0)",
+        "tonalRamp": [
+          "oklch(0.145 0 0)",
+          "oklch(0.26 0 0)",
+          "oklch(0.37 0 0)",
+          "oklch(0.48 0 0)",
+          "oklch(0.59 0 0)",
+          "oklch(0.70 0 0)",
+          "oklch(0.84 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "greige-edge": {
+        "role": "neutral",
+        "displayName": "Greige Edge",
+        "canonical": "#d8d2ca",
+        "tonalRamp": [
+          "oklch(0.18 0.012 80)",
+          "oklch(0.29 0.012 80)",
+          "oklch(0.40 0.012 80)",
+          "oklch(0.51 0.012 80)",
+          "oklch(0.62 0.012 80)",
+          "oklch(0.73 0.012 80)",
+          "oklch(0.86 0.012 80)",
+          "oklch(0.95 0.008 80)"
+        ]
+      },
+      "atelier-paper": {
+        "role": "neutral",
+        "displayName": "Atelier Paper",
+        "canonical": "#F2ECDF",
+        "tonalRamp": [
+          "oklch(0.20 0.022 88)",
+          "oklch(0.31 0.022 88)",
+          "oklch(0.42 0.022 88)",
+          "oklch(0.53 0.022 88)",
+          "oklch(0.64 0.022 88)",
+          "oklch(0.75 0.022 88)",
+          "oklch(0.86 0.022 88)",
+          "oklch(0.95 0.018 88)"
+        ]
+      },
+      "atelier-ink": {
+        "role": "neutral",
+        "displayName": "Atelier Ink",
+        "canonical": "#2B3A4A",
+        "tonalRamp": [
+          "oklch(0.16 0.032 250)",
+          "oklch(0.27 0.032 250)",
+          "oklch(0.38 0.032 250)",
+          "oklch(0.49 0.032 250)",
+          "oklch(0.60 0.032 250)",
+          "oklch(0.71 0.028 250)",
+          "oklch(0.83 0.020 250)",
+          "oklch(0.94 0.010 250)"
+        ]
+      },
+      "atelier-terracotta": {
+        "role": "secondary",
+        "displayName": "Atelier Terracotta",
+        "canonical": "#BE6247",
+        "tonalRamp": [
+          "oklch(0.18 0.10 40)",
+          "oklch(0.29 0.10 40)",
+          "oklch(0.40 0.10 40)",
+          "oklch(0.51 0.10 40)",
+          "oklch(0.60 0.10 40)",
+          "oklch(0.71 0.09 40)",
+          "oklch(0.83 0.06 40)",
+          "oklch(0.94 0.03 40)"
+        ]
+      },
+      "atelier-ochre": {
+        "role": "tertiary",
+        "displayName": "Atelier Ochre",
+        "canonical": "#C98F52",
+        "tonalRamp": [
+          "oklch(0.20 0.08 70)",
+          "oklch(0.31 0.08 70)",
+          "oklch(0.42 0.08 70)",
+          "oklch(0.53 0.08 70)",
+          "oklch(0.64 0.08 70)",
+          "oklch(0.75 0.07 70)",
+          "oklch(0.86 0.05 70)",
+          "oklch(0.95 0.03 70)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Product Display",
+        "purpose": "The home hero headline only. Tight -0.055em tracking is the signature."
+      },
+      "body": {
+        "displayName": "Product Body",
+        "purpose": "The working size of the entire application UI (14px)."
+      },
+      "label": {
+        "displayName": "Product Label",
+        "purpose": "Field labels and helper text; the eyebrow variant adds 0.18em tracking and the accent colour."
+      },
+      "mono": {
+        "displayName": "Product Mono",
+        "purpose": "Geist Mono, bound to --font-mono. Section eyebrows, panel micro-labels, filenames and code — never body copy."
+      },
+      "atelier-display": {
+        "displayName": "Atelier Display",
+        "purpose": "/design scene titles in EB Garamond, final clause set in terracotta italic."
+      },
+      "atelier-micro": {
+        "displayName": "Atelier Micro",
+        "purpose": "/design plate captions, scene counters and margin coordinates in Courier Prime."
+      },
+      "atelier-control": {
+        "displayName": "Atelier Control",
+        "purpose": "/design Plate buttons in Archivo, uppercase at 0.14em tracking."
+      }
+    },
+    "shadows": [
+      {
+        "name": "card-lift",
+        "value": "0 30px 80px -30px rgba(0,0,0,0.25)",
+        "purpose": "Focused single-task surfaces such as the auth card."
+      },
+      {
+        "name": "panel-lift",
+        "value": "0 20px 60px rgba(30,25,20,0.06)",
+        "purpose": "The home page code-editor panel; dark mode uses rgba(0,0,0,0.3)."
+      },
+      {
+        "name": "control-lift",
+        "value": "0 1px 2px 0 rgba(0,0,0,0.05)",
+        "purpose": "Buttons and inputs at rest (Tailwind shadow-xs)."
+      },
+      {
+        "name": "plate-rest",
+        "value": "0 1px 0 rgba(43,58,74,0.22), 0 22px 40px -28px rgba(43,58,74,0.75)",
+        "purpose": "/design framed artwork: a contact shadow plus a long soft cast."
+      },
+      {
+        "name": "plate-press",
+        "value": "inset 0 1px 0 rgba(242,236,223,0.16), 0 8px 20px -14px rgba(43,58,74,0.85)",
+        "purpose": "/design Plate button; the inset top highlight makes it read as struck metal."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-house",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Exponential ease-out. The one curve for both worlds; exposed on /design as --ease-ctr."
+      },
+      {
+        "name": "ease-section",
+        "value": "cubic-bezier(0.76, 0, 0.24, 1)",
+        "purpose": "Home page full-viewport section changes only, at 0.9s."
+      },
+      {
+        "name": "duration-ui",
+        "value": "150-250ms",
+        "purpose": "Interface state transitions: hover, focus, colour."
+      },
+      {
+        "name": "duration-entrance",
+        "value": "400-900ms",
+        "purpose": "Entrance reveals: opacity, small y offset, blur; ~0.18s stagger between headline lines."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" },
+      { "name": "atelier-pin", "value": "1000px" },
+      { "name": "projects-grid", "value": "700px (container query)" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single most important action on a surface. Accent fill; flips orange to ember with the theme.",
+      "html": "<button class=\"ds-btn-primary\">Projects</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 36px; padding: 8px 16px; border: none; border-radius: 10px; background: var(--primary, #ffa951); color: var(--primary-foreground, #fcfcfb); font-family: 'Lexend Deca', system-ui, sans-serif; font-size: 14px; font-weight: 600; white-space: nowrap; cursor: pointer; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); transition: background-color 0.2s cubic-bezier(0.16,1,0.3,1), box-shadow 0.2s cubic-bezier(0.16,1,0.3,1); } .ds-btn-primary:hover { background: color-mix(in oklch, var(--primary, #ffa951) 90%, transparent); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(160,160,160,0.5); } .ds-btn-primary:disabled { opacity: 0.5; pointer-events: none; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "The workhorse control. Warm greige border and hover wash; both auth forms submit through it.",
+      "html": "<button class=\"ds-btn-outline\">Log in</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 36px; padding: 8px 16px; border: 1px solid #d8d2ca; border-radius: 10px; background: var(--background, #fcfcfb); color: #292929; font-family: 'Lexend Deca', system-ui, sans-serif; font-size: 14px; font-weight: 500; white-space: nowrap; cursor: pointer; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); transition: background-color 0.2s cubic-bezier(0.16,1,0.3,1), border-color 0.2s cubic-bezier(0.16,1,0.3,1); } .ds-btn-outline:hover { background: #f5f2ed; } .ds-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(160,160,160,0.5); } .ds-btn-outline:disabled { opacity: 0.5; pointer-events: none; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "36px field with hairline border; focus shifts the border and adds a 3px ring. aria-invalid drives the error state.",
+      "html": "<input class=\"ds-input\" type=\"email\" placeholder=\"Fizz@example.com\" />",
+      "css": ".ds-input { display: block; width: 100%; height: 36px; padding: 4px 12px; border: 1px solid var(--border, oklch(0.922 0 0)); border-radius: 10px; background: transparent; color: var(--foreground, oklch(0.145 0 0)); font-family: 'Lexend Deca', system-ui, sans-serif; font-size: 14px; outline: none; transition: color 0.2s, box-shadow 0.2s, border-color 0.2s; } .ds-input::placeholder { color: var(--muted-foreground, oklch(0.556 0 0)); } .ds-input::selection { background: #29588f; color: #fff; } .ds-input:focus-visible { border-color: var(--ring, oklch(0.708 0 0)); box-shadow: 0 0 0 3px rgba(160,160,160,0.5); } .ds-input[aria-invalid='true'] { border-color: oklch(0.577 0.245 27.325); box-shadow: 0 0 0 3px oklch(0.577 0.245 27.325 / 0.2); } .ds-input:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Card Surface",
+      "kind": "card",
+      "refersTo": "card-surface",
+      "description": "The house container: pure white on the bone-white page, edged with a hairline ring rather than a border.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-title\">Quick sign up</div><div class=\"ds-card-desc\">Continue with a connected account</div></div>",
+      "css": ".ds-card { display: flex; flex-direction: column; gap: 16px; padding: 16px; border-radius: 10px; background: var(--card, #ffffff); color: var(--card-foreground, oklch(0.145 0 0)); box-shadow: 0 0 0 1px rgba(0,0,0,0.1); font-family: 'Lexend Deca', system-ui, sans-serif; font-size: 14px; } .ds-card-title { font-size: 18px; font-weight: 600; line-height: 1.35; } .ds-card-desc { font-size: 14px; color: var(--muted-foreground, oklch(0.556 0 0)); }"
+    },
+    {
+      "name": "Icon Badge",
+      "kind": "chip",
+      "refersTo": "icon-badge",
+      "description": "The warm square behind a feature or section icon; in dark mode it fills with the accent and inverts its glyph.",
+      "html": "<span class=\"ds-icon-badge\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 13v8\"/><path d=\"M4 14.9A5 5 0 0 1 6 5.5a7 7 0 0 1 13.3 2A4.5 4.5 0 0 1 20 16.4\"/><path d=\"m8 17 4-4 4 4\"/></svg></span>",
+      "css": ".ds-icon-badge { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; flex-shrink: 0; border-radius: 10px; background: #f5eee6; color: #4b4540; } .ds-icon-badge svg { width: 16px; height: 16px; }"
+    },
+    {
+      "name": "Eyebrow Label",
+      "kind": "custom",
+      "refersTo": "label",
+      "description": "The home page's accent micro-label: a short rule, a tracked accent word, and a quiet counter.",
+      "html": "<div class=\"ds-eyebrow\"><span class=\"ds-eyebrow-rule\"></span><span class=\"ds-eyebrow-word\">SDCB</span><span class=\"ds-eyebrow-num\">&middot; N&deg; 01</span></div>",
+      "css": ".ds-eyebrow { display: flex; align-items: center; gap: 12px; font-family: 'Lexend Deca', system-ui, sans-serif; } .ds-eyebrow-rule { display: block; width: 24px; height: 1px; background: #d4d4d4; } .ds-eyebrow-word { font-size: 12px; font-weight: 600; letter-spacing: 0.18em; color: var(--primary, #ffa951); } .ds-eyebrow-num { font-size: 11px; letter-spacing: 0.18em; color: #a3a3a3; }"
+    },
+    {
+      "name": "Atelier Plate",
+      "kind": "button",
+      "refersTo": "atelier-plate",
+      "description": "/design only. The square struck-metal call to action with a nib that lifts and rotates on hover.",
+      "html": "<a class=\"ds-plate\" href=\"#canvas\">Start designing<svg class=\"ds-plate-nib\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"square\"><path d=\"M4 20 L9 19 L20 8 L16 4 L5 15 Z\"/><path d=\"M9 19 L5 15\"/><path d=\"M16 4 L20 8\"/></svg></a>",
+      "css": ".ds-plate { display: inline-flex; align-items: center; gap: 0.85em; padding: 0.82em 1.5em 0.86em; border: 1px solid #2B3A4A; border-radius: 1px; background: #2B3A4A; color: #F2ECDF; font-family: Archivo, system-ui, sans-serif; font-size: 0.95rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; text-decoration: none; cursor: pointer; box-shadow: inset 0 1px 0 rgba(242,236,223,0.16), 0 8px 20px -14px rgba(43,58,74,0.85); transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), background-color 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.5s cubic-bezier(0.16,1,0.3,1); } .ds-plate:hover { transform: translateY(-2px); background: #22303E; box-shadow: inset 0 1px 0 rgba(242,236,223,0.2), 0 16px 28px -16px rgba(43,58,74,0.9); } .ds-plate:active { transform: translateY(0); } .ds-plate:focus-visible { outline: 2px solid #C98F52; outline-offset: 3px; } .ds-plate-nib { width: 1.1em; height: 1.1em; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); } .ds-plate:hover .ds-plate-nib { transform: translate(2px, -2px) rotate(-6deg); }"
+    },
+    {
+      "name": "Atelier Plate Caption",
+      "kind": "custom",
+      "refersTo": "atelier-micro",
+      "description": "/design only. The rule-topped caption under a framed plate: number, italic title, and specification.",
+      "html": "<figcaption class=\"ds-plate-caption\"><span class=\"ds-plate-no\">Plate&nbsp;I</span><span class=\"ds-plate-title\"><i>Fields under construction</i></span><span class=\"ds-plate-spec\">16:9 &middot; centred &middot; ivory ground</span></figcaption>",
+      "css": ".ds-plate-caption { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4em 1.4em; padding-top: 0.8rem; border-top: 1px solid rgba(43,58,74,0.16); font-family: 'Courier Prime', ui-monospace, monospace; font-size: 0.79rem; text-transform: uppercase; letter-spacing: 0.1em; color: #4E5E6C; } .ds-plate-no { color: #2B3A4A; } .ds-plate-title { font-family: 'EB Garamond', Georgia, serif; font-size: 0.9rem; text-transform: none; letter-spacing: 0.02em; } .ds-plate-spec { margin-left: auto; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Warm Mission Control",
+    "overview": "Fiurozz runs on instruments — a live agent chip, a code readout that types itself, ranked projects, a scene counter down the side of the page — but none of it is lit like an enterprise console. The ground is bone white, the accent is the orange of a desk lamp at midnight, the mascot is a cat in a space helmet, and the hero photograph is somebody's actual desk with a bowl of snacks on it. That is the whole idea: the precision of mission control, kept at the temperature of the room where the work really happens. Cold blue dashboards, grey-on-grey admin chrome and stock-photo professionalism are the anti-reference; so is the opposite failure, decoration with nothing running underneath.\n\nThe system is deliberately restrained: neutrals carry the surface, and the accent appears on primary actions, live indicators and one or two emphasized words per page. Density is moderate — generous around headings, tight inside field groups. Corners are small (10px), borders are hairlines, and shadows are wide and soft rather than dark. Both themes are first-class, and the accent is the one thing that genuinely changes between them: warm orange in the light, deep ember red in the dark.\n\nThe /design route is a different world on purpose. Catronaut's landing page is set on ivory laid paper in EB Garamond, with terracotta italics, hairline rules, oldstyle numerals, a watercolour plate of a Dutch polder and a wheel-capped smooth scroll. Its North Star is \"The Dutch Artist Atelier\" — a nineteenth-century painter's studio and its plate book, not a product page. Its tokens are namespaced ctr-* and its fonts are loaded on that route only, so the separation is enforced by the code, not by good intentions.",
+    "keyCharacteristics": [
+      "Bone-white ground, near-black type, one warm accent — never a second accent hue.",
+      "The accent flips family across themes: #ffa951 orange in light, #bb2233 ember in dark.",
+      "Small radii (10px), hairline borders, wide-soft shadows; nothing hard-edged or heavy.",
+      "Authored brand assets over generic UI furniture: the Catronaut pixel mascot, the painted plate, the real desk photograph.",
+      "One easing curve, cubic-bezier(0.16, 1, 0.3, 1), governs motion in both worlds.",
+      "/design is a sealed second world: ctr-* tokens, three route-scoped fonts, ivory paper."
+    ],
+    "rules": [
+      {
+        "name": "The Two-Pigment Rule",
+        "body": "One accent per world, and never both worlds' accents on one screen. If a surface seems to need a second accent colour, it needs a hierarchy fix instead.",
+        "section": "colors"
+      },
+      {
+        "name": "The Warm Neutral Rule",
+        "body": "Neutrals in this system are warm. When a grey is needed for a border, hover or badge, take it from the greige family (#d8d2ca, #f5f2ed, #f5eee6), never from a blue-grey or a pure #ccc.",
+        "section": "colors"
+      },
+      {
+        "name": "The Theme-Shift Rule",
+        "body": "The accent is var(--primary), and it is a different hue per theme by design. Writing #ffa951 literally into a component breaks dark mode silently.",
+        "section": "colors"
+      },
+      {
+        "name": "The Loaded-Weight Rule",
+        "body": "Lexend Deca is loaded at 200/300/400/500/600/700 in app/layout.tsx. Those six are the whole palette: any other weight (font-extrabold, font-black) is synthesized by the browser and looks it. Add the weight to the loader rather than reaching for a fake one.",
+        "section": "typography"
+      },
+      {
+        "name": "The Oldstyle Rule",
+        "body": "On /design, numerals are oldstyle (font-variant-numeric: oldstyle-nums) everywhere except Courier Prime labels, where they are lining by nature. Never introduce tabular lining figures into that page's prose.",
+        "section": "typography"
+      },
+      {
+        "name": "The Narrow-Mono Rule",
+        "body": "font-mono is Geist Mono, and it earns its place only where the monospace means something: a tracked micro-label, a filename, a token count, real code. Monospace as a costume for \"technical\" is not a use — the sans already carries the product's voice.",
+        "section": "typography"
+      },
+      {
+        "name": "The Diffuse-Light Rule",
+        "body": "Every shadow carries a downward offset and a blur radius several times that offset. A zero-offset coloured halo is not depth in this system, and a hard offset shadow (4px 4px 0) belongs to a neobrutalist world this project is not.",
+        "section": "elevation"
+      },
+      {
+        "name": "The One-Radius Rule",
+        "body": "Use rounded (10px). Reach for another step only when the element is genuinely smaller or larger than a control, and never introduce rounded-full on a rectangle.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do keep the two worlds sealed. ctr-* tokens, EB Garamond, Archivo and Courier Prime belong to /design and nowhere else; the application's tokens and Lexend Deca never appear on /design.",
+      "Do reach for var(--primary) (bg-primary, text-primary) so the accent flips from Signal Orange to Ember Red with the theme.",
+      "Do reserve the accent for primary actions, live state and at most one emphasized word per view. Everything else is neutral.",
+      "Do reserve the header's height on every new page (pt-14 md:pt-[82px], or pt-20 md:pt-28 on centred single-card pages).",
+      "Do start multi-column form rows at one column (grid-cols-1 sm:grid-cols-2).",
+      "Do wrap fields in a real <form> with onSubmit, id/htmlFor pairs, autoComplete, and aria-invalid on failed fields — Enter must submit.",
+      "Do ship every interactive state: hover, focus ring, disabled, loading (label swap), error, empty.",
+      "Do use the authored assets — the Catronaut components, the painted plate, the desk photograph — where a generic icon or stock image would otherwise land.",
+      "Do honour prefers-reduced-motion, as /design already does, before adding any scroll-driven or pinned animation.",
+      "Do theme the browser's own surfaces: selection colour, focus ring, scrollbar (thin-scrollbar / no-scrollbar), caret."
+    ],
+    "donts": [
+      "Don't blend the worlds — no ivory paper, Garamond or terracotta inside the application, and no orange accent, 10px radius or Lexend Deca inside /design.",
+      "Don't reintroduce the disconnected space theme. The star field, nebula blobs, Saturn and satellite art were removed from the auth pages on purpose; the celestial motif lives in the Catronaut mascot and the home page's planet, not in a decorative background layer.",
+      "Don't use gradient text, or glass and backdrop blur as decoration. Emphasis comes from weight, size and colour; blur is for a specific effect, not atmosphere.",
+      "Don't substitute emoji or unicode glyphs for icons. Icons come from lucide-react or authored SVG at a consistent stroke weight.",
+      "Don't hard-code #ffa951 or #bb2233; that silently breaks the other theme.",
+      "Don't reach for a Lexend Deca weight outside the loaded 200/300/400/500/600/700, or use font-mono as a \"technical\" flavour on ordinary text.",
+      "Don't nest a card inside a card, or use a grid of identical icon-heading-text tiles as a page's whole structure.",
+      "Don't add a tailwind.config.js. Tokens live in app/globals.css under @theme inline; a config file would split the source of truth.",
+      "Don't nest GSAP pins on /design. Pinning writes a transform, the transform becomes a containing block, and the inner pin silently stops being fixed.",
+      "Don't describe Catronaut as a working feature in any UI copy. It is a landing page; see PRODUCT.md."
+    ]
+  }
+}
