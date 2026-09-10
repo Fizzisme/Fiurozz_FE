@@ -1,5 +1,5 @@
 import type {Metadata, Viewport} from "next";
-import { Lexend_Deca } from "next/font/google";
+import { Lexend_Deca, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import * as React from "react";
 import RouteProgressBar from '@/components/ui/global/route-progress-bar';
@@ -12,7 +12,14 @@ import {baseUrl} from "@/lib/constanst";
 
 const lexendDeca = Lexend_Deca({
     subsets: ["latin"],
-    weight: ["200", "300", "400", "600", "700"],
+    weight: ["200", "300", "400", "500", "600", "700"],
+});
+
+// Backs the `--font-mono` token in globals.css, which the `font-mono` utility
+// resolves to. Loaded as a variable font so 400/600/700 all come from one file.
+const geistMono = Geist_Mono({
+    subsets: ["latin"],
+    variable: "--font-geist-mono",
 });
 
 export const metadata: Metadata = {
@@ -106,7 +113,7 @@ export default async function RootLayout({
     return (
         <html lang="en" className='mdl-js' suppressHydrationWarning>
         <body
-            className={`${lexendDeca.className} antialiased thin-scrollbar`}
+            className={`${lexendDeca.className} ${geistMono.variable} antialiased thin-scrollbar`}
         >
 
         <ThemeProvider attribute="class" defaultTheme='system' enableSystem>
