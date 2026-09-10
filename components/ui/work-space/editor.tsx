@@ -47,7 +47,7 @@ export default function Editor(props: EditorProps) {
     }
 
     return (
-        <main className="flex h-full min-w-0 flex-1 flex-col bg-background">
+        <main className="flex h-full min-w-0 flex-1 flex-col bg-ctr-paper-lift">
             <TabBar {...props} treeCollapsed={!treeOpen} onOpenTree={toggleSidebar} />
 
             {file && !isBinary ? (
@@ -56,12 +56,12 @@ export default function Editor(props: EditorProps) {
 
             {isBinary ? (
                 <div className="flex flex-1 items-center justify-center p-6">
-                    <div className="flex flex-col items-center gap-1.5 rounded-[10px] border border-line-1 bg-sidebar px-9 py-7 shadow-xs">
-                        <span className="font-mono text-[13px] text-ink-800">{activeFile}</span>
+                    <div className="flex flex-col items-center gap-1.5 rounded-[1px] border border-ctr-ink-hair bg-ctr-paper px-9 py-7 shadow-[0_1px_0_rgba(43,58,74,0.16),0_10px_24px_-16px_rgba(43,58,74,0.5)]">
+                        <span className="font-ctr-mono text-[13px] text-ctr-ink">{activeFile}</span>
 
-                        <span className="text-[12.5px] text-ink-500">{file?.meta}</span>
+                        <span className="text-[12.5px] text-ctr-ink-soft">{file?.meta}</span>
 
-                        <span className="mt-1.5 text-[12.5px] text-ink-600">
+                        <span className="mt-1.5 text-[12.5px] text-ctr-ink-soft">
                             Binary file &mdash; preview not available in the editor.
                         </span>
                     </div>
@@ -69,8 +69,8 @@ export default function Editor(props: EditorProps) {
             ) : null}
 
             {!file ? (
-                <div className="flex flex-1 flex-col items-center justify-center gap-1.5 text-ink-500">
-                    <span className="font-serif text-[16px] text-ink-700">No file open</span>
+                <div className="flex flex-1 flex-col items-center justify-center gap-1.5 text-ctr-ink-soft">
+                    <span className="font-ctr-serif text-[17px] text-ctr-ink">No file open</span>
 
                     <span className="text-[13px]">Select a file in the explorer to open it here.</span>
                 </div>

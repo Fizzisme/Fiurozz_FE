@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { CSSProperties } from 'react';
+import { Archivo, Courier_Prime, EB_Garamond } from 'next/font/google';
 
 import {
     Sidebar,
@@ -19,11 +20,45 @@ import {
 
 import { FILES } from '@/mock-data/files';
 
+/* The workspace is where "Generate" on /design lands, so it inherits that
+   surface's own world rather than the SaaS app's — same ctr-* tokens, same
+   three faces. A route this far from Design.tsx has to load them again
+   itself; next/font/google is idempotent on an identical config, so this
+   costs nothing extra to build. */
+const ebGaramond = EB_Garamond({
+    subsets: ['latin'],
+    weight: ['400', '500', '600'],
+    style: ['normal', 'italic'],
+    variable: '--font-eb-garamond',
+});
+
+const archivo = Archivo({
+    subsets: ['latin'],
+    weight: ['400', '500', '600'],
+    variable: '--font-archivo',
+});
+
+const courierPrime = Courier_Prime({
+    subsets: ['latin'],
+    weight: ['400', '700'],
+    variable: '--font-courier-prime',
+});
+
 const CHAT_MIN = 280;
 const CHAT_MAX = 480;
 
 export default function Workspace() {
     const [chatWidth, setChatWidth] = useState(348);
+
+    /* The atelier is fixed-light regardless of the app's own theme toggle —
+       see Design.tsx, which does the same for the same reason. */
+    useEffect(() => {
+        const previous = document.body.style.backgroundColor;
+        document.body.style.backgroundColor = '#F2ECDF';
+        return () => {
+            document.body.style.backgroundColor = previous;
+        };
+    }, []);
 
     const [tabs, setTabs] = useState<string[]>([
         'index.html',
@@ -81,7 +116,9 @@ export default function Workspace() {
             open={chatOpen}
             toggle={toggleChat}
         >
-            <div className="flex h-screen w-full overflow-hidden">
+            <div
+                className={`${ebGaramond.variable} ${archivo.variable} ${courierPrime.variable} flex h-screen w-full overflow-hidden bg-ctr-paper font-ctr-sans text-ctr-ink selection:bg-ctr-ochre selection:text-ctr-ink`}
+            >
                 {/* LEFT */}
                 <SidebarProvider
                     className="min-h-0 min-w-0 flex-1"
@@ -96,7 +133,7 @@ export default function Workspace() {
                         onOpenFile={openFile}
                     />
 
-                    <SidebarInset className="min-w-0 flex-1">
+                    <SidebarInset className="min-w-0 flex-1 bg-ctr-paper-lift">
                         <Editor
                             tabs={tabs}
                             activeFile={activeFile}
@@ -128,7 +165,7 @@ export default function Workspace() {
                     <Sidebar
                         side="right"
                         collapsible="offcanvas"
-                        className="border-l border-line-1 bg-sidebar"
+                        className="border-l border-ctr-ink-hair bg-ctr-paper"
                     >
                         <BoxChat onOpenFile={openFile} />
                     </Sidebar>

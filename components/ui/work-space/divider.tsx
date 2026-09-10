@@ -30,7 +30,7 @@ export default function Divider({ width, min, max, onResize }: DividerProps) {
         <div
             onMouseDown={handleMouseDown}
             title="Drag to resize"
-            className="z-10 -ml-[3px] w-[5px] flex-none cursor-col-resize bg-transparent transition-colors duration-100 hover:bg-brand-100"
+            className="z-10 -ml-[3px] w-[5px] flex-none cursor-col-resize bg-transparent transition-colors duration-300 [transition-timing-function:var(--ease-ctr)] hover:bg-ctr-terracotta/25"
         />
     );
 }

@@ -354,6 +354,13 @@ The atelier's call-to-action, ported from the original static page. Square (`1px
 ### Signature component — Catronaut
 The mascot ships as pixel-grid canvas components (`idle`, `happy`, `coding`) rendered at `scale` — `0.3` inside a 40px icon badge, larger when it is the subject. It is the brand's face: it appears in the home feature list, in the register card's title badge, and as the painter inside the `/design` hero plate. It is never replaced by a generic user or sparkle icon.
 
+### Signature component — the atelier workspace
+`/design/[projectId]` (`views/Workspace.tsx`) is where "Start designing" lands — a file tree, tabs, a code pane and a chat, in the same ivory-and-ink world as the landing page rather than the application's own chrome. It is the atelier's one Operate-mode surface: the world stays fixed, but the grammar bends to a working tool — mono for anything that is a filename or code, hairline-bordered `1px`-radius panels instead of the landing page's plates, and a calmer, UI-scale motion register (`duration-300`, still the house ease) in place of the page's staged reveals.
+
+**The code pane is ink at four weights, not a borrowed editor theme.** `ctr-terracotta`, `ctr-ochre` and `ctr-sage` read beautifully as swatches but fail 4.5:1 at code size on `ctr-paper-lift`; the four hues that clear it — `ctr-ink` (plain text, 10.5:1), `ctr-ink-soft` (comments, functions, 6.0:1), `ctr-terracotta-ink` (strings, 6.7:1) and `ctr-desk` (keywords, 8.0:1) — are the whole syntax palette. Measure before picking a code-highlight colour from the swatch tier; it is tuned for small decorative fills, not for paragraphs of 13px text.
+
+**The workspace is fixed-light for the same reason `/design` is.** It sets `document.body.style.backgroundColor` on mount exactly as `Design.tsx` does, and loads its own copies of the three atelier fonts (`next/font/google` calls are idempotent on an identical config, so this costs nothing extra) — the site's dark-mode toggle never reaches either surface.
+
 ### Motion
 One curve carries the whole product: `cubic-bezier(0.16, 1, 0.3, 1)`, an exponential ease-out, exposed on `/design` as `--ease-ctr` and written literally in the application's Framer Motion transitions. Entrances animate opacity, a small `y` offset and a blur, 0.4–0.9s, staggered ~0.18s for headline lines. Interface transitions stay at 150–250ms.
 
@@ -376,6 +383,8 @@ One curve carries the whole product: `cubic-bezier(0.16, 1, 0.3, 1)`, an exponen
 - **Do** use the authored assets — the Catronaut components, the painted plate, the desk photograph — where a generic icon or stock image would otherwise land.
 - **Do** honour `prefers-reduced-motion`, as `/design` already does, before adding any scroll-driven or pinned animation.
 - **Do** theme the browser's own surfaces: selection colour, focus ring, scrollbar (`thin-scrollbar` / `no-scrollbar`), caret.
+- **Do** give a shared primitive with more than one consumer an override prop for its world-specific colours (see `Files`' `highlightClassName`) rather than editing its default — the default is the other consumers' contract.
+- **Do** pick code-syntax and other small-text colours by measured contrast against their real background, not by which swatch looks closest in the palette list.
 
 ### Don't:
 - **Don't** blend the worlds — no ivory paper, Garamond or terracotta inside the application, and no orange accent, 10px radius or Lexend Deca inside `/design`.

@@ -71,7 +71,9 @@ function getFileIcon(fileName: string) {
     }
 }
 
-const fileTreeItemClass = 'text-[#52514e] dark:text-[#c3c2b7]';
+/* Filenames are mono (the parent SidebarContent sets font-ctr-mono) — a
+   filename is exactly the kind of fact the Narrow-Mono Rule is for. */
+const fileTreeItemClass = 'text-ctr-ink';
 
 function RenderTree({
     nodes,
@@ -95,8 +97,8 @@ function RenderTree({
                         <FolderItem key={node.name} value={node.name}>
                             <FolderTrigger className={fileTreeItemClass}>{node.name}</FolderTrigger>
 
-                            <FolderContent>
-                                <SubFiles>
+                            <FolderContent guideClassName="before:bg-ctr-ink-hair">
+                                <SubFiles highlightClassName="bg-ctr-paper-2 rounded-[1px]">
                                     <RenderTree nodes={childNodes} activeFile={activeFile} onOpenFile={onOpenFile} />
                                 </SubFiles>
                             </FolderContent>
@@ -131,16 +133,16 @@ export default function FileTree({ activeFile, onOpenFile }: FileTreeProps) {
     const folderNames = (TREE as RawNode[]).filter((node) => node.type === 'folder').map((node) => node.name);
 
     return (
-        <Sidebar side="left" collapsible="offcanvas" className="border-r border-line-1 bg-sidebar">
-            <SidebarHeader className="flex h-[59px] flex-none flex-row items-center gap-2 border-b border-line-1 px-3.5 justify-between">
-                <Link href="/home">
-                    <Fiurozz className="h-8 w-8 opacity-80 transition-opacity duration-200 md:h-10 md:w-10 group-data-[collapsible=icon]:absolute group-data-[collapsible=icon]:inset-0 group-data-[collapsible=icon]:h-8 group-data-[collapsible=icon]:w-8 group-data-[collapsible=icon]:group-hover/logoheader:opacity-0 group-data-[collapsible=icon]:my-2" />
+        <Sidebar side="left" collapsible="offcanvas" className="border-r border-ctr-ink-hair bg-ctr-paper">
+            <SidebarHeader className="flex h-[59px] flex-none flex-row items-center justify-between gap-2 border-b border-ctr-ink-hair px-3.5">
+                <Link href="/home" title="Back to Fiurozz" className="text-ctr-ink opacity-70 transition-opacity duration-300 [transition-timing-function:var(--ease-ctr)] hover:opacity-100">
+                    <Fiurozz className="h-7 w-7 group-data-[collapsible=icon]:absolute group-data-[collapsible=icon]:inset-0 group-data-[collapsible=icon]:my-2 group-data-[collapsible=icon]:h-7 group-data-[collapsible=icon]:w-7" />
                 </Link>
-                <SidebarTrigger className="cursor-pointer" />
+                <SidebarTrigger className="cursor-pointer text-ctr-ink" />
             </SidebarHeader>
 
-            <SidebarContent className="min-h-0 flex-1 overflow-y-auto px-1.5 pb-6 pt-1.5">
-                <Files className="w-full" defaultOpen={folderNames}>
+            <SidebarContent className="min-h-0 flex-1 overflow-y-auto px-1.5 pt-1.5 pb-6 font-ctr-mono text-[13px]">
+                <Files className="w-full" highlightClassName="bg-ctr-paper-2 rounded-[1px]" defaultOpen={folderNames}>
                     <RenderTree nodes={TREE as RawNode[]} activeFile={activeFile} onOpenFile={onOpenFile} />
                 </Files>
             </SidebarContent>
