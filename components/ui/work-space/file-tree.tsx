@@ -2,12 +2,7 @@
 
 import { FileJsonIcon, FileCodeIcon, Image as ImageIcon } from 'lucide-react';
 
-import {
-    Sidebar,
-    SidebarHeader,
-    SidebarContent,
-    useSidebar,
-} from '@/components/animate-ui/components/radix/sidebar';
+import { Sidebar, SidebarHeader, SidebarContent, useSidebar } from '@/components/animate-ui/components/radix/sidebar';
 import { PanelLeftClose } from '@/components/animate-ui/icons/panel-left-close';
 import { PanelLeftOpen } from '@/components/animate-ui/icons/panel-left-open';
 
@@ -31,7 +26,7 @@ import ReadmeIcon from '@/components/file-icons/ReadmeIcon';
 
 import { FILES, TREE } from '@/mock-data/files';
 import Link from 'next/link';
-import Fiurozz from '@/components/icons/logo';
+import { Paintbrush } from '@/components/animate-ui/icons/paintbrush';
 
 interface RawNode {
     name: string;
@@ -184,14 +179,29 @@ export default function FileTree({ activeFile, onOpenFile }: FileTreeProps) {
                         dark:text-white dark:opacity-60` and sets it locally via
                         `currentColor`, so it has to be overridden on the icon
                         itself — the wrapping Link's colour never reaches it. */}
-                    <Link href="/design" title="Back to Catronaut" className="opacity-70 transition-opacity duration-300 [transition-timing-function:var(--ease-ctr)] hover:opacity-100">
-                        <Fiurozz className="h-7 w-7 text-ctr-ink dark:text-ctr-ink dark:opacity-100 group-data-[collapsible=icon]:absolute group-data-[collapsible=icon]:inset-0 group-data-[collapsible=icon]:my-2 group-data-[collapsible=icon]:h-7 group-data-[collapsible=icon]:w-7" />
+                    <Link
+                        href="/design"
+                        title="Back to Catronaut"
+                        className="flex size-7 flex-none items-center justify-center opacity-70 transition-opacity duration-300 [transition-timing-function:var(--ease-ctr)] hover:opacity-100"
+                    >
+                        {/* Matches TreeToggle's own icon size exactly, so the two
+                            header controls read as one pair, not two scales. */}
+                        <Paintbrush
+                            animateOnHover
+                            size={16}
+                            strokeWidth={1.7}
+                            className="text-ctr-ink dark:text-ctr-ink dark:opacity-100"
+                        />
                     </Link>
                     <TreeToggle />
                 </SidebarHeader>
 
                 <SidebarContent className="min-h-0 flex-1 overflow-y-auto px-1.5 pt-1.5 pb-6 font-ctr-mono text-[13px]">
-                    <Files className="w-full" highlightClassName="bg-ctr-paper-2 rounded-[1px]" defaultOpen={folderNames}>
+                    <Files
+                        className="w-full"
+                        highlightClassName="bg-ctr-paper-2 rounded-[1px]"
+                        defaultOpen={folderNames}
+                    >
                         <RenderTree nodes={TREE as RawNode[]} activeFile={activeFile} onOpenFile={onOpenFile} />
                     </Files>
                 </SidebarContent>
