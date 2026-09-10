@@ -1,5 +1,4 @@
 import Register from '@/views/Register';
-import { createStars } from '@/lib/utils';
 
 interface Country {
     country: string;
@@ -25,8 +24,6 @@ const getCountries = async (): Promise<string[]> => {
 
 export default async function RegisterPage() {
     const countries: string[] = await getCountries();
-    const smallStars = createStars(80, 0.5, 2, 2, 5);
-    const bigStars = createStars(8, 2, 4, 3, 6);
 
-    return <Register countries={countries} smallStars={smallStars} bigStars={bigStars} />;
+    return <Register countries={countries} />;
 }
