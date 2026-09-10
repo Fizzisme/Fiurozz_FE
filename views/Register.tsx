@@ -8,7 +8,7 @@ import { Separator } from '@/components/ui/global/separator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/global/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/global/card';
 import { Label } from '@/components/ui/global/label';
-import { User, Mail, Lock, Globe, Transgender, Mars, Venus, CircleHelp } from 'lucide-react';
+import { Mail, Lock, Globe, Transgender, Mars, Venus, CircleHelp } from 'lucide-react';
 import { useState } from 'react';
 import { format, parse, isValid } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
@@ -20,11 +20,9 @@ import { authService } from '@/services/auth-service';
 import Github from '@/components/icons/github';
 import OauthLogin from '@/components/ui/global/oauth-login';
 import Google from '@/components/icons/google';
-import Image from 'next/image';
 import Facebook from '@/components/icons/facebook';
 import { OauthLoginListener } from '@/components/oauth-login-listener';
-import BackgroundSpace from '@/components/ui/global/background-space';
-import { Star } from '@/lib/utils';
+import CatronautHappy from '@/components/ui/catronaut/happy';
 
 const GENDER_OPTIONS = [
     { label: 'Male', value: 'MALE', icon: Mars },
@@ -62,15 +60,7 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 
 type FormErrors = Partial<Record<keyof RegisterFormData, string>>;
 
-export default function Register({
-    countries,
-    smallStars,
-    bigStars,
-}: {
-    countries: string[];
-    smallStars: Star[];
-    bigStars: Star[];
-}) {
+export default function Register({ countries }: { countries: string[] }) {
     const [formData, setFormData] = useState<RegisterFormData>({
         fullName: '',
         displayName: '',
@@ -83,6 +73,7 @@ export default function Register({
     });
 
     const [errors, setErrors] = useState<FormErrors>({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [birthdayOpen, setBirthdayOpen] = useState(false);
 
@@ -93,7 +84,9 @@ export default function Register({
         }
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
         const parsed = registerSchema.safeParse(formData);
 
         if (!parsed.success) {
@@ -107,7 +100,9 @@ export default function Register({
 
         const { confirmPassword, ...payload } = parsed.data;
 
+        setIsSubmitting(true);
         const result: ApiEnvelope<null> = await authService.register(payload);
+        setIsSubmitting(false);
 
         if (!result.success) {
             alert(result.message);
@@ -125,6 +120,7 @@ export default function Register({
             password: '',
             confirmPassword: '',
         });
+        setInputValue('');
     };
 
     const [inputValue, setInputValue] = useState(formData.birthday ? format(formData.birthday, 'dd/MM/yyyy') : '');
@@ -165,54 +161,25 @@ export default function Register({
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-8 relative">
-            <BackgroundSpace smallStars={smallStars} bigStars={bigStars} />
+        <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 pt-20 pb-10 md:pt-28">
+            {/* AMBIENT ACCENT */}
+            <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                <div className="absolute -top-32 -left-24 h-[420px] w-[420px] rounded-full bg-primary/10 blur-[110px] dark:bg-primary/15" />
+                <div className="absolute -bottom-40 -right-32 h-[380px] w-[380px] rounded-full bg-primary/5 blur-[110px] dark:bg-primary/10" />
+            </div>
 
-            {/* SATURN DECORATION - top right, hidden on small screens */}
-            <div className="hidden md:block absolute top-16 right-8 pointer-events-none select-none">
-                <Image
-                    src="/auth/saturn-light.png"
-                    alt=""
-                    width={240}
-                    height={240}
-                    className="object-contain dark:hidden"
-                />
-                <Image
-                    src="/auth/saturn-dark.png"
-                    alt=""
-                    width={240}
-                    height={240}
-                    className="object-contain hidden dark:block"
-                />
-            </div>
-            <div className="hidden md:block absolute bottom-0 left-0 pointer-events-none select-none">
-                <Image
-                    src="/auth/satellite-dark.png"
-                    alt=""
-                    width={240}
-                    height={240}
-                    className="object-contain dark:hidden"
-                />
-                <Image
-                    src="/auth/satellite-light.png"
-                    alt=""
-                    width={240}
-                    height={240}
-                    className="object-contain hidden dark:block"
-                />
-            </div>
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
-                className="w-full max-w-6xl z-1"
+                className="z-1 w-full max-w-6xl"
             >
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <form onSubmit={handleSubmit} noValidate className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                     {/* MAIN - ACCOUNT INFO */}
                     <Card className="lg:col-span-2">
                         <CardHeader>
-                            <CardTitle className="flex items-center gap-2 text-xl">
-                                <User className="h-5 w-5" />
+                            <CardTitle className="flex items-center gap-3 text-xl">
+                                <CatronautHappy scale={0.3} />
                                 Create your account
                             </CardTitle>
                             <CardDescription>Tell us a bit about yourself to get started</CardDescription>
@@ -220,62 +187,71 @@ export default function Register({
 
                         <CardContent className="space-y-5">
                             {/* FULL NAME & DISPLAY NAME */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                 <div className="space-y-2">
-                                    <Label>Full name</Label>
+                                    <Label htmlFor="register-fullname">Full name</Label>
                                     <Input
+                                        id="register-fullname"
                                         name="fullName"
+                                        autoComplete="name"
                                         value={formData.fullName}
                                         onChange={(e) => handleInputChange('fullName', e.target.value)}
                                         placeholder="Nguyen Le Tuan Phi"
+                                        aria-invalid={!!errors.fullName}
                                     />
-                                    {errors.fullName && (
-                                        <p className="text-destructive text-xs mt-1">{errors.fullName}</p>
-                                    )}
+                                    {errors.fullName && <p className="text-xs text-destructive">{errors.fullName}</p>}
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label>Display name</Label>
+                                    <Label htmlFor="register-displayname">Display name</Label>
                                     <Input
+                                        id="register-displayname"
                                         name="displayName"
+                                        autoComplete="nickname"
                                         value={formData.displayName}
                                         onChange={(e) => handleInputChange('displayName', e.target.value)}
                                         placeholder="Fizzisme"
+                                        aria-invalid={!!errors.displayName}
                                     />
                                     {errors.displayName && (
-                                        <p className="text-destructive text-xs mt-1">{errors.displayName}</p>
+                                        <p className="text-xs text-destructive">{errors.displayName}</p>
                                     )}
                                 </div>
                             </div>
 
                             {/* EMAIL & BIRTHDAY */}
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                 <div className="space-y-2">
-                                    <Label className="flex items-center gap-1.5">
+                                    <Label htmlFor="register-email" className="flex items-center gap-1.5">
                                         <Mail className="h-3.5 w-3.5" /> Email
                                     </Label>
                                     <Input
+                                        id="register-email"
                                         name="email"
                                         type="email"
+                                        autoComplete="email"
                                         value={formData.email}
                                         onChange={(e) => handleInputChange('email', e.target.value)}
                                         placeholder="Fizz@example.com"
+                                        aria-invalid={!!errors.email}
                                     />
-                                    {errors.email && <p className="text-destructive text-xs mt-1">{errors.email}</p>}
+                                    {errors.email && <p className="text-xs text-destructive">{errors.email}</p>}
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label className="flex items-center gap-1.5">
+                                    <Label htmlFor="register-birthday" className="flex items-center gap-1.5">
                                         <CalendarIcon className="h-3.5 w-3.5" /> Birthday
                                     </Label>
 
                                     <div className="relative">
                                         <Input
+                                            id="register-birthday"
                                             type="text"
                                             placeholder="DD/MM/YYYY"
                                             value={inputValue}
                                             onChange={handleInputChangeText}
                                             className="pr-9"
+                                            aria-invalid={!!errors.birthday}
                                         />
 
                                         <Popover open={birthdayOpen} onOpenChange={setBirthdayOpen}>
@@ -308,13 +284,11 @@ export default function Register({
                                         </Popover>
                                     </div>
 
-                                    {errors.birthday && (
-                                        <p className="text-destructive text-xs mt-1">{errors.birthday}</p>
-                                    )}
+                                    {errors.birthday && <p className="text-xs text-destructive">{errors.birthday}</p>}
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                 {/* COUNTRY */}
                                 <div className="space-y-2">
                                     <Label className="flex items-center gap-1.5">
@@ -324,7 +298,10 @@ export default function Register({
                                         value={formData.country}
                                         onValueChange={(value) => handleInputChange('country', value)}
                                     >
-                                        <SelectTrigger className="w-full cursor-pointer">
+                                        <SelectTrigger
+                                            className="w-full cursor-pointer"
+                                            aria-invalid={!!errors.country}
+                                        >
                                             <SelectValue placeholder="Select your country" />
                                         </SelectTrigger>
                                         <SelectContent className="w-[var(--radix-select-trigger-width)]">
@@ -336,9 +313,7 @@ export default function Register({
                                         </SelectContent>
                                     </Select>
 
-                                    {errors.country && (
-                                        <p className="text-destructive text-xs mt-1">{errors.country}</p>
-                                    )}
+                                    {errors.country && <p className="text-xs text-destructive">{errors.country}</p>}
                                 </div>
 
                                 {/*GENDER*/}
@@ -350,7 +325,7 @@ export default function Register({
                                         value={formData.gender}
                                         onValueChange={(value) => handleInputChange('gender', value)}
                                     >
-                                        <SelectTrigger className="w-full  cursor-pointer">
+                                        <SelectTrigger className="w-full cursor-pointer" aria-invalid={!!errors.gender}>
                                             <SelectValue placeholder="Select your gender" />
                                         </SelectTrigger>
                                         <SelectContent className="w-[var(--radix-select-trigger-width)]">
@@ -364,43 +339,47 @@ export default function Register({
                                             ))}
                                         </SelectContent>
                                     </Select>
-                                    {errors.gender && <p className="text-destructive text-xs mt-1">{errors.gender}</p>}
+                                    {errors.gender && <p className="text-xs text-destructive">{errors.gender}</p>}
                                 </div>
                             </div>
 
                             <Separator />
 
                             {/* PASSWORD & CONFIRM PASSWORD */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
-                                    <Label className="flex items-center gap-1.5">
+                                    <Label htmlFor="register-password" className="flex items-center gap-1.5">
                                         <Lock className="h-3.5 w-3.5" /> Password
                                     </Label>
                                     <Input
+                                        id="register-password"
                                         name="password"
                                         type="password"
+                                        autoComplete="new-password"
                                         value={formData.password}
                                         onChange={(e) => handleInputChange('password', e.target.value)}
                                         placeholder="••••••••"
+                                        aria-invalid={!!errors.password}
                                     />
-                                    {errors.password && (
-                                        <p className="text-destructive text-xs mt-1">{errors.password}</p>
-                                    )}
+                                    {errors.password && <p className="text-xs text-destructive">{errors.password}</p>}
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label className="flex items-center gap-1.5">
+                                    <Label htmlFor="register-confirm-password" className="flex items-center gap-1.5">
                                         <Lock className="h-3.5 w-3.5" /> Confirm password
                                     </Label>
                                     <Input
+                                        id="register-confirm-password"
                                         name="confirmPassword"
                                         type="password"
+                                        autoComplete="new-password"
                                         value={formData.confirmPassword}
                                         onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                                         placeholder="••••••••"
+                                        aria-invalid={!!errors.confirmPassword}
                                     />
                                     {errors.confirmPassword && (
-                                        <p className="text-destructive text-xs mt-1">{errors.confirmPassword}</p>
+                                        <p className="text-xs text-destructive">{errors.confirmPassword}</p>
                                     )}
                                 </div>
                             </div>
@@ -431,10 +410,10 @@ export default function Register({
 
                         {/* ALREADY HAVE ACCOUNT */}
                         <Card>
-                            <CardContent className="pt-6 text-center space-y-3">
+                            <CardContent className="space-y-3 pt-6 text-center">
                                 <p className="text-sm text-muted-foreground">Already have an account?</p>
                                 <Link href="/login">
-                                    <Button variant="outline" className="w-full cursor-pointer">
+                                    <Button type="button" variant="outline" className="w-full cursor-pointer">
                                         Log in instead
                                     </Button>
                                 </Link>
@@ -442,14 +421,15 @@ export default function Register({
                         </Card>
 
                         <Button
-                            onClick={handleSubmit}
-                            className="w-full cursor-pointer dark:bg-[#212121] dark:border-[#424242] border-1 dark:text-white text-black"
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="w-full cursor-pointer"
+                            variant="outline"
                         >
-                            {/*{loading ? 'Registering...' : 'Register'}*/}
-                            Register
+                            {isSubmitting ? 'Creating account…' : 'Register'}
                         </Button>
                     </div>
-                </div>
+                </form>
             </motion.div>
         </div>
     );

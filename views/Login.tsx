@@ -18,8 +18,6 @@ import OauthLogin from '@/components/ui/global/oauth-login';
 import Image from 'next/image';
 import Facebook from '@/components/icons/facebook';
 import { OauthLoginListener } from '@/components/oauth-login-listener';
-import BackgroundSpace from '@/components/ui/global/background-space';
-import { Star } from '@/lib/utils';
 
 const loginSchema = z.object({
     email: z.string().email(),
@@ -33,13 +31,14 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 type FormErrors = Partial<Record<keyof LoginFormData, string>>;
 
-export default function LoginForm({ smallStars, bigStars }: { smallStars: Star[]; bigStars: Star[] }) {
+export default function LoginForm() {
     const [formData, setFormData] = useState<LoginFormData>({
         email: '',
         password: '',
     });
 
     const [errors, setErrors] = useState<FormErrors>({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const router = useRouter();
 
@@ -50,7 +49,9 @@ export default function LoginForm({ smallStars, bigStars }: { smallStars: Star[]
         }
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
         const parsed = loginSchema.safeParse(formData);
         if (!parsed.success) {
             const fieldErrors: FormErrors = {};
@@ -61,7 +62,10 @@ export default function LoginForm({ smallStars, bigStars }: { smallStars: Star[]
             return;
         }
 
+        setIsSubmitting(true);
         const result: ApiEnvelope<null> = await authService.login(parsed.data);
+        setIsSubmitting(false);
+
         if (!result.success) {
             alert(result.message);
             return;
@@ -71,133 +75,111 @@ export default function LoginForm({ smallStars, bigStars }: { smallStars: Star[]
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-8 relative">
-            {/*<GravityStarsBackground*/}
-            {/*    starsCount={100}*/}
-            {/*    starsOpacity={0.9}*/}
-            {/*    className="absolute bg-muted/30 dark:bg-primary"*/}
-            {/*/>*/}
-            <BackgroundSpace smallStars={smallStars} bigStars={bigStars} />
-            {/* SATURN DECORATION - top right, hidden on small screens */}
-            <div className="hidden md:block absolute top-16 right-8 pointer-events-none select-none">
-                <Image
-                    src="/auth/saturn-light.png"
-                    alt=""
-                    width={240}
-                    height={240}
-                    className="object-contain dark:hidden"
-                />
-                <Image
-                    src="/auth/saturn-dark.png"
-                    alt=""
-                    width={240}
-                    height={240}
-                    className="object-contain hidden dark:block"
-                />
+        <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 pt-20 pb-10 md:pt-28">
+            {/* AMBIENT ACCENT */}
+            <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                <div className="absolute -top-32 -right-24 h-[420px] w-[420px] rounded-full bg-primary/10 blur-[110px] dark:bg-primary/15" />
+                <div className="absolute -bottom-40 -left-32 h-[380px] w-[380px] rounded-full bg-primary/5 blur-[110px] dark:bg-primary/10" />
             </div>
-            <div className="hidden md:block absolute bottom-0 left-0 pointer-events-none select-none">
-                <Image
-                    src="/auth/satellite-dark.png"
-                    alt=""
-                    width={240}
-                    height={240}
-                    className="object-contain dark:hidden"
-                />
-                <Image
-                    src="/auth/satellite-light.png"
-                    alt=""
-                    width={240}
-                    height={240}
-                    className="object-contain hidden dark:block"
-                />
-            </div>
+
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
-                className="w-full max-w-6xl z-1"
+                className="z-1 w-full max-w-6xl"
             >
-                <div className="w-full max-w-4xl mx-auto rounded border bg-card shadow-sm overflow-hidden grid grid-cols-1 lg:grid-cols-2">
+                <div className="mx-auto grid w-full max-w-4xl grid-cols-1 overflow-hidden rounded border border-foreground/10 bg-card shadow-[0_30px_80px_-30px_rgba(0,0,0,0.25)] lg:grid-cols-2">
                     {/* LEFT - IMAGE */}
-                    <div className="relative hidden lg:block bg-muted">
+                    <div className="relative hidden bg-muted lg:block">
                         <Image
                             src="/auth/Fizz.png"
                             alt=""
                             fill
-                            className="object-cover pointer-events-none select-none"
+                            sizes="(min-width: 1024px) 50vw, 0px"
+                            className="pointer-events-none object-cover select-none"
                             priority
                         />
                         {/* Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/0 to-black/0 dark:from-black/90 dark:via-black/50 dark:to-black/20" />
-                        <div className="absolute bottom-6 left-6 text-white">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent dark:from-black/90 dark:via-black/50 dark:to-black/20" />
+                        <div className="absolute bottom-7 left-7 text-white">
                             <p className="text-lg font-semibold tracking-tight">Fiurozz</p>
                             <p className="text-sm text-white/70">Showcase your work, your way.</p>
                         </div>
                     </div>
+
                     {/* RIGHT - FORM */}
                     <div className="flex flex-col justify-center p-8 sm:p-10">
-                        <div className="mb-6">
-                            <h1 className="text-xl font-semibold tracking-tight">Welcome back</h1>
-                            <p className="text-sm text-muted-foreground mt-1">
+                        <div className="mb-7">
+                            <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
+                            <p className="mt-1.5 text-sm text-muted-foreground">
                                 Enter your credentials to access your account
                             </p>
                         </div>
 
-                        <div className="space-y-4">
+                        <form onSubmit={handleSubmit} className="space-y-4" noValidate>
                             {/* EMAIL */}
                             <div className="space-y-2">
-                                <Label className="flex items-center gap-1.5">
+                                <Label htmlFor="login-email" className="flex items-center gap-1.5">
                                     <Mail className="h-3.5 w-3.5" /> Email
                                 </Label>
                                 <Input
+                                    id="login-email"
                                     name="email"
                                     type="email"
+                                    autoComplete="email"
                                     value={formData.email}
                                     onChange={(e) => handleInputChange('email', e.target.value)}
                                     placeholder="Fizz@example.com"
+                                    aria-invalid={!!errors.email}
                                 />
-                                {errors.email && <p className="text-destructive text-xs mt-1">{errors.email}</p>}
+                                {errors.email && <p className="text-xs text-destructive">{errors.email}</p>}
                             </div>
 
                             {/* PASSWORD */}
                             <div className="space-y-2">
-                                <Label className="flex items-center gap-1.5">
+                                <Label htmlFor="login-password" className="flex items-center gap-1.5">
                                     <Lock className="h-3.5 w-3.5" /> Password
                                 </Label>
                                 <Input
+                                    id="login-password"
                                     name="password"
                                     type="password"
+                                    autoComplete="current-password"
                                     value={formData.password}
                                     onChange={(e) => handleInputChange('password', e.target.value)}
                                     placeholder="••••••••"
+                                    aria-invalid={!!errors.password}
                                 />
-                                {errors.password && <p className="text-destructive text-xs mt-1">{errors.password}</p>}
+                                {errors.password && <p className="text-xs text-destructive">{errors.password}</p>}
                             </div>
 
-                            <div className="flex justify-end mb-1">
+                            <div className="mb-1 flex justify-end">
                                 <Link
                                     href="/forgot-password"
-                                    className="text-xs text-muted-foreground hover:text-black dark:hover:text-white transition-colors"
+                                    className="text-xs text-muted-foreground transition-colors hover:text-black dark:hover:text-white"
                                 >
                                     Forgot password?
                                 </Link>
                             </div>
 
-                            <Button onClick={handleSubmit} className="w-full rounded cursor-pointer" variant="outline">
-                                {/*{loading ? 'Logging in...' : 'Log in'}*/}
-                                Log in
+                            <Button
+                                type="submit"
+                                disabled={isSubmitting}
+                                className="w-full cursor-pointer"
+                                variant="outline"
+                            >
+                                {isSubmitting ? 'Logging in…' : 'Log in'}
                             </Button>
-                        </div>
+                        </form>
 
                         {/* DIVIDER */}
-                        <div className="flex items-center gap-3 my-6">
+                        <div className="my-6 flex items-center gap-3">
                             <Separator className="flex-1" />
                             <span className="text-xs text-muted-foreground">or</span>
                             <Separator className="flex-1" />
                         </div>
 
                         {/* SOCIAL LOGIN */}
-
                         <div className="grid grid-cols-3 gap-3">
                             <OauthLoginListener>
                                 <OauthLogin provider="google" label="" Icon={Google} />
@@ -206,9 +188,9 @@ export default function LoginForm({ smallStars, bigStars }: { smallStars: Star[]
                             </OauthLoginListener>
                         </div>
 
-                        <p className="text-center text-sm text-muted-foreground mt-6">
+                        <p className="mt-6 text-center text-sm text-muted-foreground">
                             Don&apos;t have an account?{' '}
-                            <Link href="/register" className="text-black dark:text-white font-medium hover:underline">
+                            <Link href="/register" className="font-medium text-black hover:underline dark:text-white">
                                 Create one
                             </Link>
                         </p>

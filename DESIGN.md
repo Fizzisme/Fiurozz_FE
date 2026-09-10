@@ -1,0 +1,351 @@
+---
+name: Fiurozz
+description: Two deliberate worlds — a warm, instrument-lit SaaS for builders, and an ivory-paper atelier for the Catronaut landing page.
+colors:
+  signal-orange: "#ffa951"
+  ember-red: "#bb2233"
+  bone-white: "#fcfcfb"
+  ink-black: "oklch(0.145 0 0)"
+  card-white: "oklch(1 0 0)"
+  card-graphite: "oklch(0.205 0 0)"
+  quiet-grey: "oklch(0.556 0 0)"
+  hairline-grey: "oklch(0.922 0 0)"
+  greige-edge: "#d8d2ca"
+  greige-wash: "#f5f2ed"
+  toast-badge: "#f5eee6"
+  alarm-red: "oklch(0.577 0.245 27.325)"
+  atelier-paper: "#F2ECDF"
+  atelier-paper-lift: "#F8F3E8"
+  atelier-paper-2: "#E9E1D0"
+  atelier-paper-3: "#DED3BE"
+  atelier-ink: "#2B3A4A"
+  atelier-ink-soft: "#4E5E6C"
+  atelier-desk: "#454D3D"
+  atelier-terracotta: "#BE6247"
+  atelier-terracotta-ink: "#8E3D28"
+  atelier-ochre: "#C98F52"
+  atelier-sage: "#8B9C86"
+  atelier-blue: "#93A9B8"
+typography:
+  display:
+    fontFamily: "Lexend Deca, system-ui, sans-serif"
+    fontSize: "clamp(2.5rem, 5vw, 4.25rem)"
+    fontWeight: 600
+    lineHeight: 0.98
+    letterSpacing: "-0.055em"
+  title:
+    fontFamily: "Lexend Deca, system-ui, sans-serif"
+    fontSize: "1.5rem"
+    fontWeight: 600
+    lineHeight: 1.2
+    letterSpacing: "-0.02em"
+  body:
+    fontFamily: "Lexend Deca, system-ui, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 400
+    lineHeight: 1.6
+  label:
+    fontFamily: "Lexend Deca, system-ui, sans-serif"
+    fontSize: "0.75rem"
+    fontWeight: 400
+    letterSpacing: "0.18em"
+  mono:
+    fontFamily: "Geist Mono, ui-monospace, monospace"
+    fontSize: "0.6875rem"
+    fontWeight: 600
+    letterSpacing: "0.18em"
+  atelier-display:
+    fontFamily: "EB Garamond, Georgia, serif"
+    fontSize: "clamp(2.5rem, 6.2vw, 5.6rem)"
+    fontWeight: 400
+    lineHeight: 0.99
+    letterSpacing: "-0.022em"
+    fontFeature: "oldstyle-nums"
+  atelier-h2:
+    fontFamily: "EB Garamond, Georgia, serif"
+    fontSize: "clamp(2.1rem, 4.1vw, 3.6rem)"
+    fontWeight: 400
+    lineHeight: 1.02
+    letterSpacing: "-0.02em"
+  atelier-h3:
+    fontFamily: "EB Garamond, Georgia, serif"
+    fontSize: "clamp(1.35rem, 1.9vw, 1.75rem)"
+    fontWeight: 400
+    lineHeight: 1.15
+    letterSpacing: "-0.012em"
+  atelier-lede:
+    fontFamily: "EB Garamond, Georgia, serif"
+    fontSize: "clamp(1.06rem, 1.3vw, 1.28rem)"
+    fontWeight: 400
+    lineHeight: 1.66
+  atelier-body:
+    fontFamily: "EB Garamond, Georgia, serif"
+    fontSize: "clamp(1rem, 1.05vw, 1.1rem)"
+    fontWeight: 400
+    lineHeight: 1.62
+    fontFeature: "oldstyle-nums"
+  atelier-micro:
+    fontFamily: "Courier Prime, ui-monospace, monospace"
+    fontSize: "clamp(0.69rem, 0.78vw, 0.79rem)"
+    fontWeight: 400
+    letterSpacing: "0.1em"
+  atelier-control:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "clamp(0.82rem, 0.95vw, 0.95rem)"
+    fontWeight: 500
+    letterSpacing: "0.14em"
+rounded:
+  sm: "6px"
+  md: "8px"
+  lg: "10px"
+  xl: "14px"
+  atelier-plate: "1px"
+spacing:
+  card: "16px"
+  field-gap: "8px"
+  group-gap: "16px"
+  section-gap: "24px"
+  atelier-gutter: "clamp(1.5rem, 5vw, 6rem)"
+components:
+  button-primary:
+    backgroundColor: "{colors.signal-orange}"
+    textColor: "{colors.bone-white}"
+    rounded: "{rounded.lg}"
+    padding: "8px 16px"
+    height: "36px"
+  button-outline:
+    backgroundColor: "{colors.bone-white}"
+    textColor: "#292929"
+    rounded: "{rounded.lg}"
+    padding: "8px 16px"
+    height: "36px"
+  button-outline-hover:
+    backgroundColor: "{colors.greige-wash}"
+  input-field:
+    backgroundColor: "{colors.card-white}"
+    textColor: "{colors.ink-black}"
+    rounded: "{rounded.lg}"
+    padding: "4px 12px"
+    height: "36px"
+  card-surface:
+    backgroundColor: "{colors.card-white}"
+    textColor: "{colors.ink-black}"
+    rounded: "{rounded.lg}"
+    padding: "16px"
+  icon-badge:
+    backgroundColor: "{colors.toast-badge}"
+    textColor: "#4b4540"
+    rounded: "{rounded.lg}"
+    size: "40px"
+  atelier-plate:
+    backgroundColor: "{colors.atelier-ink}"
+    textColor: "{colors.atelier-paper}"
+    typography: "{typography.atelier-control}"
+    rounded: "{rounded.atelier-plate}"
+    padding: "0.82em 1.5em 0.86em"
+  atelier-plate-ink:
+    backgroundColor: "#9C4C34"
+    textColor: "{colors.atelier-paper}"
+    rounded: "{rounded.atelier-plate}"
+  atelier-plate-large:
+    backgroundColor: "{colors.atelier-paper}"
+    textColor: "{colors.atelier-ink}"
+    rounded: "{rounded.atelier-plate}"
+    padding: "1.05em 2.2em 1.1em"
+---
+
+# Design System: Fiurozz
+
+## Overview
+
+**Creative North Star: "The Warm Mission Control"**
+
+Fiurozz runs on instruments — a live agent chip, a code readout that types itself, ranked projects, a scene counter down the side of the page — but none of it is lit like an enterprise console. The ground is bone white, the accent is the orange of a desk lamp at midnight, the mascot is a cat in a space helmet, and the hero photograph is somebody's actual desk with a bowl of snacks on it. That is the whole idea: the precision of mission control, kept at the temperature of the room where the work really happens. Cold blue dashboards, grey-on-grey admin chrome and stock-photo professionalism are the anti-reference; so is the opposite failure, decoration with nothing running underneath.
+
+The system is deliberately restrained: neutrals carry the surface, and the accent appears on primary actions, live indicators and one or two emphasized words per page. Density is moderate — generous around headings, tight inside field groups. Corners are small (10px), borders are hairlines, and shadows are wide and soft rather than dark. Both themes are first-class, and the accent is the one thing that genuinely changes between them: warm orange in the light, deep ember red in the dark.
+
+**The `/design` route is a different world on purpose.** Catronaut's landing page is set on ivory laid paper in EB Garamond, with terracotta italics, hairline rules, oldstyle numerals, a watercolour plate of a Dutch polder and a wheel-capped smooth scroll. Its North Star is **"The Dutch Artist Atelier"** — a nineteenth-century painter's studio and its plate book, not a product page. Its tokens are namespaced `ctr-*` and its fonts are loaded on that route only, so the separation is enforced by the code, not by good intentions. The two worlds never blend; see Do's and Don'ts.
+
+**Key Characteristics:**
+- Bone-white ground, near-black type, one warm accent — never a second accent hue.
+- The accent flips family across themes: `#ffa951` orange in light, `#bb2233` ember in dark.
+- Small radii (10px), hairline borders, wide-soft shadows; nothing hard-edged or heavy.
+- Authored brand assets over generic UI furniture: the Catronaut pixel mascot, the painted plate, the real desk photograph.
+- One easing curve, `cubic-bezier(0.16, 1, 0.3, 1)`, governs motion in both worlds.
+- `/design` is a sealed second world: `ctr-*` tokens, three route-scoped fonts, ivory paper.
+
+## Colors
+
+Two palettes, each internally restrained: a warm neutral field with a single shifting accent for the application, and a pigment set drawn from paper, ink and earth for the atelier.
+
+### Primary
+- **Signal Orange** (`#ffa951`): the application's accent in light mode. Primary buttons, the emphasized word in the hero headline, the eyebrow label, active indicators. It is the only saturated colour on a light screen and should stay that way.
+- **Ember Red** (`#bb2233`): the accent in dark mode. Not a darkened orange — a different pigment that holds its weight against a near-black ground, where orange would glow and cheapen. The same class names produce both; never hard-code either.
+
+### Secondary
+- **Atelier Terracotta** (`#BE6247`): `/design` only. The italic emphasis in the hero headline, the short rule under a section intro, tinted swatches inside the drawn figures.
+- **Atelier Terracotta Ink** (`#8E3D28`): `/design` only, for numerals and small type where terracotta at text size would read too light.
+- **Atelier Ochre** (`#C98F52`): `/design` selection highlight, and a warm accent inside plates.
+
+### Tertiary
+- **Atelier Sage** (`#8B9C86`) and **Atelier Blue** (`#93A9B8`): muted swatch pigments inside the atelier's line drawings. Never for text or controls.
+- **Atelier Desk** (`#454D3D`) / **Desk Lift** (`#515A48`): the dark olive of the drawing table, for inverted panels on `/design`.
+
+### Neutral
+- **Bone White** (`#fcfcfb`): the application's page ground in light mode. Warmer than white; the difference from a card's pure white is the whole depth model.
+- **Ink Black** (`oklch(0.145 0 0)`): body and heading text in light mode, and the page ground in dark mode.
+- **Card White** (`oklch(1 0 0)`) / **Card Graphite** (`oklch(0.205 0 0)`): raised surfaces, light and dark.
+- **Quiet Grey** (`oklch(0.556 0 0)` light, `oklch(0.708 0 0)` dark): secondary and helper text.
+- **Hairline Grey** (`oklch(0.922 0 0)` light, `oklch(1 0 0 / 10%)` dark): borders and dividers.
+- **Greige Edge** (`#d8d2ca`) and **Greige Wash** (`#f5f2ed`): the warm border and hover fill of outline buttons — the detail that keeps the neutral field from turning cold grey.
+- **Toast Badge** (`#f5eee6`): the warm square behind feature and section icons.
+- **Atelier Paper** (`#F2ECDF`, with lifts at `#F8F3E8`, `#E9E1D0`, `#DED3BE`): the four grades of ivory stock the atelier is printed on; scene backgrounds alternate between them.
+- **Atelier Ink** (`#2B3A4A`) and **Ink Soft** (`#4E5E6C`): the atelier's blue-black writing ink, at full and reading strength. Its transparencies `rgba(43,58,74,0.28)` and `rgba(43,58,74,0.16)` draw every frame and rule on that page.
+- **Alarm Red** (`oklch(0.577 0.245 27.325)`): validation errors only.
+
+### Named Rules
+**The Two-Pigment Rule.** One accent per world, and never both worlds' accents on one screen. If a surface seems to need a second accent colour, it needs a hierarchy fix instead.
+
+**The Warm Neutral Rule.** Neutrals in this system are warm. When a grey is needed for a border, hover or badge, take it from the greige family (`#d8d2ca`, `#f5f2ed`, `#f5eee6`), never from a blue-grey or a pure `#ccc`.
+
+**The Theme-Shift Rule.** The accent is `var(--primary)`, and it is a different hue per theme by design. Writing `#ffa951` literally into a component breaks dark mode silently.
+
+## Typography
+
+**Display / Body Font (application):** Lexend Deca (with `system-ui, sans-serif`), loaded globally at weights 200, 300, 400, 500, 600, 700.
+**Label / Mono Font (application):** Geist Mono, loaded as a variable font and bound to the `--font-mono` token.
+**Display Font (`/design`):** EB Garamond, roman and italic, weights 400–600.
+**Control Font (`/design`):** Archivo, weights 400–600.
+**Label / Mono Font (`/design`):** Courier Prime, weights 400 and 700.
+
+**Character:** the application speaks in one geometric humanist sans, tightly tracked at display size and plain everywhere else — a single voice doing headings, labels, buttons and data, which is what a product interface wants. Geist Mono is its one second voice, and a narrow one: tracked micro-labels and anything that is literally code or a filename. The atelier speaks in three: a Garamond that sets long-form thinking with oldstyle numerals, a tracked Archivo for anything you press, and Courier Prime for the plate numbers and marginalia. The pairing is a printed book, not a web page.
+
+### Hierarchy — application
+- **Display** (600, `2.5rem → 4.25rem` across breakpoints, line-height 0.98, tracking `-0.055em`): the home hero headline only. The tight tracking is the signature; it is what makes the type read as designed rather than defaulted.
+- **Headline** (600, `1.5rem`, tracking `-0.02em`): page and panel titles — "Welcome back", "Create your account".
+- **Title** (500–600, `1.125rem`): card titles, section headings.
+- **Body** (400, `0.875rem`, line-height ~1.6): the working size of the entire product UI. Prose blocks stay under 65–75ch; form and data can run denser.
+- **Label** (400, `0.75rem`): field labels and helper text, usually in Quiet Grey. The eyebrow variant adds `0.18em` tracking and the accent colour.
+- **Mono** (Geist Mono, 400–700, `0.5625rem → 0.8125rem`, tracking `0.1em`–`0.2em`): section eyebrows ("SDCB · N° 01"), panel micro-labels ("PROMPT", "142 tokens"), filenames and code. Never body copy.
+
+### Hierarchy — atelier (`/design`)
+- **Display** (400 roman, `clamp(2.5rem, 6.2vw, 5.6rem)`, line-height 0.99, tracking `-0.022em`): scene titles, with the final clause set in terracotta italic.
+- **Headline** (400, `clamp(2.1rem, 4.1vw, 3.6rem)`) and **Title** (400, `clamp(1.35rem, 1.9vw, 1.75rem)`): scene and tenet headings.
+- **Lede** (400, `clamp(1.06rem, 1.3vw, 1.28rem)`, line-height 1.66, Ink Soft): the paragraph under a scene title, capped at 44ch.
+- **Body** (400, `clamp(1rem, 1.05vw, 1.1rem)`, line-height 1.62): running text, capped at 58ch.
+- **Micro** (Courier Prime, `clamp(0.69rem, 0.78vw, 0.79rem)`, uppercase, tracking `0.1em`, or `0.24em` when set vertically): plate captions, scene counters, margin coordinates.
+
+### Named Rules
+**The Loaded-Weight Rule.** Lexend Deca is loaded at 200/300/400/500/600/700 in `app/layout.tsx`. Those six are the whole palette: any other weight (`font-extrabold`, `font-black`) is synthesized by the browser and looks it. Add the weight to the loader rather than reaching for a fake one.
+
+**The Oldstyle Rule.** On `/design`, numerals are oldstyle (`font-variant-numeric: oldstyle-nums`) everywhere except Courier Prime labels, where they are lining by nature. Never introduce tabular lining figures into that page's prose.
+
+**The Narrow-Mono Rule.** `font-mono` is Geist Mono, and it earns its place only where the monospace means something: a tracked micro-label, a filename, a token count, real code. Monospace as a costume for "technical" is not a use — the sans already carries the product's voice.
+
+## Layout
+
+The application is a fixed-header layout: the header is `position: fixed`, 56px tall on mobile and 82px from `md` up, and it auto-hides after 1.2s of scroll idle. **Every page must reserve that height itself** — the home sections pad `pt-14 md:pt-[82px]`, the auth pages `pt-20 md:pt-28`. A page that starts at `p-8` slides under the header.
+
+Content sits in a centred column: `max-w-6xl` for page shells, `max-w-4xl` for a focused single-task card such as sign-in. Horizontal padding is `px-4` to `px-6` on mobile, `px-6` to `px-8` from `md`. The spacing rhythm is Tailwind's 4px scale used at four steps: `gap-2` inside a labelled field, `gap-4` between fields, `gap-6` between cards, `gap-8`+ between page regions — with more space above a heading than below it.
+
+Responsive behaviour is structural, not fluid: type sizes step at breakpoints rather than clamping (the atelier is the exception), and layouts collapse column-by-column. The rule that matters in practice is that **two-column form rows start at one column**: `grid-cols-1 sm:grid-cols-2`, never a bare `grid-cols-2`, which crushes inputs on a phone. The projects grid is a container query (`projects-grid-container`, `@container projects-grid (min-width: 700px)`) that switches from a 2-up mobile cycle to a 3-up/2-up desktop cycle.
+
+The home page is not a scrolling document: it is five full-viewport layers stacked with `position: absolute`, moved by wheel-driven index changes, each with its own inner scroll. New home sections join that stack; they do not append to a page flow.
+
+`/design` uses its own grammar: a `max-w-[1500px]` container, a `clamp(1.5rem, 5vw, 6rem)` gutter, an asymmetric `0.82fr / 1.38fr` split at the hero, sticky section intros beside scrolling lists, and a single-column fallback below 1000px where the pinned choreography is disabled entirely.
+
+## Elevation & Depth
+
+The application is **tonally layered first and shadowed second**. Depth comes from the difference between the bone-white page and a pure-white card, plus a hairline ring — `ring-1 ring-foreground/10` is the house card edge. Shadows are wide, soft and far more transparent than they look in the value: they describe a card lifted a few centimetres off a desk under diffuse light, never a hard drop.
+
+`/design` is the opposite model: it is printed matter. Depth is the paper's own grain (a fixed SVG turbulence overlay at 22% opacity, `mix-blend-multiply`), the hairline frame around a plate, and one long soft shadow under it. Nothing on that page floats; things rest.
+
+### Shadow Vocabulary
+- **Card lift** (`box-shadow: 0 30px 80px -30px rgba(0,0,0,0.25)`): the auth card and other focused single-task surfaces.
+- **Panel lift** (`box-shadow: 0 20px 60px rgba(30,25,20,0.06)`, dark `rgba(0,0,0,0.3)`): the home page's code-editor panel.
+- **Control lift** (`shadow-xs`): buttons and inputs at rest.
+- **Plate rest** (`box-shadow: 0 1px 0 rgba(43,58,74,0.22), 0 22px 40px -28px rgba(43,58,74,0.75)`): `/design` framed artwork — a contact shadow plus a long soft cast.
+- **Plate press** (`inset 0 1px 0 rgba(242,236,223,0.16), 0 8px 20px -14px rgba(43,58,74,0.85)`): the atelier button, whose inset top highlight is what makes it read as a struck metal plate.
+
+### Named Rules
+**The Diffuse-Light Rule.** Every shadow carries a downward offset and a blur radius several times that offset. A zero-offset coloured halo is not depth in this system, and a hard offset shadow (`4px 4px 0`) belongs to a neobrutalist world this project is not.
+
+## Shapes
+
+The application's form language is **quietly rounded**: one radius token, `--radius: 0.625rem` (10px), with a scale derived from it (`sm` 6px, `md` 8px, `lg` 10px, `xl` 14px). The bare `rounded` utility resolves to the 10px step and is what almost everything uses — buttons, inputs, cards, badges, avatarless tiles. Pills and fully-round shapes are reserved for genuinely circular things: status dots, the theme toggle, the floating bubble.
+
+Borders are always hairlines (1px). Cards prefer a `ring-1` over a `border` so the edge does not affect layout. Dividers are 1px rules in Hairline Grey, and the home page uses bare `h-px` spans in the same role.
+
+`/design` has effectively **no radius**: the Plate control is `rounded-[1px]`, frames and rules are square. That squareness is load-bearing — it is what makes the page read as printed rather than rendered.
+
+### Named Rules
+**The One-Radius Rule.** Use `rounded` (10px). Reach for another step only when the element is genuinely smaller or larger than a control, and never introduce `rounded-full` on a rectangle.
+
+## Components
+
+### Buttons
+Two implementations exist, and they are not interchangeable:
+- `components/animate-ui/components/buttons/button.tsx` — the **product** button. It is what the home page and the auth pages use, and what new feature work should use.
+- `components/ui/global/button.tsx` — a shadcn-generation button retained for the header and older surfaces. Do not mix the two in one view.
+
+- **Shape:** 10px radius (`rounded`), 36px tall at default size, `8px 16px` padding.
+- **Primary:** Signal Orange fill with near-white text, `shadow-xs`, hover at 90% opacity. Reserved for the single most important action on a surface.
+- **Outline:** bone-white fill, warm greige border (`#d8d2ca`), `#292929` text, hover fill `#f5f2ed`; in dark mode a translucent input-tinted fill with the border token. This is the workhorse — both auth forms submit through it, deliberately, so sign-in and registration read as one family rather than competing for the accent.
+- **Ghost:** no fill until hover. Header icons and toolbars.
+- **States:** focus shows a 3px `ring-ring/50` ring; disabled drops to 50% opacity and removes pointer events; loading is expressed by disabling the control and swapping the label ("Log in" → "Logging in…"), never by a spinner replacing the text.
+
+### Cards / Containers
+- **Corner Style:** 10px (`rounded`).
+- **Background:** `bg-card` — pure white on light, graphite on dark.
+- **Border:** `ring-1 ring-foreground/10`, a hairline that does not shift layout.
+- **Shadow Strategy:** flat by default; only focused single-task surfaces take Card lift (see Elevation).
+- **Internal Padding:** driven by `--card-spacing` (16px default, 12px at `size="sm"`), applied by `CardHeader` / `CardContent` / `CardFooter` rather than by hand.
+
+### Inputs / Fields
+- **Style:** 36px tall, 10px radius, hairline border, transparent-to-white fill (`dark:bg-input/30`), 14px text from `md` up.
+- **Focus:** border shifts to the ring colour plus a 3px `ring-ring/50` halo — the same focus language as buttons.
+- **Error:** `aria-invalid` drives a destructive border and ring; the message renders beneath the field in 12px Alarm Red, naming the problem ("Password must be at least 8 characters"), not just flagging it.
+- **Composition:** every field is `Label` + control + optional error inside a `space-y-2` group; groups are separated by `space-y-4`. Labels may carry a 14px lucide icon before the text.
+- **Selection:** input text selection is themed `#29588f` on white — one of several browser surfaces this system themes rather than leaving to the platform.
+
+### Navigation
+- Fixed header, hairline bottom border, bone-white fill, 56/82px tall, springing out of view after 1.2s of scroll idle and returning on any scroll or hover.
+- The logo sits left; search, GitHub count, account and theme toggle sit right as 25px ghost icon buttons separated by vertical rules, each with a tooltip.
+- The home page carries a vertical section-nav rail on the right edge; `/design` carries its own rail with a serif wordmark and an `01 / 05` scene counter.
+
+### Signature component — the Plate (`/design` only)
+The atelier's call-to-action, ported from the original static page. Square (`1px` radius), Archivo uppercase at `0.14em` tracking, ink fill with paper text, an inset top highlight and a long soft shadow. It carries a hand-drawn nib icon that lifts and rotates `-6°` on hover while the plate itself rises 2px over 500ms on the house easing curve. Three variants: `default` (ink), `ink` (terracotta `#9C4C34`), and `large` (paper on a dark ground, `0.2em` tracking).
+
+### Signature component — Catronaut
+The mascot ships as pixel-grid canvas components (`idle`, `happy`, `coding`) rendered at `scale` — `0.3` inside a 40px icon badge, larger when it is the subject. It is the brand's face: it appears in the home feature list, in the register card's title badge, and as the painter inside the `/design` hero plate. It is never replaced by a generic user or sparkle icon.
+
+### Motion
+One curve carries the whole product: `cubic-bezier(0.16, 1, 0.3, 1)`, an exponential ease-out, exposed on `/design` as `--ease-ctr` and written literally in the application's Framer Motion transitions. Entrances animate opacity, a small `y` offset and a blur, 0.4–0.9s, staggered ~0.18s for headline lines. Interface transitions stay at 150–250ms. The home page's full-screen section changes are the one exception, running 0.9s on `cubic-bezier(0.76, 0, 0.24, 1)` because they move a whole viewport.
+
+`/design` runs a different engine: Lenis smooth scroll stepped by the GSAP ticker (one clock for scroll and ScrollTrigger), a 700px cap on how far the page may lag the wheel, pinned scenes, and reveals gated on scroll progress. All of it is disabled below 1000px and under `prefers-reduced-motion`.
+
+## Do's and Don'ts
+
+### Do:
+- **Do** keep the two worlds sealed. `ctr-*` tokens, EB Garamond, Archivo and Courier Prime belong to `/design` and nowhere else; the application's tokens and Lexend Deca never appear on `/design`.
+- **Do** reach for `var(--primary)` (`bg-primary`, `text-primary`) so the accent flips from Signal Orange to Ember Red with the theme.
+- **Do** reserve the accent for primary actions, live state and at most one emphasized word per view. Everything else is neutral.
+- **Do** reserve the header's height on every new page (`pt-14 md:pt-[82px]`, or `pt-20 md:pt-28` on centred single-card pages).
+- **Do** start multi-column form rows at one column (`grid-cols-1 sm:grid-cols-2`).
+- **Do** wrap fields in a real `<form>` with `onSubmit`, `id`/`htmlFor` pairs, `autoComplete`, and `aria-invalid` on failed fields — Enter must submit.
+- **Do** ship every interactive state: hover, focus ring, disabled, loading (label swap), error, empty.
+- **Do** use the authored assets — the Catronaut components, the painted plate, the desk photograph — where a generic icon or stock image would otherwise land.
+- **Do** honour `prefers-reduced-motion`, as `/design` already does, before adding any scroll-driven or pinned animation.
+- **Do** theme the browser's own surfaces: selection colour, focus ring, scrollbar (`thin-scrollbar` / `no-scrollbar`), caret.
+
+### Don't:
+- **Don't** blend the worlds — no ivory paper, Garamond or terracotta inside the application, and no orange accent, 10px radius or Lexend Deca inside `/design`.
+- **Don't** reintroduce the disconnected space theme. The star field, nebula blobs, Saturn and satellite art were removed from the auth pages on purpose; the celestial motif lives in the Catronaut mascot and the home page's planet, not in a decorative background layer.
+- **Don't** use gradient text, or glass and backdrop blur as decoration. Emphasis comes from weight, size and colour; blur is for a specific effect, not atmosphere.
+- **Don't** substitute emoji or unicode glyphs for icons. Icons come from `lucide-react` or authored SVG at a consistent stroke weight.
+- **Don't** hard-code `#ffa951` or `#bb2233`; that silently breaks the other theme.
+- **Don't** reach for a Lexend Deca weight outside the loaded 200/300/400/500/600/700, or use `font-mono` as a "technical" flavour on ordinary text.
+- **Don't** nest a card inside a card, or use a grid of identical icon-heading-text tiles as a page's whole structure.
+- **Don't** add a `tailwind.config.js`. Tokens live in `app/globals.css` under `@theme inline`; a config file would split the source of truth.
+- **Don't** nest GSAP pins on `/design`. Pinning writes a transform, the transform becomes a containing block, and the inner pin silently stops being fixed.
+- **Don't** describe Catronaut as a working feature in any UI copy. It is a landing page; see PRODUCT.md.
