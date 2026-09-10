@@ -149,16 +149,51 @@ export function Design() {
         };
     }, []);
 
+    /* Same-page hash links (the "Start designing" plates, the rail's way back
+       up) go through Lenis's scrollTo rather than the browser's instant native
+       jump, which would fight Lenis's still-running lerp over the position.
+
+       Lenis's own `anchors` option can't do this: it aims at the target's top
+       edge, and the canvas sits inside an arriving pin whose veil is still at
+       opacity 0 there — "Start designing" landed on bare paper. A target
+       inside a pin spacer is aimed at the end of that pin instead: the
+       spacer's bottom padding is exactly the pin's length, and the spacer
+       itself is never transformed, so this holds from above and from below. */
+    useEffect(() => {
+        const onClick = (event: MouseEvent) => {
+            if (event.defaultPrevented || event.button !== 0) return;
+            if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+            const link =
+                event.target instanceof Element
+                    ? event.target.closest<HTMLAnchorElement>('a[href^="#"]')
+                    : null;
+            const lenis = lenisRef.current?.lenis;
+            if (!link || !lenis) return;
+
+            const node = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+            if (!node) return;
+            event.preventDefault();
+
+            const spacer = node.closest<HTMLElement>('.pin-spacer');
+            if (spacer) {
+                const start = spacer.getBoundingClientRect().top + lenis.animatedScroll;
+                lenis.scrollTo(start + Number.parseFloat(getComputedStyle(spacer).paddingBottom));
+            } else {
+                lenis.scrollTo(node);
+            }
+        };
+
+        document.addEventListener('click', onClick);
+        return () => document.removeEventListener('click', onClick);
+    }, []);
+
     return (
         <div
             className={`${ebGaramond.variable} ${archivo.variable} ${courierPrime.variable} relative overflow-x-clip bg-ctr-paper font-ctr-serif text-[clamp(1rem,1.05vw,1.1rem)] leading-[1.62] text-ctr-ink [font-variant-numeric:oldstyle-nums] selection:bg-ctr-ochre selection:text-ctr-ink`}
         >
-            {/* `anchors` hands same-page hash clicks (the "Start designing"
-                plates) to Lenis's own scrollTo instead of the browser's
-                instant native jump — without it the native jump and Lenis's
-                still-running lerp fight over the scroll position and the
-                page settles somewhere past the target. */}
-            <ReactLenis root options={{ autoRaf: false, anchors: true }} ref={lenisRef} />
+            {/* Hash links are routed through Lenis by the click handler above. */}
+            <ReactLenis root options={{ autoRaf: false }} ref={lenisRef} />
 
             <div
                 aria-hidden="true"
