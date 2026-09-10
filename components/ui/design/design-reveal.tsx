@@ -42,6 +42,10 @@ const VIEWPORT = { once: true, margin: '0px 0px -12% 0px', amount: 0.12 } as con
 type RevealProps<T extends keyof typeof MOTION_TAG> = {
     as?: T;
     delay?: 0 | 1 | 2 | 3;
+    /** Overrides the scroll trigger. A pinned scene is on screen by
+     *  definition, and the default's -12% bottom margin would strand
+     *  anything sitting in the lowest band of the viewport. */
+    viewport?: ComponentPropsWithoutRef<typeof motion.div>['viewport'];
     className?: string;
     children: ReactNode;
 } & Omit<ComponentPropsWithoutRef<T>, 'as' | 'className' | 'children'>;
@@ -56,6 +60,7 @@ type RevealProps<T extends keyof typeof MOTION_TAG> = {
 export function Reveal<T extends keyof typeof MOTION_TAG = 'div'>({
     as,
     delay = 0,
+    viewport = VIEWPORT,
     className,
     children,
     ...rest
@@ -71,7 +76,7 @@ export function Reveal<T extends keyof typeof MOTION_TAG = 'div'>({
             key={open ? 'open' : 'gated'}
             initial={{ opacity: 0, y: 20, filter: 'blur(7px)' }}
             whileInView={open ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
-            viewport={VIEWPORT}
+            viewport={viewport}
             transition={{ duration: 0.9, delay: delay * STEP, ease: EASE }}
             className={className}
             {...rest}
