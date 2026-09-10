@@ -77,10 +77,11 @@ function getFileIcon(fileName: string) {
    filename is exactly the kind of fact the Narrow-Mono Rule is for.
    `Files`' own highlight pill is hover-only (see FilesHighlight's default
    `hover: true`), so it never marks which file is actually open — that has
-   to come from activeFile, computed per row below. */
-function fileTreeItemClass(active: boolean) {
-    return active ? 'rounded-[1px] bg-ctr-paper-2 font-semibold text-ctr-ink' : 'text-ctr-ink';
-}
+   to come from activeFile, applied per row via FileItem's `active` prop
+   below (which reaches the row itself, not `className`, which only ever
+   reaches the label). */
+const fileTreeItemClass = 'text-ctr-ink';
+const activeFileClassName = 'bg-ctr-paper-2 font-semibold';
 
 function RenderTree({
     nodes,
@@ -102,7 +103,7 @@ function RenderTree({
 
                     return (
                         <FolderItem key={node.name} value={node.name}>
-                            <FolderTrigger className={fileTreeItemClass(false)}>{node.name}</FolderTrigger>
+                            <FolderTrigger className={fileTreeItemClass}>{node.name}</FolderTrigger>
 
                             <FolderContent guideClassName="before:bg-ctr-ink-hair">
                                 {/* SubFiles has no highlight pill of its own to recolour — the
@@ -125,8 +126,10 @@ function RenderTree({
                         key={node.name}
                         icon={getFileIcon(node.name)}
                         onClick={() => onOpenFile(node.name)}
+                        active={active}
+                        activeClassName={activeFileClassName}
                         aria-current={active ? 'true' : undefined}
-                        className={fileTreeItemClass(active)}
+                        className={fileTreeItemClass}
                     >
                         {node.name}
                     </FileItem>

@@ -130,22 +130,37 @@ function FolderContent({ guideClassName, ...props }: FolderContentProps) {
 type FileItemProps = FilePrimitiveProps & {
   icon?: React.ElementType;
   gitStatus?: GitStatus;
+  /** True when this file is the persistently "open" one — distinct from
+   *  Files' own hover/click pill, which is transient. Applied to the row
+   *  itself (FilePrimitive), never to the label: `className` only ever
+   *  reached the label here, which is why an "active" row used to end up
+   *  with only its text coloured instead of the whole row filled. */
+  active?: boolean;
+  /** Defaults to the app's own `bg-accent` for any consumer that never
+   *  passes one — see `Files`' `highlightClassName` for why a shared
+   *  primitive's world colours live in a prop, not in this default. */
+  activeClassName?: string;
 };
 
 function FileItem({
   icon: Icon = FileIcon,
-    onClick,
+  onClick,
   className,
   children,
   gitStatus,
+  active,
+  activeClassName = 'bg-accent',
+  'aria-current': ariaCurrent,
   ...props
 }: FileItemProps) {
   return (
     <FileHighlightPrimitive>
       <FilePrimitive
-          onClick={onClick}
+        onClick={onClick}
+        aria-current={ariaCurrent}
         className={cn(
-          'flex items-center justify-between gap-2 p-2 cursor-pointer',
+          'flex items-center justify-between gap-2 p-2 cursor-pointer rounded-md',
+          active && activeClassName,
           gitStatus === 'untracked' && 'text-green-400',
           gitStatus === 'modified' && 'text-amber-400',
           gitStatus === 'deleted' && 'text-red-400',
