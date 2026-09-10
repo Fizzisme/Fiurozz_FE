@@ -6,8 +6,10 @@ import {
     Sidebar,
     SidebarHeader,
     SidebarContent,
-    SidebarTrigger,
+    useSidebar,
 } from '@/components/animate-ui/components/radix/sidebar';
+import { PanelLeftClose } from '@/components/animate-ui/icons/panel-left-close';
+import { PanelLeftOpen } from '@/components/animate-ui/icons/panel-left-open';
 
 import {
     Files,
@@ -103,7 +105,10 @@ function RenderTree({
                             <FolderTrigger className={fileTreeItemClass(false)}>{node.name}</FolderTrigger>
 
                             <FolderContent guideClassName="before:bg-ctr-ink-hair">
-                                <SubFiles highlightClassName="bg-ctr-paper-2 rounded-[1px]">
+                                {/* SubFiles has no highlight pill of its own to recolour — the
+                                    outer Files' single FilesHighlightPrimitive already tracks
+                                    any descendant item, nested or not. */}
+                                <SubFiles>
                                     <RenderTree nodes={childNodes} activeFile={activeFile} onOpenFile={onOpenFile} />
                                 </SubFiles>
                             </FolderContent>
@@ -136,23 +141,58 @@ interface FileTreeProps {
     onOpenFile: (name: string) => void;
 }
 
+/**
+ * `SidebarTrigger`'s own icon carries a hardcoded `!text-[#52514e]
+ * dark:text-[#c3c2b7]` with `!important` — no className reaches it from
+ * outside, and editing the shared primitive would reach `/projects` too. A
+ * local button on the same `useSidebar()` hook gets the identical behaviour
+ * with the atelier's own ink instead.
+ */
+function TreeToggle() {
+    const { open, toggleSidebar } = useSidebar();
+
+    return (
+        <button
+            onClick={toggleSidebar}
+            title={open ? 'Collapse explorer' : 'Open explorer'}
+            className="flex size-7 flex-none cursor-pointer items-center justify-center rounded-[1px] text-ctr-ink transition-colors duration-300 [transition-timing-function:var(--ease-ctr)] hover:bg-ctr-paper-2"
+        >
+            {open ? (
+                <PanelLeftClose size={16} strokeWidth={1.7} animateOnHover />
+            ) : (
+                <PanelLeftOpen size={16} strokeWidth={1.7} animateOnHover />
+            )}
+        </button>
+    );
+}
+
 export default function FileTree({ activeFile, onOpenFile }: FileTreeProps) {
     const folderNames = (TREE as RawNode[]).filter((node) => node.type === 'folder').map((node) => node.name);
 
     return (
-        <Sidebar side="left" collapsible="offcanvas" className="border-r border-ctr-ink-hair bg-ctr-paper">
-            <SidebarHeader className="flex h-[59px] flex-none flex-row items-center justify-between gap-2 border-b border-ctr-ink-hair px-3.5">
-                <Link href="/design" title="Back to Catronaut" className="text-ctr-ink opacity-70 transition-opacity duration-300 [transition-timing-function:var(--ease-ctr)] hover:opacity-100">
-                    <Fiurozz className="h-7 w-7 group-data-[collapsible=icon]:absolute group-data-[collapsible=icon]:inset-0 group-data-[collapsible=icon]:my-2 group-data-[collapsible=icon]:h-7 group-data-[collapsible=icon]:w-7" />
-                </Link>
-                <SidebarTrigger className="cursor-pointer text-ctr-ink" />
-            </SidebarHeader>
+        <Sidebar side="left" collapsible="offcanvas" className="border-r border-ctr-ink-hair">
+            {/* `Sidebar`'s own `className` lands on the fixed outer box; its
+                child `sidebar-inner` paints its own opaque `bg-sidebar` on top
+                of it regardless, so the panel's real fill has to come from a
+                div inside the tree here rather than a class passed above. */}
+            <div className="flex h-full w-full flex-col bg-ctr-paper">
+                <SidebarHeader className="flex h-[59px] flex-none flex-row items-center justify-between gap-2 border-b border-ctr-ink-hair px-3.5">
+                    {/* Fiurozz's own default className carries `text-black
+                        dark:text-white dark:opacity-60` and sets it locally via
+                        `currentColor`, so it has to be overridden on the icon
+                        itself — the wrapping Link's colour never reaches it. */}
+                    <Link href="/design" title="Back to Catronaut" className="opacity-70 transition-opacity duration-300 [transition-timing-function:var(--ease-ctr)] hover:opacity-100">
+                        <Fiurozz className="h-7 w-7 text-ctr-ink dark:text-ctr-ink dark:opacity-100 group-data-[collapsible=icon]:absolute group-data-[collapsible=icon]:inset-0 group-data-[collapsible=icon]:my-2 group-data-[collapsible=icon]:h-7 group-data-[collapsible=icon]:w-7" />
+                    </Link>
+                    <TreeToggle />
+                </SidebarHeader>
 
-            <SidebarContent className="min-h-0 flex-1 overflow-y-auto px-1.5 pt-1.5 pb-6 font-ctr-mono text-[13px]">
-                <Files className="w-full" highlightClassName="bg-ctr-paper-2 rounded-[1px]" defaultOpen={folderNames}>
-                    <RenderTree nodes={TREE as RawNode[]} activeFile={activeFile} onOpenFile={onOpenFile} />
-                </Files>
-            </SidebarContent>
+                <SidebarContent className="min-h-0 flex-1 overflow-y-auto px-1.5 pt-1.5 pb-6 font-ctr-mono text-[13px]">
+                    <Files className="w-full" highlightClassName="bg-ctr-paper-2 rounded-[1px]" defaultOpen={folderNames}>
+                        <RenderTree nodes={TREE as RawNode[]} activeFile={activeFile} onOpenFile={onOpenFile} />
+                    </Files>
+                </SidebarContent>
+            </div>
         </Sidebar>
     );
 }
