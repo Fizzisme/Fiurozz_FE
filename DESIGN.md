@@ -137,6 +137,17 @@ components:
     textColor: "#4b4540"
     rounded: "{rounded.lg}"
     size: "40px"
+  chip-stack:
+    backgroundColor: "transparent"
+    textColor: "{colors.quiet-grey}"
+    rounded: "{rounded.lg}"
+    padding: "4px 8px"
+    typography: "{typography.mono}"
+  card-artifact:
+    backgroundColor: "{colors.card-white}"
+    textColor: "{colors.ink-black}"
+    rounded: "{rounded.lg}"
+    padding: "24px"
   atelier-plate:
     backgroundColor: "{colors.atelier-ink}"
     textColor: "{colors.atelier-paper}"
@@ -225,7 +236,8 @@ Two palettes, each internally restrained: a warm neutral field with a single shi
 - **Headline** (600, `1.5rem`, tracking `-0.02em`): page and panel titles — "Welcome back", "Create your account".
 - **Title** (500–600, `1.125rem`): card titles, section headings.
 - **Body** (400, `0.875rem`, line-height ~1.6): the working size of the entire product UI. Prose blocks stay under 65–75ch; form and data can run denser.
-- **Label** (400, `0.75rem`): field labels and helper text, usually in Quiet Grey. The eyebrow variant adds `0.18em` tracking and the accent colour.
+- **Label** (400, `0.75rem`): field labels and helper text, usually in Quiet Grey.
+- **Eyebrow** (mono, 11px, `0.2em` tracking, accent, with a hairline and an `N° 0x` counter): a legacy pattern still running on home scenes 02–05. The hero dropped it — a page's opening does not need a label announcing itself — and it is not to be added to anything new. Documented because it is on screen, not because it is a model.
 - **Mono** (Geist Mono, 400–700, `0.5625rem → 0.8125rem`, tracking `0.1em`–`0.2em`): section eyebrows ("SDCB · N° 01"), panel micro-labels ("PROMPT", "142 tokens"), filenames and code. Never body copy.
 
 ### Hierarchy — atelier (`/design`)
@@ -251,6 +263,11 @@ Content sits in a centred column: `max-w-6xl` for page shells, `max-w-4xl` for a
 Responsive behaviour is structural, not fluid: type sizes step at breakpoints rather than clamping (the atelier is the exception), and layouts collapse column-by-column. The rule that matters in practice is that **two-column form rows start at one column**: `grid-cols-1 sm:grid-cols-2`, never a bare `grid-cols-2`, which crushes inputs on a phone. The projects grid is a container query (`projects-grid-container`, `@container projects-grid (min-width: 700px)`) that switches from a 2-up mobile cycle to a 3-up/2-up desktop cycle.
 
 The home page is not a scrolling document: it is five full-viewport layers stacked with `position: absolute`, moved by wheel-driven index changes, each with its own inner scroll. New home sections join that stack; they do not append to a page flow.
+
+### Named Rules
+**The Standing-Room Rule.** A full-height scene centres against the room the visitor actually has, not against the document. The header is `position: fixed`, so a scene reserves its band (`pt-14 md:pt-[82px]`), then makes its content area `flex-1` and centres inside that. `min-h-screen` with top padding and no centring drops everything against the header and leaves the dead space at the bottom, which reads as a page that failed to load rather than a composition.
+
+**The Horizon Rule.** Decorative artwork is ground, and ground sits under the page rather than behind the words. The home hero's planet is anchored past two edges at once (`-bottom-20 -left-24`) so only an arc reads, clear of the text column; copy is never asked to survive on top of it. An image that lands inside a column of type is either content — given a box, a caption and a job — or it moves.
 
 `/design` uses its own grammar: a `max-w-[1500px]` container, a `clamp(1.5rem, 5vw, 6rem)` gutter, an asymmetric `0.82fr / 1.38fr` split at the hero, sticky section intros beside scrolling lists, and a single-column fallback below 1000px where the pinned choreography is disabled entirely.
 
@@ -301,6 +318,11 @@ Two implementations exist, and they are not interchangeable:
 - **Shadow Strategy:** flat by default; only focused single-task surfaces take Card lift (see Elevation).
 - **Internal Padding:** driven by `--card-spacing` (16px default, 12px at `size="sm"`), applied by `CardHeader` / `CardContent` / `CardFooter` rather than by hand.
 
+### Chips
+- **Style:** a hairline outline pill, not a filled tag — `1px` border in `foreground/10`, 10px radius, `4px 8px` padding, 11px label **in Geist Mono**, Quiet Grey. The mono is the point: it marks the content as machine fact (a dependency, a version) rather than prose.
+- **Use:** read-only metadata that belongs to an object, above all a project's stack ("Next.js", "TypeScript"). They sit in a wrapped row with `8px` gaps, and a run longer than three collapses into a muted `+N` in the same mono.
+- **State:** none. These are labels, not filters. A chip that can be selected needs the accent and a real pressed state, and none exists yet — build it deliberately rather than tinting this one.
+
 ### Inputs / Fields
 - **Style:** 36px tall, 10px radius, hairline border, transparent-to-white fill (`dark:bg-input/30`), 14px text from `md` up.
 - **Focus:** border shifts to the ring colour plus a 3px `ring-ring/50` halo — the same focus language as buttons.
@@ -313,6 +335,17 @@ Two implementations exist, and they are not interchangeable:
 - The logo sits left; search, GitHub count, account and theme toggle sit right as 25px ghost icon buttons separated by vertical rules, each with a tooltip.
 - The home page carries a vertical section-nav rail on the right edge; `/design` carries its own rail with a serif wordmark and an `01 / 05` scene counter.
 
+### Signature component — the project artifact
+The home hero's proof: one project rendered as the page it would really get, not an illustration of one. Three bands, separated by hairlines and read top to bottom:
+
+1. **Cover** — full bleed and the tallest band on the card (`188px`, `216px` from `sm`): a real screenshot, `object-cover` cropped from the top so a page's header and hero survive rather than its empty middle, with a `bg-primary/10` field behind it as the load-in colour. It scales to `1.03` on card hover, on the house ease. The cover is the card's weight; it is never a small mark floating in an empty tint, and never a synthesized mockup where a real capture exists.
+2. **Meta** — the name at 20–24px semibold on the left with a lowercase mono descriptor right-aligned on the same baseline (`developer showcase`), the tagline beneath it, then the stack as mono chips. Chips past the third collapse into a muted `+N` rather than wrapping to a second row.
+3. **Footer** — a small accent diamond (a `6px` square turned 45°, not a glyph) and the author handle in mono on the left, the `ArrowUpRight` on the right.
+
+It rests on Card lift and deepens to `0 28px 70px -30px` on hover while the arrow nudges up and right; the whole card is one focusable link with the standard 3px ring.
+
+The rule it exists to enforce: **the hero shows the product, and the product is a project page.** The sample it carries is Fiurozz's own project — real tagline, real stack, real handle — so the most prominent thing on the home page invents nothing. If it is ever swapped for another project, that project has to be real too, or the caption under it has to say plainly that it is an example.
+
 ### Signature component — the Plate (`/design` only)
 The atelier's call-to-action, ported from the original static page. Square (`1px` radius), Archivo uppercase at `0.14em` tracking, ink fill with paper text, an inset top highlight and a long soft shadow. It carries a hand-drawn nib icon that lifts and rotates `-6°` on hover while the plate itself rises 2px over 500ms on the house easing curve. Three variants: `default` (ink), `ink` (terracotta `#9C4C34`), and `large` (paper on a dark ground, `0.2em` tracking).
 
@@ -320,7 +353,11 @@ The atelier's call-to-action, ported from the original static page. Square (`1px
 The mascot ships as pixel-grid canvas components (`idle`, `happy`, `coding`) rendered at `scale` — `0.3` inside a 40px icon badge, larger when it is the subject. It is the brand's face: it appears in the home feature list, in the register card's title badge, and as the painter inside the `/design` hero plate. It is never replaced by a generic user or sparkle icon.
 
 ### Motion
-One curve carries the whole product: `cubic-bezier(0.16, 1, 0.3, 1)`, an exponential ease-out, exposed on `/design` as `--ease-ctr` and written literally in the application's Framer Motion transitions. Entrances animate opacity, a small `y` offset and a blur, 0.4–0.9s, staggered ~0.18s for headline lines. Interface transitions stay at 150–250ms. The home page's full-screen section changes are the one exception, running 0.9s on `cubic-bezier(0.76, 0, 0.24, 1)` because they move a whole viewport.
+One curve carries the whole product: `cubic-bezier(0.16, 1, 0.3, 1)`, an exponential ease-out, exposed on `/design` as `--ease-ctr` and written literally in the application's Framer Motion transitions. Entrances animate opacity, a small `y` offset and a blur, 0.4–0.9s, staggered ~0.18s for headline lines. Interface transitions stay at 150–250ms.
+
+**Entrances are orchestrated, not hand-timed.** A region enters as one variant tree — a container holding `staggerChildren` and `delayChildren`, children sharing a single `piece` variant — rather than as a set of siblings each carrying its own `delay`. The home hero runs two: the copy column at `0.12s` steps after a `0.3s` lead, and the project artifact assembling itself in reading order at `0.09s` steps after `0.35s`, so cover, name, author, stack and README arrive the way a published page fills in. Any orchestrating container must pass `useReducedMotion()` into its `initial` so a reduced-motion visitor starts at the resting state.
+
+**The variant-label trap.** A wrapper that animates to a variant *label* hands that label to every motion descendant, and a child animating to a plain object is stranded at its initial values — invisible, with no error. Inside such a wrapper, give the nested tree its own variant names and an explicit `animate`, which stops the inheritance at that node. This is why the hero's inner trees use `rest`/`enter` and `hidden`/`shown` rather than reusing the wrapper's `initial`/`leaving`. The home page's full-screen section changes are the one exception, running 0.9s on `cubic-bezier(0.76, 0, 0.24, 1)` because they move a whole viewport.
 
 `/design` runs a different engine: Lenis smooth scroll stepped by the GSAP ticker (one clock for scroll and ScrollTrigger), a 700px cap on how far the page may lag the wheel, pinned scenes, and reveals gated on scroll progress. All of it is disabled below 1000px and under `prefers-reduced-motion`.
 
@@ -346,6 +383,8 @@ One curve carries the whole product: `cubic-bezier(0.16, 1, 0.3, 1)`, an exponen
 - **Don't** hard-code `#ffa951` or `#bb2233`; that silently breaks the other theme.
 - **Don't** reach for a Lexend Deca weight outside the loaded 200/300/400/500/600/700, or use `font-mono` as a "technical" flavour on ordinary text.
 - **Don't** nest a card inside a card, or use a grid of identical icon-heading-text tiles as a page's whole structure.
+- **Don't** put an eyebrow label above a new heading, or give a section an `N° 0x` counter. Scenes 02–05 carry the old pattern; nothing new joins them.
+- **Don't** hand-time an entrance with per-element `delay` values, or let a decorative image land inside a column of type (see The Horizon Rule).
 - **Don't** add a `tailwind.config.js`. Tokens live in `app/globals.css` under `@theme inline`; a config file would split the source of truth.
 - **Don't** nest GSAP pins on `/design`. Pinning writes a transform, the transform becomes a containing block, and the inner pin silently stops being fixed.
 - **Don't** describe Catronaut as a working feature in any UI copy. It is a landing page; see PRODUCT.md.
