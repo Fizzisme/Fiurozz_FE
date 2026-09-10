@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-09T00:00:00.000Z",
+  "generatedAt": "2026-09-10T05:22:35.184Z",
   "title": "Design System: Fiurozz",
   "extensions": {
     "colorMeta": {
@@ -217,15 +217,43 @@
         "name": "duration-entrance",
         "value": "400-900ms",
         "purpose": "Entrance reveals: opacity, small y offset, blur; ~0.18s stagger between headline lines."
+      },
+      {
+        "name": "stagger-copy",
+        "value": "staggerChildren 0.12s, delayChildren 0.3s",
+        "purpose": "A copy column entering as one orchestrated sequence rather than per-element delays."
+      },
+      {
+        "name": "stagger-assembly",
+        "value": "staggerChildren 0.09s, delayChildren 0.35s",
+        "purpose": "The project artifact assembling in reading order: cover, name, author, stack, README."
       }
     ],
     "breakpoints": [
-      { "name": "sm", "value": "640px" },
-      { "name": "md", "value": "768px" },
-      { "name": "lg", "value": "1024px" },
-      { "name": "xl", "value": "1280px" },
-      { "name": "atelier-pin", "value": "1000px" },
-      { "name": "projects-grid", "value": "700px (container query)" }
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      },
+      {
+        "name": "atelier-pin",
+        "value": "1000px"
+      },
+      {
+        "name": "projects-grid",
+        "value": "700px (container query)"
+      }
     ]
   },
   "components": [
@@ -270,12 +298,20 @@
       "css": ".ds-icon-badge { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; flex-shrink: 0; border-radius: 10px; background: #f5eee6; color: #4b4540; } .ds-icon-badge svg { width: 16px; height: 16px; }"
     },
     {
-      "name": "Eyebrow Label",
-      "kind": "custom",
-      "refersTo": "label",
-      "description": "The home page's accent micro-label: a short rule, a tracked accent word, and a quiet counter.",
-      "html": "<div class=\"ds-eyebrow\"><span class=\"ds-eyebrow-rule\"></span><span class=\"ds-eyebrow-word\">SDCB</span><span class=\"ds-eyebrow-num\">&middot; N&deg; 01</span></div>",
-      "css": ".ds-eyebrow { display: flex; align-items: center; gap: 12px; font-family: 'Lexend Deca', system-ui, sans-serif; } .ds-eyebrow-rule { display: block; width: 24px; height: 1px; background: #d4d4d4; } .ds-eyebrow-word { font-size: 12px; font-weight: 600; letter-spacing: 0.18em; color: var(--primary, #ffa951); } .ds-eyebrow-num { font-size: 11px; letter-spacing: 0.18em; color: #a3a3a3; }"
+      "name": "Stack Chip",
+      "kind": "chip",
+      "refersTo": "chip-stack",
+      "description": "Read-only metadata belonging to an object — a project's stack. A hairline outline pill in mono, never a filled tag; a run longer than three collapses into a muted +N.",
+      "html": "<ul class=\"ds-chip-row\"><li class=\"ds-chip\">Next.js</li><li class=\"ds-chip\">TypeScript</li><li class=\"ds-chip\">Tailwind</li><li class=\"ds-chip-more\">+1</li></ul>",
+      "css": ".ds-chip-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; list-style: none; margin: 0; padding: 0; } .ds-chip { border: 1px solid rgba(0,0,0,0.1); border-radius: 10px; padding: 4px 8px; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px; line-height: 1; color: var(--muted-foreground, oklch(0.556 0 0)); } .ds-chip-more { font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px; line-height: 1; color: color-mix(in oklch, var(--muted-foreground, oklch(0.556 0 0)) 70%, transparent); }"
+    },
+    {
+      "name": "Project Artifact Card",
+      "kind": "card",
+      "refersTo": "card-artifact",
+      "description": "The home hero's proof: one project rendered as the page it would really get. Three hairline-separated bands — a real full-bleed screenshot cover (top-cropped, scales on hover), meta, footer.",
+      "html": "<a class=\"ds-artifact\" href=\"#\"><div class=\"ds-artifact-cover\"><img class=\"ds-artifact-cover-img\" src=\"/home/fiurozz.jpg\" alt=\"\" /></div><div class=\"ds-artifact-meta\"><div class=\"ds-artifact-head\"><h3 class=\"ds-artifact-title\">Fiurozz</h3><span class=\"ds-artifact-descriptor\">developer showcase</span></div><p class=\"ds-artifact-tagline\">Showcase your work, your way.</p><ul class=\"ds-chip-row\"><li class=\"ds-chip\">Next.js</li><li class=\"ds-chip\">TypeScript</li><li class=\"ds-chip\">Tailwind</li><li class=\"ds-chip-more\">+1</li></ul></div><div class=\"ds-artifact-footer\"><span class=\"ds-artifact-by\"><span class=\"ds-artifact-mark\"></span><span class=\"ds-artifact-handle\">@fizzisme</span></span><svg class=\"ds-artifact-arrow\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M7 17 17 7\"/><path d=\"M7 7h10v10\"/></svg></div></a>",
+      "css": ".ds-artifact { display: block; overflow: hidden; border-radius: 10px; background: var(--card, #fff); color: var(--card-foreground, oklch(0.145 0 0)); box-shadow: 0 0 0 1px rgba(0,0,0,0.1), 0 20px 60px -30px rgba(30,25,20,0.35); text-decoration: none; transition: box-shadow 0.3s cubic-bezier(0.16,1,0.3,1); } .ds-artifact:hover { box-shadow: 0 0 0 1px rgba(0,0,0,0.1), 0 28px 70px -30px rgba(30,25,20,0.45); } .ds-artifact:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(160,160,160,0.5); } .ds-artifact-cover { position: relative; height: 188px; overflow: hidden; border-bottom: 1px solid rgba(0,0,0,0.1); background: color-mix(in oklch, var(--primary, #ffa951) 10%, transparent); } .ds-artifact-cover-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0%; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); } .ds-artifact:hover .ds-artifact-cover-img { transform: scale(1.03); } .ds-artifact-meta { padding: 24px 24px 20px; } .ds-artifact-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; } .ds-artifact-title { margin: 0; font-family: 'Lexend Deca', system-ui, sans-serif; font-size: 24px; font-weight: 600; letter-spacing: -0.02em; } .ds-artifact-descriptor { font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: -0.01em; color: var(--muted-foreground, oklch(0.556 0 0)); } .ds-artifact-tagline { margin: 8px 0 20px; font-family: 'Lexend Deca', system-ui, sans-serif; font-size: 14px; color: var(--muted-foreground, oklch(0.556 0 0)); } .ds-artifact-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; border-top: 1px solid rgba(0,0,0,0.1); } .ds-artifact-by { display: flex; align-items: center; gap: 10px; } .ds-artifact-mark { width: 6px; height: 6px; transform: rotate(45deg); background: var(--primary, #ffa951); } .ds-artifact-handle { font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px; color: var(--muted-foreground, oklch(0.556 0 0)); } .ds-artifact-arrow { width: 16px; height: 16px; color: var(--muted-foreground, oklch(0.556 0 0)); transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), color 0.3s; } .ds-artifact:hover .ds-artifact-arrow { transform: translate(2px, -2px); color: var(--foreground, oklch(0.145 0 0)); }"
     },
     {
       "name": "Atelier Plate",
@@ -345,6 +381,16 @@
         "name": "The One-Radius Rule",
         "body": "Use rounded (10px). Reach for another step only when the element is genuinely smaller or larger than a control, and never introduce rounded-full on a rectangle.",
         "section": "shapes"
+      },
+      {
+        "name": "The Horizon Rule",
+        "body": "Decorative artwork is ground, and ground sits under the page rather than behind the words. The home hero's planet is anchored past two edges at once (-bottom-20 -left-24) so only an arc reads, clear of the text column; copy is never asked to survive on top of it. An image that lands inside a column of type is either content — given a box, a caption and a job — or it moves.",
+        "section": "layout"
+      },
+      {
+        "name": "The Standing-Room Rule",
+        "body": "A full-height scene centres against the room the visitor actually has, not against the document. The header is position: fixed, so a scene reserves its band (pt-14 md:pt-[82px]), then makes its content area flex-1 and centres inside that. min-h-screen with top padding and no centring drops everything against the header and leaves the dead space at the bottom, which reads as a page that failed to load rather than a composition.",
+        "section": "layout"
       }
     ],
     "dos": [
@@ -369,7 +415,9 @@
       "Don't nest a card inside a card, or use a grid of identical icon-heading-text tiles as a page's whole structure.",
       "Don't add a tailwind.config.js. Tokens live in app/globals.css under @theme inline; a config file would split the source of truth.",
       "Don't nest GSAP pins on /design. Pinning writes a transform, the transform becomes a containing block, and the inner pin silently stops being fixed.",
-      "Don't describe Catronaut as a working feature in any UI copy. It is a landing page; see PRODUCT.md."
+      "Don't describe Catronaut as a working feature in any UI copy. It is a landing page; see PRODUCT.md.",
+      "Don't put an eyebrow label above a new heading, or give a section an N° 0x counter. Scenes 02–05 carry the old pattern; nothing new joins them.",
+      "Don't hand-time an entrance with per-element delay values, or let a decorative image land inside a column of type (see The Horizon Rule)."
     ]
   }
 }
