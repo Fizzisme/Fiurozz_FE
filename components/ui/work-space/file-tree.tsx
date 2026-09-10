@@ -188,7 +188,7 @@ export default function FileTree({ activeFile, onOpenFile }: FileTreeProps) {
                             header controls read as one pair, not two scales. */}
                         <Paintbrush
                             animateOnHover
-                            size={16}
+                            size={19}
                             strokeWidth={1.7}
                             className="text-ctr-ink dark:text-ctr-ink dark:opacity-100"
                         />
