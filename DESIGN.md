@@ -361,6 +361,8 @@ The mascot ships as pixel-grid canvas components (`idle`, `happy`, `coding`) ren
 
 **The workspace is fixed-light for the same reason `/design` is.** It sets `document.body.style.backgroundColor` on mount exactly as `Design.tsx` does, and loads its own copies of the three atelier fonts (`next/font/google` calls are idempotent on an identical config, so this costs nothing extra) — the site's dark-mode toggle never reaches either surface.
 
+**`Files`' own highlight pill is hover-only** (`FilesHighlight` defaults to `hover: true`), so it never marks which file is actually open in the editor — that has to be computed from `activeFile` and applied as a real class per row, the way the tab bar already does, not assumed to come free from the primitive. The file tree's own header links back to `/design`, not `/home`: this surface is reached only from the atelier, so its way out returns there rather than dropping the visitor into an unrelated part of the site.
+
 ### Motion
 One curve carries the whole product: `cubic-bezier(0.16, 1, 0.3, 1)`, an exponential ease-out, exposed on `/design` as `--ease-ctr` and written literally in the application's Framer Motion transitions. Entrances animate opacity, a small `y` offset and a blur, 0.4–0.9s, staggered ~0.18s for headline lines. Interface transitions stay at 150–250ms.
 

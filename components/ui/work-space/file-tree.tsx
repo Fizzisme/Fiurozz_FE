@@ -72,8 +72,13 @@ function getFileIcon(fileName: string) {
 }
 
 /* Filenames are mono (the parent SidebarContent sets font-ctr-mono) — a
-   filename is exactly the kind of fact the Narrow-Mono Rule is for. */
-const fileTreeItemClass = 'text-ctr-ink';
+   filename is exactly the kind of fact the Narrow-Mono Rule is for.
+   `Files`' own highlight pill is hover-only (see FilesHighlight's default
+   `hover: true`), so it never marks which file is actually open — that has
+   to come from activeFile, computed per row below. */
+function fileTreeItemClass(active: boolean) {
+    return active ? 'rounded-[1px] bg-ctr-paper-2 font-semibold text-ctr-ink' : 'text-ctr-ink';
+}
 
 function RenderTree({
     nodes,
@@ -95,7 +100,7 @@ function RenderTree({
 
                     return (
                         <FolderItem key={node.name} value={node.name}>
-                            <FolderTrigger className={fileTreeItemClass}>{node.name}</FolderTrigger>
+                            <FolderTrigger className={fileTreeItemClass(false)}>{node.name}</FolderTrigger>
 
                             <FolderContent guideClassName="before:bg-ctr-ink-hair">
                                 <SubFiles highlightClassName="bg-ctr-paper-2 rounded-[1px]">
@@ -108,13 +113,15 @@ function RenderTree({
 
                 if (!FILES[node.name]) return null;
 
+                const active = activeFile === node.name;
+
                 return (
                     <FileItem
                         key={node.name}
                         icon={getFileIcon(node.name)}
                         onClick={() => onOpenFile(node.name)}
-                        aria-current={activeFile === node.name ? 'true' : undefined}
-                        className={fileTreeItemClass}
+                        aria-current={active ? 'true' : undefined}
+                        className={fileTreeItemClass(active)}
                     >
                         {node.name}
                     </FileItem>
@@ -135,7 +142,7 @@ export default function FileTree({ activeFile, onOpenFile }: FileTreeProps) {
     return (
         <Sidebar side="left" collapsible="offcanvas" className="border-r border-ctr-ink-hair bg-ctr-paper">
             <SidebarHeader className="flex h-[59px] flex-none flex-row items-center justify-between gap-2 border-b border-ctr-ink-hair px-3.5">
-                <Link href="/home" title="Back to Fiurozz" className="text-ctr-ink opacity-70 transition-opacity duration-300 [transition-timing-function:var(--ease-ctr)] hover:opacity-100">
+                <Link href="/design" title="Back to Catronaut" className="text-ctr-ink opacity-70 transition-opacity duration-300 [transition-timing-function:var(--ease-ctr)] hover:opacity-100">
                     <Fiurozz className="h-7 w-7 group-data-[collapsible=icon]:absolute group-data-[collapsible=icon]:inset-0 group-data-[collapsible=icon]:my-2 group-data-[collapsible=icon]:h-7 group-data-[collapsible=icon]:w-7" />
                 </Link>
                 <SidebarTrigger className="cursor-pointer text-ctr-ink" />
