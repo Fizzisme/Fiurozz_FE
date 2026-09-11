@@ -354,6 +354,19 @@ The atelier's call-to-action, ported from the original static page. Square (`1px
 ### Signature component — Catronaut
 The mascot ships as pixel-grid canvas components (`idle`, `happy`, `coding`) rendered at `scale` — `0.3` inside a 40px icon badge, larger when it is the subject. It is the brand's face: it appears in the home feature list, in the register card's title badge, and as the painter inside the `/design` hero plate. It is never replaced by a generic user or sparkle icon.
 
+### Signature component — the atelier workspace
+`/design/[projectId]` (`views/Workspace.tsx`) is where "Start designing" lands — a file tree, tabs, a code pane and a chat, in the same ivory-and-ink world as the landing page rather than the application's own chrome. It is the atelier's one Operate-mode surface: the world stays fixed, but the grammar bends to a working tool — mono for anything that is a filename or code, hairline-bordered `1px`-radius panels instead of the landing page's plates, and a calmer, UI-scale motion register (`duration-300`, still the house ease) in place of the page's staged reveals.
+
+**The code pane is ink at four weights, not a borrowed editor theme.** `ctr-terracotta`, `ctr-ochre` and `ctr-sage` read beautifully as swatches but fail 4.5:1 at code size on `ctr-paper-lift`; the four hues that clear it — `ctr-ink` (plain text, 10.5:1), `ctr-ink-soft` (comments, functions, 6.0:1), `ctr-terracotta-ink` (strings, 6.7:1) and `ctr-desk` (keywords, 8.0:1) — are the whole syntax palette. Measure before picking a code-highlight colour from the swatch tier; it is tuned for small decorative fills, not for paragraphs of 13px text.
+
+**The workspace is fixed-light for the same reason `/design` is.** It sets `document.body.style.backgroundColor` on mount exactly as `Design.tsx` does, and loads its own copies of the three atelier fonts (`next/font/google` calls are idempotent on an identical config, so this costs nothing extra) — the site's dark-mode toggle never reaches either surface.
+
+**`Files`' own highlight pill is hover-only** (`FilesHighlight` defaults to `hover: true`), so it never marks which file is actually open in the editor — that has to be computed from `activeFile` and applied as a real class per row, the way the tab bar already does, not assumed to come free from the primitive. The file tree's own header links back to `/design`, not `/home`: this surface is reached only from the atelier, so its way out returns there rather than dropping the visitor into an unrelated part of the site.
+
+**A third trap, this time in `Files`.** `FileItem`'s `className` prop (and its `{...props}` spread, `aria-current` included) reaches `FileLabelPrimitive` — the text span — not the row. A background or `aria-current` meant to mark the whole item ends up sized to the label instead, which reads as "only the word is selected" next to a hover state that correctly fills the row. `FileItem` now takes `active`/`activeClassName` (default `bg-accent`, so any other consumer's behaviour is unchanged) applied to the row itself, and forwards `aria-current` there too; the file tree passes its own atelier fill through `activeClassName` rather than through `className`.
+
+**Two more traps `Sidebar` hides, both worth knowing before recolouring it again.** `Sidebar`'s own `className` prop lands on the fixed outer `sidebar-container` box; its child `sidebar-inner` then paints its own opaque `bg-sidebar` over that entire area regardless, so a colour passed to `<Sidebar className>` is never actually visible — the file tree's real fill is a plain div wrapped around its own children instead. And the Fiurozz mark (`components/icons/logo.tsx`) sets `text-black dark:text-white dark:opacity-60` on itself and reads `currentColor` locally, so a colour applied to its *wrapping* element never reaches it — the override has to land on the icon's own `className` (`text-ctr-ink dark:text-ctr-ink dark:opacity-100`), the one time this file intentionally fights a `dark:` class rather than just not using one.
+
 ### Motion
 One curve carries the whole product: `cubic-bezier(0.16, 1, 0.3, 1)`, an exponential ease-out, exposed on `/design` as `--ease-ctr` and written literally in the application's Framer Motion transitions. Entrances animate opacity, a small `y` offset and a blur, 0.4–0.9s, staggered ~0.18s for headline lines. Interface transitions stay at 150–250ms.
 
@@ -376,6 +389,8 @@ One curve carries the whole product: `cubic-bezier(0.16, 1, 0.3, 1)`, an exponen
 - **Do** use the authored assets — the Catronaut components, the painted plate, the desk photograph — where a generic icon or stock image would otherwise land.
 - **Do** honour `prefers-reduced-motion`, as `/design` already does, before adding any scroll-driven or pinned animation.
 - **Do** theme the browser's own surfaces: selection colour, focus ring, scrollbar (`thin-scrollbar` / `no-scrollbar`), caret.
+- **Do** give a shared primitive with more than one consumer an override prop for its world-specific colours (see `Files`' `highlightClassName`) rather than editing its default — the default is the other consumers' contract.
+- **Do** pick code-syntax and other small-text colours by measured contrast against their real background, not by which swatch looks closest in the palette list.
 
 ### Don't:
 - **Don't** blend the worlds — no ivory paper, Garamond or terracotta inside the application, and no orange accent, 10px radius or Lexend Deca inside `/design`.

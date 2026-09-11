@@ -25,12 +25,18 @@ import { cn } from '@/lib/utils';
 
 type GitStatus = 'untracked' | 'modified' | 'deleted';
 
-type FilesProps = FilesPrimitiveProps;
+type FilesProps = FilesPrimitiveProps & {
+  /** Overrides the sliding active/hover pill, which otherwise defaults to the
+   *  app's own `bg-accent` — pass a world-specific class (e.g. the atelier's
+   *  `bg-ctr-paper-2 rounded-[1px]`) rather than editing this default, since
+   *  this primitive has other consumers outside any one visual world. */
+  highlightClassName?: string;
+};
 
-function Files({ className, children, ...props }: FilesProps) {
+function Files({ className, highlightClassName, children, ...props }: FilesProps) {
   return (
     <FilesPrimitive className={cn('p-2 w-full', className)} {...props}>
-      <FilesHighlightPrimitive className="bg-accent rounded-lg pointer-events-none">
+      <FilesHighlightPrimitive className={cn('bg-accent rounded-lg pointer-events-none', highlightClassName)}>
         {children}
       </FilesHighlightPrimitive>
     </FilesPrimitive>
@@ -101,11 +107,21 @@ function FolderTrigger({
   );
 }
 
-type FolderContentProps = FolderContentPrimitiveProps;
+type FolderContentProps = FolderContentPrimitiveProps & {
+  /** Overrides the nested-folder guide line, which otherwise defaults to the
+   *  app's own `bg-border` — see `Files`' `highlightClassName` for why this
+   *  is a prop rather than an edit to the default. */
+  guideClassName?: string;
+};
 
-function FolderContent(props: FolderContentProps) {
+function FolderContent({ guideClassName, ...props }: FolderContentProps) {
   return (
-    <div className="relative ml-6 before:absolute before:-left-2 before:inset-y-0 before:w-px before:h-full before:bg-border">
+    <div
+      className={cn(
+        'relative ml-6 before:absolute before:-left-2 before:inset-y-0 before:w-px before:h-full before:bg-border',
+        guideClassName,
+      )}
+    >
       <FolderContentPrimitive {...props} />
     </div>
   );
@@ -114,22 +130,37 @@ function FolderContent(props: FolderContentProps) {
 type FileItemProps = FilePrimitiveProps & {
   icon?: React.ElementType;
   gitStatus?: GitStatus;
+  /** True when this file is the persistently "open" one — distinct from
+   *  Files' own hover/click pill, which is transient. Applied to the row
+   *  itself (FilePrimitive), never to the label: `className` only ever
+   *  reached the label here, which is why an "active" row used to end up
+   *  with only its text coloured instead of the whole row filled. */
+  active?: boolean;
+  /** Defaults to the app's own `bg-accent` for any consumer that never
+   *  passes one — see `Files`' `highlightClassName` for why a shared
+   *  primitive's world colours live in a prop, not in this default. */
+  activeClassName?: string;
 };
 
 function FileItem({
   icon: Icon = FileIcon,
-    onClick,
+  onClick,
   className,
   children,
   gitStatus,
+  active,
+  activeClassName = 'bg-accent',
+  'aria-current': ariaCurrent,
   ...props
 }: FileItemProps) {
   return (
     <FileHighlightPrimitive>
       <FilePrimitive
-          onClick={onClick}
+        onClick={onClick}
+        aria-current={ariaCurrent}
         className={cn(
-          'flex items-center justify-between gap-2 p-2 cursor-pointer',
+          'flex items-center justify-between gap-2 p-2 cursor-pointer rounded-md',
+          active && activeClassName,
           gitStatus === 'untracked' && 'text-green-400',
           gitStatus === 'modified' && 'text-amber-400',
           gitStatus === 'deleted' && 'text-red-400',

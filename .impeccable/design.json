@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-10T05:54:53.504Z",
+  "generatedAt": "2026-09-10T06:22:53.309Z",
   "title": "Design System: Fiurozz",
   "extensions": {
     "colorMeta": {
@@ -391,6 +391,16 @@
         "name": "The Standing-Room Rule",
         "body": "A full-height scene centres against the room the visitor actually has, not against the document. The header is position: fixed, so a scene reserves its band (pt-14 md:pt-[82px]), then makes its content area flex-1 and centres inside that. min-h-screen with top padding and no centring drops everything against the header and leaves the dead space at the bottom, which reads as a page that failed to load rather than a composition.",
         "section": "layout"
+      },
+      {
+        "name": "The Ink-Four Rule",
+        "body": "Code and other small text inside the atelier draw from exactly four measured colours: ctr-ink (plain, 10.5:1 on ctr-paper-lift), ctr-ink-soft (comments/functions, 6.0:1), ctr-terracotta-ink (strings, 6.7:1) and ctr-desk (keywords, 8.0:1). ctr-terracotta, ctr-ochre and ctr-sage stay swatch- and accent-only — they fail 4.5:1 at code size and were never meant to carry paragraphs of text.",
+        "section": "colors"
+      },
+      {
+        "name": "The Override-Prop Rule",
+        "body": "A shared primitive used by more than one surface keeps its existing default and gains an override prop for a new world's colours, instead of having its default edited in place — Files/FileItem's highlightClassName and FolderContent's guideClassName exist so the atelier workspace could recolour them without risking a future app-world consumer of the same component.",
+        "section": "components"
       }
     ],
     "dos": [
@@ -403,7 +413,9 @@
       "Do ship every interactive state: hover, focus ring, disabled, loading (label swap), error, empty.",
       "Do use the authored assets — the Catronaut components, the painted plate, the desk photograph — where a generic icon or stock image would otherwise land.",
       "Do honour prefers-reduced-motion, as /design already does, before adding any scroll-driven or pinned animation.",
-      "Do theme the browser's own surfaces: selection colour, focus ring, scrollbar (thin-scrollbar / no-scrollbar), caret."
+      "Do theme the browser's own surfaces: selection colour, focus ring, scrollbar (thin-scrollbar / no-scrollbar), caret.",
+      "Do give a shared primitive with more than one consumer an override prop for its world-specific colours rather than editing its default.",
+      "Do pick code-syntax and other small-text colours by measured contrast against their real background, not by which swatch looks closest in the palette list."
     ],
     "donts": [
       "Don't blend the worlds — no ivory paper, Garamond or terracotta inside the application, and no orange accent, 10px radius or Lexend Deca inside /design.",

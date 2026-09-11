@@ -48,22 +48,25 @@ const SUGGESTIONS = [
     {
         label: 'Match next step',
         Icon: Sparkles,
-        color: '#1e7350',
+        color: '#BE6247', // ctr-terracotta
     },
     {
         label: 'Design polish / ready to ship',
         Icon: Palette,
-        color: '#2c5a7f',
+        color: '#C98F52', // ctr-ochre
     },
     {
         label: 'More',
         Icon: MoreHorizontal,
-        color: '#657485',
+        color: '#4E5E6C', // ctr-ink-soft
     },
 ];
 
+const EASE = '[transition-timing-function:var(--ease-ctr)]';
+const PLATE_SHADOW = 'shadow-[0_1px_0_rgba(43,58,74,0.16),0_10px_24px_-16px_rgba(43,58,74,0.5)]';
+
 const iconBtn =
-    'flex h-[26px] w-[26px] items-center justify-center rounded-md text-ink-500 transition-colors duration-100 hover:bg-paper-2 hover:text-ink-800';
+    `flex h-[26px] w-[26px] items-center justify-center rounded-[1px] text-ctr-ink-soft transition-colors duration-300 ${EASE} hover:bg-ctr-paper-2 hover:text-ctr-ink`;
 
 export default function BoxChat({ onOpenFile }: BoxChatProps) {
     const [messages, setMessages] =
@@ -91,22 +94,22 @@ export default function BoxChat({ onOpenFile }: BoxChatProps) {
     return (
         <>
             {/* HEADER */}
-            <SidebarHeader className="flex h-[59px] flex-none flex-row items-center gap-2 border-b border-line-1 px-3">
+            <SidebarHeader className="flex h-[59px] flex-none flex-row items-center gap-2 border-b border-ctr-ink-hair bg-ctr-paper px-3 font-ctr-sans">
                 {/* Collapse */}
                 <SidebarTrigger
                     title="Collapse chat"
-                    className="cursor-pointer"
+                    className="cursor-pointer text-ctr-ink"
                 />
 
                 {/* Project selector */}
                 <button
-                    className="flex min-w-0 flex-1 cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-[13.5px] font-semibold text-[#52514e] transition-colors hover:bg-paper-2 dark:text-[#c3c2b7]"
+                    className={`flex min-w-0 flex-1 cursor-pointer items-center gap-2 rounded-[1px] px-2 py-1.5 text-[13.5px] font-semibold text-ctr-ink transition-colors duration-300 ${EASE} hover:bg-ctr-paper-2`}
                     title="Select project"
                 >
                     <Folder
                         size={15}
                         strokeWidth={1.7}
-                        color="#1f4463"
+                        color="#8E3D28"
                         className="flex-none"
                     />
 
@@ -117,7 +120,7 @@ export default function BoxChat({ onOpenFile }: BoxChatProps) {
                     <ChevronDown
                         size={14}
                         strokeWidth={1.7}
-                        color="#8695a5"
+                        color="#4E5E6C"
                         className="flex-none"
                     />
                 </button>
@@ -125,7 +128,7 @@ export default function BoxChat({ onOpenFile }: BoxChatProps) {
                 {/* New chat */}
                 <button
                     title="New chat"
-                    className="flex h-8 w-8 flex-none cursor-pointer items-center justify-center rounded-md text-[#52514e] transition-colors hover:bg-paper-2 dark:text-[#c3c2b7]"
+                    className={`flex h-8 w-8 flex-none cursor-pointer items-center justify-center rounded-[1px] text-ctr-ink transition-colors duration-300 ${EASE} hover:bg-ctr-paper-2`}
                 >
                     <MessageSquare
                         animateOnHover
@@ -136,31 +139,31 @@ export default function BoxChat({ onOpenFile }: BoxChatProps) {
             </SidebarHeader>
 
             {/* MESSAGES */}
-            <SidebarContent className="min-h-0 flex-1">
+            <SidebarContent className="min-h-0 flex-1 bg-ctr-paper">
                 <div className="flex min-h-0 flex-1 select-text flex-col gap-[18px] overflow-y-auto p-4 thin-scrollbar">
                     {messages.map((m, i) =>
                         m.role === 'user' ? (
                             <div
                                 key={i}
-                                className="max-w-[88%] self-end rounded-[10px_10px_4px_10px] bg-brand-700 px-[11px] py-2 leading-normal text-white"
+                                className="max-w-[88%] self-end rounded-[2px_2px_0px_2px] bg-[#9C4C34] px-[11px] py-2 font-ctr-serif leading-normal text-ctr-paper"
                             >
                                 {m.text}
                             </div>
                         ) : (
                             <div
                                 key={i}
-                                className="flex flex-col gap-2.5"
+                                className="flex flex-col gap-2.5 font-ctr-serif"
                             >
-                                <p className="m-0 leading-relaxed text-ink-800">
+                                <p className="m-0 leading-relaxed text-ctr-ink">
                                     {m.text}
                                 </p>
 
                                 {(m.bullets || []).map((b, j) => (
                                     <div
                                         key={j}
-                                        className="flex gap-2 leading-relaxed text-ink-700"
+                                        className="flex gap-2 leading-relaxed text-ctr-ink-soft"
                                     >
-                                        <span className="text-ink-300">
+                                        <span className="text-ctr-ink-soft">
                                             &mdash;
                                         </span>
 
@@ -171,25 +174,25 @@ export default function BoxChat({ onOpenFile }: BoxChatProps) {
                                 ))}
 
                                 {m.note ? (
-                                    <p className="m-0 leading-relaxed text-ink-600">
+                                    <p className="m-0 leading-relaxed text-ctr-ink-soft italic">
                                         {m.note}
                                     </p>
                                 ) : null}
 
                                 {m.files?.length ? (
-                                    <div className="overflow-hidden rounded-[10px] border border-line-1 bg-sidebar shadow-xs">
-                                        <div className="flex items-center gap-2 border-b border-line-2 bg-background px-3 py-2.5">
+                                    <div className={`overflow-hidden rounded-[1px] border border-ctr-ink-hair bg-ctr-paper-lift font-ctr-sans ${PLATE_SHADOW}`}>
+                                        <div className="flex items-center gap-2 border-b border-ctr-ink-faint bg-ctr-paper-2 px-3 py-2.5">
                                             <Files
                                                 size={14}
                                                 strokeWidth={1.7}
-                                                color="#657485"
+                                                color="#4E5E6C"
                                             />
 
-                                            <span className="text-[11px] font-bold uppercase tracking-[0.08em] text-ink-600">
+                                            <span className="text-[11px] font-bold uppercase tracking-[0.08em] text-ctr-ink-soft">
                                                 Files from this turn
                                             </span>
 
-                                            <span className="ml-auto text-xs text-ink-500">
+                                            <span className="ml-auto text-xs text-ctr-ink-soft">
                                                 Write{' '}
                                                 {
                                                     m.files.filter(
@@ -216,14 +219,14 @@ export default function BoxChat({ onOpenFile }: BoxChatProps) {
                                                     onClick={() =>
                                                         onOpenFile(f.name)
                                                     }
-                                                    className="flex items-center gap-2.5 rounded-md px-2 py-[7px] text-left text-[13px] transition-colors duration-100 hover:bg-brand-050"
+                                                    className={`flex items-center gap-2.5 rounded-[1px] px-2 py-[7px] text-left text-[13px] transition-colors duration-300 ${EASE} hover:bg-ctr-paper-2`}
                                                 >
                                                     <span
                                                         className={
-                                                            'flex h-[22px] w-[22px] flex-none items-center justify-center rounded-[5px] border ' +
+                                                            'flex h-[22px] w-[22px] flex-none items-center justify-center rounded-[1px] border ' +
                                                             (f.status === 'edit'
-                                                                ? 'border-review-100 bg-review-050 text-review-700'
-                                                                : 'border-decided-100 bg-decided-050 text-decided-700')
+                                                                ? 'border-[#8E3D28]/35 bg-[#C98F52]/15 text-[#8E3D28]'
+                                                                : 'border-[#454D3D]/35 bg-[#8B9C86]/15 text-[#454D3D]')
                                                         }
                                                     >
                                                         {f.status === 'edit' ? (
@@ -241,7 +244,7 @@ export default function BoxChat({ onOpenFile }: BoxChatProps) {
                                                         )}
                                                     </span>
 
-                                                    <span className="font-mono text-[12.5px]">
+                                                    <span className="font-ctr-mono text-[12.5px] text-ctr-ink">
                                                         {f.name}
                                                     </span>
                                                 </button>
@@ -296,13 +299,13 @@ export default function BoxChat({ onOpenFile }: BoxChatProps) {
                     )}
 
                     {/* SUGGESTIONS */}
-                    <div className="flex flex-col gap-2 rounded-[10px] border border-line-2 bg-background p-3">
+                    <div className="flex flex-col gap-2 rounded-[1px] border border-ctr-ink-faint bg-ctr-paper-2 p-3 font-ctr-sans">
                         {SUGGESTIONS.map(
                             ({ label, Icon, color }) => (
                                 <button
                                     key={label}
                                     onClick={() => setDraft(label)}
-                                    className="flex items-center gap-2.5 rounded-lg border border-line-1 bg-sidebar px-3 py-2.5 text-[13px] transition-colors duration-100 hover:border-brand-100 hover:bg-brand-050"
+                                    className={`flex items-center gap-2.5 rounded-[1px] border border-ctr-ink-hair bg-ctr-paper-lift px-3 py-2.5 text-[13px] text-ctr-ink transition-colors duration-300 ${EASE} hover:border-[#BE6247]/40 hover:bg-ctr-paper`}
                                 >
                                     <Icon
                                         size={15}
@@ -317,7 +320,7 @@ export default function BoxChat({ onOpenFile }: BoxChatProps) {
                                     <ChevronRight
                                         size={14}
                                         strokeWidth={1.7}
-                                        color="#8695a5"
+                                        color="#4E5E6C"
                                     />
                                 </button>
                             ),
@@ -327,8 +330,8 @@ export default function BoxChat({ onOpenFile }: BoxChatProps) {
             </SidebarContent>
 
             {/* INPUT */}
-            <div className="flex-none border-t border-line-2 p-3">
-                <div className="overflow-hidden rounded-[10px] border border-line-1 bg-sidebar shadow-xs">
+            <div className="flex-none border-t border-ctr-ink-faint bg-ctr-paper p-3">
+                <div className={`overflow-hidden rounded-[1px] border border-ctr-ink-hair bg-ctr-paper-lift ${PLATE_SHADOW}`}>
                     <textarea
                         value={draft}
                         onChange={(e) =>
@@ -345,10 +348,10 @@ export default function BoxChat({ onOpenFile }: BoxChatProps) {
                         }}
                         rows={2}
                         placeholder="Improve the icon system for the current design…"
-                        className="block max-h-[180px] min-h-[56px] w-full select-text resize-none bg-transparent p-3 text-[13.5px] leading-normal outline-none"
+                        className="block max-h-[180px] min-h-[56px] w-full select-text resize-none bg-transparent p-3 font-ctr-serif text-[14px] leading-normal text-ctr-ink outline-none placeholder:text-ctr-ink-soft/70"
                     />
 
-                    <div className="flex items-center gap-0.5 border-t border-line-2 py-2 pl-1.5 pr-2">
+                    <div className="flex items-center gap-0.5 border-t border-ctr-ink-faint py-2 pr-2 pl-1.5 font-ctr-sans">
                         <button
                             title="Attach"
                             className={iconBtn}
@@ -390,7 +393,7 @@ export default function BoxChat({ onOpenFile }: BoxChatProps) {
                             />
                         </button>
 
-                        <button className="ml-auto flex items-center gap-1.5 rounded-md px-2 py-[5px] text-[12.5px] text-ink-600 transition-colors duration-100 hover:bg-paper-2">
+                        <button className={`ml-auto flex items-center gap-1.5 rounded-[1px] px-2 py-[5px] text-[12.5px] text-ctr-ink-soft transition-colors duration-300 ${EASE} hover:bg-ctr-paper-2`}>
                             <span>
                                 Default (CLI config)
                             </span>
@@ -398,14 +401,14 @@ export default function BoxChat({ onOpenFile }: BoxChatProps) {
                             <ChevronDown
                                 size={14}
                                 strokeWidth={1.7}
-                                color="#8695a5"
+                                color="#4E5E6C"
                             />
                         </button>
 
                         <button
                             onClick={send}
                             title="Send"
-                            className="flex h-[30px] w-[30px] flex-none items-center justify-center rounded-full bg-brand-700 text-white transition-colors duration-100 hover:bg-brand-900"
+                            className={`flex h-[30px] w-[30px] flex-none items-center justify-center rounded-[1px] bg-[#9C4C34] text-ctr-paper transition-colors duration-300 ${EASE} hover:bg-[#8A422D]`}
                         >
                             <ArrowUp
                                 size={16}
@@ -419,12 +422,13 @@ export default function BoxChat({ onOpenFile }: BoxChatProps) {
     );
 }
 
+/** The atelier's own ink palette, never the app's orange/ember accent. */
 export function fileColor(name: string) {
-    if (name.endsWith('.css')) return '#2c5a7f';
-    if (name.endsWith('.js')) return '#a8710c';
-    if (name.endsWith('.html')) return '#9c4221';
+    if (name.endsWith('.css')) return '#93A9B8'; // ctr-blue
+    if (name.endsWith('.js')) return '#C98F52'; // ctr-ochre
+    if (name.endsWith('.html')) return '#8E3D28'; // ctr-terracotta-ink
 
-    return '#657485';
+    return '#4E5E6C'; // ctr-ink-soft
 }
 
 export function FileIcon({
