@@ -6,7 +6,9 @@ export default function Navigate() {
             <Link href="/projects" className="cursor-pointer transition-colors">
                 Projects
             </Link>
-            <p className="cursor-pointer transition-colors">Members</p>
+            <Link href="/members" className="cursor-pointer transition-colors">
+                Members
+            </Link>
             <p className="cursor-pointer transition-colors">Posts</p>
             <p className="cursor-pointer transition-colors">Contact Us</p>
         </div>

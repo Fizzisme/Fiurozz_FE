@@ -13,8 +13,8 @@ import Image from 'next/image';
 
 const navItems = [
     { label: 'Home', href: '/home' },
-    { label: 'Projects', href: '/projects/e-commerce/online-store' },
-    { label: 'Members', href: '#' },
+    { label: 'Projects', href: '/projects' },
+    { label: 'Members', href: '/members' },
     { label: 'Posts', href: '#' },
     { label: 'Contact', href: '#' },
     { label: 'Search', href: '#' },
