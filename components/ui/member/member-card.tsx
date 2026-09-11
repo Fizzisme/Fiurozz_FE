@@ -2,12 +2,15 @@
 
 import { useState, useTransition } from 'react';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { MapPin, School, Send } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/global/avatar';
 import { Button } from '@/components/animate-ui/components/buttons/button';
 import { Member } from '@/mock-data/members';
 import { memberService } from '@/services/member-service';
+import { useMessageDockStore } from '@/lib/store/message-dock-store';
+import { useUserStore } from '@/lib/store/user-store';
 
 interface MemberCardProps {
     member: Member;
@@ -71,11 +74,35 @@ export default function MemberCard({ member, className }: MemberCardProps) {
     const visible = fitSkills(member.skills);
     const overflow = member.skills.length - visible.length;
 
+    const openConversation = useMessageDockStore((state) => state.openConversation);
+    const user = useUserStore((state) => state.user);
+    const isInitialized = useUserStore((state) => state.isInitialized);
+
+    const router = useRouter();
+    const pathname = usePathname();
+
+    /**
+     * Following and messaging both author something, so both are gated. Returns
+     * true when the caller must stop: either auth is still unknown (act on it and
+     * you risk bouncing someone who is in fact signed in) or there is no account,
+     * in which case the visitor is sent to sign in and brought back here.
+     */
+    const blockedByAuth = () => {
+        if (!isInitialized) return true;
+        if (!user) {
+            router.push(`/login?next=${encodeURIComponent(pathname)}`);
+            return true;
+        }
+        return false;
+    };
+
     const [isFollowing, setIsFollowing] = useState(member.isFollowing);
     const [followers, setFollowers] = useState(member.stats.followers);
     const [isPending, startTransition] = useTransition();
 
     const toggleFollow = () => {
+        if (blockedByAuth()) return;
+
         const next = !isFollowing;
         const previous = { isFollowing, followers };
 
@@ -119,16 +146,18 @@ export default function MemberCard({ member, className }: MemberCardProps) {
                         keyboard. Lifted above the stretched link so both stay clickable. */}
                     <div className="relative z-10 flex shrink-0 items-center gap-3">
                         <Button
-                            asChild
+                            type="button"
                             variant="ghost"
                             size="icon-sm"
+                            onClick={() => {
+                                if (blockedByAuth()) return;
+                                openConversation(member.username);
+                            }}
                             aria-label={`Message ${member.name}`}
                             title={`Message ${member.name}`}
                             className="hover:bg-transparent"
                         >
-                            <Link href={`/messages/${member.username}`}>
-                                <Send className="size-6" />
-                            </Link>
+                            <Send className="size-6" />
                         </Button>
 
                         <Button
