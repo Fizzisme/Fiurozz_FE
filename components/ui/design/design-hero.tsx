@@ -41,6 +41,12 @@ const RESERVE_UNITS = INTRO_UNITS + HOLD_UNITS;
  *  a share of the plate's own beat, restated against the full timeline. */
 const COPY_CUE = (0.7 * INTRO_UNITS) / TOTAL_UNITS;
 
+/** The hero is pinned, so it is always in view and the RevealGate alone
+ *  decides when its copy arrives. The default scroll trigger ignores the
+ *  bottom 12% of the viewport — on a ~700px-tall screen that is exactly where
+ *  the call and the plate caption sit, and they never came in. */
+const PINNED_VIEWPORT = { once: true, amount: 0 } as const;
+
 /** Scene 01 — the studio. Title, lede, the call, and the reserved hero plate. */
 export function DesignHero() {
     const sectionRef = useRef<HTMLElement>(null);
@@ -178,9 +184,13 @@ export function DesignHero() {
                     >
                         <div className="flex justify-center">
                             <div className="max-w-full">
+                                {/* The pinned section is exactly one viewport tall and
+                                    clips, so on desktop the title also yields to the
+                                    height: four lines plus ~24rem of padding, lede and
+                                    call have to fit, or the call drops off the bottom. */}
                                 <h1
                                     id="hero-title"
-                                    className="max-w-[15ch] font-ctr-serif text-ctr-display leading-[0.99] tracking-[-0.022em] font-normal"
+                                    className="max-w-[15ch] font-ctr-serif text-ctr-display leading-[0.99] tracking-[-0.022em] font-normal min-[1000px]:text-[length:clamp(2.5rem,min(6.2vw,calc((100svh_-_24rem)/4)),5.6rem)]"
                                 >
                                     <RevealLines
                                         lines={[
@@ -196,6 +206,7 @@ export function DesignHero() {
                                 <Reveal
                                     as="p"
                                     delay={1}
+                                    viewport={PINNED_VIEWPORT}
                                     className="mt-[clamp(1.4rem,2.4vw,2.1rem)] max-w-[44ch] font-ctr-serif text-ctr-lede leading-[1.66] text-ctr-ink-soft"
                                 >
                                     Catronaut is a design studio you talk to. Bring the site, the product interface, the
@@ -206,6 +217,7 @@ export function DesignHero() {
                                 <Reveal
                                     as="p"
                                     delay={2}
+                                    viewport={PINNED_VIEWPORT}
                                     className="mt-[clamp(1.7rem,2.8vw,2.5rem)] flex  max-[1000px]:justify-center"
                                 >
                                     <Plate href="#canvas">
@@ -245,6 +257,7 @@ export function DesignHero() {
                             <Reveal
                                 as="figcaption"
                                 delay={3}
+                                viewport={PINNED_VIEWPORT}
                                 className="mt-[0.9rem] flex flex-wrap items-baseline gap-x-[1.4em] gap-y-[0.4em] border-t border-ctr-ink-hair pt-[0.8rem] font-ctr-mono text-ctr-micro uppercase tracking-[0.1em] text-ctr-ink-soft"
                             >
                                 <span className="text-ctr-ink">Plate&nbsp;I</span>
@@ -266,6 +279,7 @@ export function DesignHero() {
                     <Reveal
                         as="aside"
                         delay={3}
+                        viewport={PINNED_VIEWPORT}
                         aria-hidden="true"
                         className="absolute top-[42%] hidden gap-[1.6em] font-ctr-mono text-ctr-micro uppercase tracking-[0.24em] text-ctr-ink-soft [writing-mode:vertical-rl] min-[1000px]:flex"
                         style={{ left: 'calc(clamp(1.5rem,5vw,6rem) * 0.32)' }}

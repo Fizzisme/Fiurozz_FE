@@ -11,7 +11,7 @@ import {
     type FormEvent,
 } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion, type Variants } from 'motion/react';
+import { motion, useReducedMotion, type Variants } from 'motion/react';
 import { ChevronDown, Paperclip, Plus, X } from 'lucide-react';
 import { Plate, PlateNib } from './design-icons';
 import { Reveal } from './design-reveal';
@@ -135,6 +135,7 @@ type Log = { head: string; tail: string };
 /** Scene 02 — the canvas. The sheet you write on, and the margin of the desk. */
 export function DesignCanvas() {
     const router = useRouter();
+    const quiet = useReducedMotion();
     const fieldRef = useRef<HTMLTextAreaElement>(null);
     const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -227,7 +228,9 @@ export function DesignCanvas() {
         let step = 0;
         const next = () => {
             if (step >= STAGES.length) {
-                setWorking(false);
+                /* `working` stays true on purpose: the plate is spoken for
+                   from the first click until the studio route replaces this
+                   page, so a slow route load can't take a second generate. */
                 setDrawn(true);
                 setLog({
                     head: 'draft 01',
@@ -471,24 +474,123 @@ export function DesignCanvas() {
                                 </div>
                             </fieldset>
 
-                            <Plate as="button" type="submit" variant="ink" disabled={working} className="ml-auto">
-                                Generate
+                            <Plate
+                                as="button"
+                                type="submit"
+                                variant="ink"
+                                disabled={working}
+                                aria-busy={working}
+                                className="ml-auto"
+                            >
+                                {drawn ? 'Opening…' : working ? 'Drawing…' : 'Generate'}
                                 <PlateNib />
                             </Plate>
                         </div>
 
+                        <output
+                            htmlFor="prompt"
+                            aria-live="polite"
+                            className="mt-[1.4rem] block min-h-[1.4em] font-ctr-mono text-ctr-micro tracking-[0.12em] text-ctr-ink-soft uppercase"
+                        >
+                            {log && (
+                                <>
+                                    <b className="font-normal text-ctr-terracotta-ink">{log.head}</b> — {log.tail}
+                                </>
+                            )}
+                        </output>
+                    </Reveal>
+
+                    <Reveal as="aside" delay={3} className="grid pt-[0.5rem] min-[1000px]:pt-[2.6rem]">
+                        {/* The margin holds the sample lines until a generate
+                            starts; then the draft is laid over them, beside the
+                            sheet where the eye already is. Both share one grid
+                            cell so the column never jumps. */}
                         <div
-                            aria-hidden="true"
+                            inert={draftOpen}
                             className={[
-                                'grid overflow-hidden transition-[grid-template-rows,opacity,margin-top] duration-1000 [transition-timing-function:var(--ease-ctr)]',
-                                draftOpen
-                                    ? 'mt-[clamp(2rem,3.5vw,3rem)] grid-rows-[1fr] opacity-100'
-                                    : 'mt-0 grid-rows-[0fr] opacity-0',
+                                '[grid-area:1/1] transition-[opacity,filter] duration-700 [transition-timing-function:var(--ease-ctr)]',
+                                draftOpen ? 'opacity-0 blur-[3px]' : 'opacity-100 blur-0',
                             ].join(' ')}
                         >
+                            <p className="mb-[1.2em] font-ctr-mono text-ctr-micro tracking-[0.2em] text-ctr-on-dark-soft uppercase">
+                                Try a line —
+                            </p>
+                            <ul className="grid gap-[0.1rem]">
+                                {EXAMPLES.map((example, i) => (
+                                    <li key={example.label}>
+                                        <button
+                                            type="button"
+                                            onClick={() => takeExample(example.prompt)}
+                                            className={[
+                                                'block w-full border-t border-[rgba(237,229,211,0.2)] py-[0.95em] pb-[1em] text-left font-ctr-serif text-[1.02rem] leading-[1.4] text-ctr-on-dark-soft italic transition-[color,transform] duration-[450ms] [transition-timing-function:var(--ease-ctr)] hover:translate-x-[0.7em] hover:text-[#EFC0A0]',
+                                                i === EXAMPLES.length - 1 ? 'border-b' : '',
+                                            ].join(' ')}
+                                        >
+                                            {example.label}
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+
+                            <p className="mt-[2.2rem] grid max-w-[34ch] gap-[0.9rem] font-ctr-serif text-[1rem] leading-[1.5] text-ctr-on-dark-soft italic">
+                                <svg
+                                    className="h-[46px] w-[60px] opacity-60"
+                                    viewBox="0 0 60 46"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                >
+                                    <path
+                                        d="M2 40 C 14 14, 34 4, 57 8"
+                                        fill="none"
+                                        stroke="#C8CDBA"
+                                        strokeWidth="1.4"
+                                    />
+                                    <path
+                                        d="M57 8 L45 4 M57 8 L50 18"
+                                        fill="none"
+                                        stroke="#C8CDBA"
+                                        strokeWidth="1.4"
+                                    />
+                                </svg>
+                                <span>
+                                    The wash sets the art direction. Change it and the same sentence
+                                    comes back a different painting.
+                                </span>
+                            </p>
+                        </div>
+
+                        {/* The draft: a second, smaller sheet dropped onto the
+                            desk at a slight angle. Decorative — the log under
+                            the plate is what screen readers hear. */}
+                        <motion.div
+                            aria-hidden="true"
+                            initial={false}
+                            animate={
+                                draftOpen
+                                    ? { opacity: 1, y: 0, rotate: quiet ? 0 : -1.2, filter: 'blur(0px)' }
+                                    : {
+                                          opacity: 0,
+                                          y: quiet ? 0 : 28,
+                                          rotate: quiet ? 0 : -3.5,
+                                          filter: quiet ? 'blur(0px)' : 'blur(6px)',
+                                      }
+                            }
+                            transition={{ duration: quiet ? 0.3 : 0.9, ease: EASE }}
+                            className="pointer-events-none relative self-start bg-ctr-paper-lift p-[clamp(2rem,2.6vw,2.4rem)] text-ctr-ink shadow-[0_2px_1px_rgba(0,0,0,0.14),0_40px_70px_-40px_rgba(0,0,0,0.6)] [grid-area:1/1]"
+                        >
+                            <SheetMark position="tl" />
+                            <SheetMark position="tr" />
+                            <SheetMark position="bl" />
+                            <SheetMark position="br" />
+
+                            <p className="flex gap-[1.6em] border-b border-ctr-ink-hair pb-[0.9em] font-ctr-mono text-ctr-micro tracking-[0.16em] text-ctr-ink-soft uppercase">
+                                <span>draft 01</span>
+                                <span className="ml-auto">{wash}</span>
+                            </p>
+
                             <motion.svg
                                 key={run}
-                                className="h-auto min-h-0 w-full overflow-hidden"
+                                className="mt-[clamp(1rem,1.8vw,1.4rem)] block h-auto w-full"
                                 viewBox="0 0 520 300"
                                 preserveAspectRatio="xMidYMid meet"
                                 initial="hidden"
@@ -531,67 +633,7 @@ export function DesignCanvas() {
                                     />
                                 </g>
                             </motion.svg>
-                        </div>
-
-                        <output
-                            htmlFor="prompt"
-                            aria-live="polite"
-                            className="mt-[1.4rem] block min-h-[1.4em] font-ctr-mono text-ctr-micro tracking-[0.12em] text-ctr-ink-soft uppercase"
-                        >
-                            {log && (
-                                <>
-                                    <b className="font-normal text-ctr-terracotta-ink">{log.head}</b> — {log.tail}
-                                </>
-                            )}
-                        </output>
-                    </Reveal>
-
-                    <Reveal as="aside" delay={3} className="pt-[0.5rem] min-[1000px]:pt-[2.6rem]">
-                        <p className="mb-[1.2em] font-ctr-mono text-ctr-micro tracking-[0.2em] text-ctr-on-dark-soft uppercase">
-                            Try a line —
-                        </p>
-                        <ul className="grid gap-[0.1rem]">
-                            {EXAMPLES.map((example, i) => (
-                                <li key={example.label}>
-                                    <button
-                                        type="button"
-                                        onClick={() => takeExample(example.prompt)}
-                                        className={[
-                                            'block w-full border-t border-[rgba(237,229,211,0.2)] py-[0.95em] pb-[1em] text-left font-ctr-serif text-[1.02rem] leading-[1.4] text-ctr-on-dark-soft italic transition-[color,transform] duration-[450ms] [transition-timing-function:var(--ease-ctr)] hover:translate-x-[0.7em] hover:text-[#EFC0A0]',
-                                            i === EXAMPLES.length - 1 ? 'border-b' : '',
-                                        ].join(' ')}
-                                    >
-                                        {example.label}
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
-
-                        <p className="mt-[2.2rem] grid max-w-[34ch] gap-[0.9rem] font-ctr-serif text-[1rem] leading-[1.5] text-ctr-on-dark-soft italic">
-                            <svg
-                                className="h-[46px] w-[60px] opacity-60"
-                                viewBox="0 0 60 46"
-                                aria-hidden="true"
-                                focusable="false"
-                            >
-                                <path
-                                    d="M2 40 C 14 14, 34 4, 57 8"
-                                    fill="none"
-                                    stroke="#C8CDBA"
-                                    strokeWidth="1.4"
-                                />
-                                <path
-                                    d="M57 8 L45 4 M57 8 L50 18"
-                                    fill="none"
-                                    stroke="#C8CDBA"
-                                    strokeWidth="1.4"
-                                />
-                            </svg>
-                            <span>
-                                The wash sets the art direction. Change it and the same sentence
-                                comes back a different painting.
-                            </span>
-                        </p>
+                        </motion.div>
                     </Reveal>
                 </div>
             </div>
