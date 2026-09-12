@@ -3,6 +3,7 @@ import { Lexend_Deca, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import * as React from "react";
 import RouteProgressBar from '@/components/ui/global/route-progress-bar';
+import MessageDock from '@/components/ui/messages/message-dock';
 import { userService } from '@/services/user-service';
 import { AuthHydrator } from '@/components/auth-hydrator';
 import { ThemeProvider } from '@/components/ui/global/theme-provider';
@@ -120,6 +121,7 @@ export default async function RootLayout({
             <AuthHydrator initialUser={user}/>
             <RouteProgressBar />
             {children}
+            <MessageDock />
         </ThemeProvider>
         </body>
         </html>
