@@ -64,7 +64,7 @@ export default function Contact() {
     } as const;
 
     return (
-        <main className="bg-background px-4 pt-20 pb-24 md:px-8 md:pt-28">
+        <div className="w-full px-4 pt-8 pb-16 sm:px-8">
             <motion.div
                 variants={revealGroup}
                 initial={reduceMotion ? false : 'hidden'}
@@ -178,6 +178,6 @@ export default function Contact() {
                     </motion.aside>
                 </div>
             </motion.div>
-        </main>
+        </div>
     );
 }

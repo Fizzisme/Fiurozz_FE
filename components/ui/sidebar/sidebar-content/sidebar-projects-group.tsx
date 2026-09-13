@@ -102,7 +102,7 @@ export default function SidebarProjectsGroup() {
                     {/* Categories                                      */}
                     {/* ------------------------------------------------ */}
 
-                    <Collapsible defaultOpen className="group/collapsible">
+                    <Collapsible defaultOpen={pathname.startsWith('/projects')} className="group/collapsible">
                         <SidebarMenuItem>
                             <CollapsibleTrigger asChild>
                                 <AnimateIcon animateOnHover asChild>
