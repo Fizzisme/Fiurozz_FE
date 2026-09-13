@@ -9,7 +9,9 @@ export default function Navigate() {
             <Link href="/members" className="cursor-pointer transition-colors">
                 Members
             </Link>
-            <p className="cursor-pointer transition-colors">Posts</p>
+            <Link href="/posts" className="cursor-pointer transition-colors">
+                Posts
+            </Link>
             <Link href="/contact" className="cursor-pointer transition-colors">
                 Contact Us
             </Link>
